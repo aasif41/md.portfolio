@@ -82,7 +82,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               {/* SubDescription */}
               <div className="text-sm md:text-base text-[#222] font-light leading-relaxed max-w-md mb-8">
                 <p>
-                  Final-year <strong className="font-bold text-[#161216]">BSc (Hons) Computer Science</strong> student. My main objective is to make cool WebGL 3D interactive experiences and scalable distributed systems accessible for everyone on the internet.
+                  Final-year <strong className="font-bold text-[#161216]">BSc (Hons) CS</strong> student who codes in two dimensions and designs in three. Full-stack by trade, 3D designer by obsession — building WebGL experiences the internet remembers.
                 </p>
               </div>
 
@@ -124,23 +124,14 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
           <section className="h-screen flex flex-col items-center justify-center p-8 select-none">
             <button
               onClick={onContinue}
-              className="pointer-events-auto group cursor-pointer text-center p-8 transition-transform duration-300 hover:scale-105"
+              className="pointer-events-auto group cursor-pointer text-center p-4 transition-transform duration-300 hover:scale-105"
             >
-              <span className="flex items-center justify-center gap-2 text-xs font-mono tracking-[0.3em] uppercase text-[#c93b2b] font-bold mb-4">
-                <Star size={11} className="animate-pulse" />
-                EXPLORE WORKS & GALAXY
-                <Star size={11} className="animate-pulse" />
-              </span>
               <h2
-                className="text-5xl md:text-8xl font-black en tracking-tight transition-all duration-300 text-transparent group-hover:text-[#161216]"
+                className="text-6xl sm:text-7xl md:text-9xl font-bold font-movement uppercase tracking-wider transition-all duration-300 text-transparent group-hover:text-[#161216] group-hover:[-webkit-text-fill-color:#161216] group-hover:[-webkit-text-stroke-color:#161216]"
                 style={{ WebkitTextStroke: '2px #161216' }}
               >
                 Click to continue
               </h2>
-              <span className="inline-flex items-center gap-2 mt-6 px-8 py-3 bg-[#161216] text-white text-xs font-mono tracking-[0.2em] uppercase rounded-full group-hover:bg-[#c93b2b] transition-colors shadow-lg">
-                Enter Project Universe
-                <ArrowRight size={13} />
-              </span>
             </button>
           </section>
         </div>

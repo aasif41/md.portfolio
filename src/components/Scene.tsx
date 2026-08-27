@@ -204,7 +204,7 @@ export default function Scene({ act, isWarping }: SceneProps) {
               anchorY="middle"
               letterSpacing={0.2}
             >
-              PORTFOLIO
+              PORTFOL!O
             </Text>
           </group>
 

@@ -25,6 +25,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Movement';
+  src: url('/fonts/Movement-DirectBlack.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-sans: "Space Grotesk", -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
