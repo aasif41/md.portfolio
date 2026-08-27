@@ -1,4 +1,4 @@
-// Exact 1:1 Renaud Rohlinger Style Faceted Low-Poly Tree
+// High Fidelity Low-Poly Faceted Japanese Tree
 
 interface LowPolyTreeProps {
   position?: [number, number, number]
@@ -11,45 +11,45 @@ export default function LowPolyTree({
   scale = 1,
   variant = 'sakura'
 }: LowPolyTreeProps) {
-  const trunkColor = "#8a7065" // Light stylized wood trunk
+  const trunkColor = "#785f54" // Stylized tree bark
   
-  // Exact pastel colors from reference screenshots
+  // Exact anime pastel palette matching Renaud's live portfolio
   const leafColor = variant === 'sakura' 
-    ? "#e4afb5"  // Soft pink sakura
+    ? "#dea4ab"  // Soft pink cherry blossom
     : variant === 'white'
-    ? "#ebeef0"  // Soft cloud white
-    : "#94b8a2"  // Soft sage green
+    ? "#e6ebed"  // Cloud white
+    : "#88ab94"  // Sage pine
 
   return (
     <group position={position} scale={scale} dispose={null}>
-      {/* Angled low-poly trunk */}
-      <mesh position={[0, 1.6, 0]} rotation={[0.05, 0.1, -0.05]}>
-        <cylinderGeometry args={[0.22, 0.45, 3.2, 5]} />
+      {/* Curved faceted trunk */}
+      <mesh position={[0, 1.6, 0]} rotation={[0.08, 0.2, -0.06]}>
+        <cylinderGeometry args={[0.26, 0.52, 3.4, 6]} />
         <meshStandardMaterial color={trunkColor} roughness={0.8} flatShading />
       </mesh>
 
-      {/* Main big faceted crown */}
-      <mesh position={[0, 4.4, 0]} rotation={[0.2, 0.4, 0]}>
-        <icosahedronGeometry args={[2.2, 0]} />
-        <meshStandardMaterial color={leafColor} roughness={0.7} flatShading />
+      {/* Main big cloud cluster */}
+      <mesh position={[0, 4.4, 0]} rotation={[0.2, 0.5, 0.1]}>
+        <dodecahedronGeometry args={[2.3, 0]} />
+        <meshStandardMaterial color={leafColor} roughness={0.65} flatShading />
       </mesh>
 
-      {/* Left foliage cluster */}
-      <mesh position={[-1.4, 3.8, 0.4]} rotation={[0.1, 0.8, -0.2]}>
-        <icosahedronGeometry args={[1.5, 0]} />
-        <meshStandardMaterial color={leafColor} roughness={0.7} flatShading />
+      {/* Left cloud cluster */}
+      <mesh position={[-1.5, 3.7, 0.5]} rotation={[0.1, 0.8, -0.2]}>
+        <dodecahedronGeometry args={[1.6, 0]} />
+        <meshStandardMaterial color={leafColor} roughness={0.65} flatShading />
       </mesh>
 
-      {/* Right foliage cluster */}
-      <mesh position={[1.4, 3.6, -0.3]} rotation={[-0.2, 0.3, 0.3]}>
-        <icosahedronGeometry args={[1.6, 0]} />
-        <meshStandardMaterial color={leafColor} roughness={0.7} flatShading />
+      {/* Right cloud cluster */}
+      <mesh position={[1.5, 3.5, -0.4]} rotation={[-0.2, 0.3, 0.3]}>
+        <dodecahedronGeometry args={[1.7, 0]} />
+        <meshStandardMaterial color={leafColor} roughness={0.65} flatShading />
       </mesh>
 
-      {/* Top crown cluster */}
-      <mesh position={[0.2, 5.8, 0.1]} rotation={[0.4, -0.2, 0.1]}>
-        <icosahedronGeometry args={[1.3, 0]} />
-        <meshStandardMaterial color={leafColor} roughness={0.7} flatShading />
+      {/* Top crown peak */}
+      <mesh position={[0.2, 5.9, 0.2]} rotation={[0.3, -0.2, 0.1]}>
+        <dodecahedronGeometry args={[1.4, 0]} />
+        <meshStandardMaterial color={leafColor} roughness={0.65} flatShading />
       </mesh>
     </group>
   )

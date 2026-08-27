@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+JP:wght@700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Plus Jakarta Sans", "Noto Sans JP", -apple-system, sans-serif;
-  --font-heading: "Plus Jakarta Sans", "Noto Sans JP", -apple-system, sans-serif;
+  --font-display: "Syne", "Plus Jakarta Sans", sans-serif;
+  --font-sans: "Outfit", "Plus Jakarta Sans", -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
 
@@ -20,11 +20,15 @@
   }
 
   body {
-    font-family: "Plus Jakarta Sans", -apple-system, sans-serif;
+    font-family: "Outfit", sans-serif;
     background: #eef2f6;
     color: #111111;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: "Syne", sans-serif;
   }
 }
 
@@ -36,7 +40,7 @@
   background: #eef2f6; 
 }
 ::-webkit-scrollbar-thumb { 
-  background: #222222; 
+  background: #1a1a1a; 
   border-radius: 2px; 
 }
 ::-webkit-scrollbar-thumb:hover { 

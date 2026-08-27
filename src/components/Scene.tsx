@@ -41,14 +41,14 @@ export default function Scene() {
     return Array.from({ length: GATE_COUNT }, (_, i) => ({
       z: -i * SPACING,
       leftTree: {
-        x: -(4.6 + seededRand(i * 3) * 2.0),
-        scale: 1.05 + seededRand(i * 3 + 1) * 0.35,
+        x: -(4.6 + seededRand(i * 3) * 2.2),
+        scale: 1.05 + seededRand(i * 3 + 1) * 0.4,
         variant: (i % 2 === 0 ? 'sakura' : 'white') as 'sakura' | 'white',
         show: seededRand(i * 3 + 2) > 0.1,
       },
       rightTree: {
-        x: 4.6 + seededRand(i * 5) * 2.0,
-        scale: 1.0 + seededRand(i * 5 + 1) * 0.35,
+        x: 4.6 + seededRand(i * 5) * 2.2,
+        scale: 1.0 + seededRand(i * 5 + 1) * 0.4,
         variant: (i % 3 === 0 ? 'white' : 'sakura') as 'sakura' | 'white',
         show: seededRand(i * 5 + 2) > 0.12,
       },
@@ -82,18 +82,18 @@ export default function Scene() {
       }
     }
 
-    // Dynamic camera rig matching Renaud's wide cinematic framing
+    // Dynamic camera rig with cinematic framing
     const targetX = pointer.x * 0.75
-    const targetY = 2.2 + pointer.y * 0.35
+    const targetY = 2.3 + pointer.y * 0.35
     camera.position.x = THREE.MathUtils.damp(camera.position.x, targetX, 3.5, delta)
     camera.position.y = THREE.MathUtils.damp(camera.position.y, targetY, 3.5, delta)
     camera.rotation.z = THREE.MathUtils.damp(camera.rotation.z, -pointer.x * 0.025, 3.5, delta)
-    camera.lookAt(pointer.x * 0.15, 2.0, -25)
+    camera.lookAt(pointer.x * 0.15, 2.1, -25)
 
     // Hero background text subtle float & fade on scroll
     if (heroTextRef.current) {
-      heroTextRef.current.position.y = 0.4 + Math.sin(state.clock.elapsedTime * 0.5) * 0.08
-      const textOpacity = Math.max(0.12, 0.85 - currentScroll.current * 1.5)
+      heroTextRef.current.position.y = 0.6 + Math.sin(state.clock.elapsedTime * 0.5) * 0.08
+      const textOpacity = Math.max(0.1, 0.85 - currentScroll.current * 1.5)
       heroTextRef.current.children.forEach((c) => {
         const mesh = c as THREE.Mesh
         if (mesh.material && 'fillOpacity' in mesh) {
@@ -105,18 +105,29 @@ export default function Scene() {
 
   return (
     <group>
-      {/* ================= MASSIVE JAPANESE FOREGROUND/MIDGROUND TEXT (ポートフォリオ) ================= */}
-      <group ref={heroTextRef} position={[0, 0.4, -6.5]}>
+      {/* ================= MASSIVE ENGLISH 3D TEXT (MD AASIF · PORTFOLIO) ================= */}
+      <group ref={heroTextRef} position={[0, 0.6, -6.5]}>
         <Text
-          position={[0, 0, 0]}
-          fontSize={3.8}
+          position={[0, 0.6, 0]}
+          fontSize={3.2}
           color="#16181b"
           fillOpacity={0.88}
           anchorX="center"
           anchorY="middle"
-          letterSpacing={0.06}
+          letterSpacing={0.08}
         >
-          ポートフォリオ
+          MD AASIF
+        </Text>
+        <Text
+          position={[0, -0.9, 0]}
+          fontSize={1.2}
+          color="#c93b2b"
+          fillOpacity={0.85}
+          anchorX="center"
+          anchorY="middle"
+          letterSpacing={0.35}
+        >
+          PORTFOLIO · 2026
         </Text>
       </group>
 

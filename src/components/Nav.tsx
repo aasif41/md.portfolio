@@ -2,12 +2,11 @@ import { useState, useEffect } from 'react'
 
 export default function Nav() {
   const [active, setActive] = useState('hero')
-  const [lang, setLang] = useState<'EN' | 'JP'>('EN')
 
   const links = [
     { id: 'projects', label: 'Works' },
-    { id: 'about', label: 'About' },
-    { id: 'skills', label: 'Skills' },
+    { id: 'about', label: 'Biography' },
+    { id: 'skills', label: 'Arsenal' },
     { id: 'contact', label: 'Contact' },
   ]
 
@@ -37,42 +36,32 @@ export default function Nav() {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 px-8 md:px-14 py-6 flex justify-between items-center bg-transparent select-none">
+    <nav className="fixed top-0 left-0 right-0 z-50 px-8 md:px-16 py-6 flex justify-between items-center bg-transparent select-none">
       {/* Brand logo */}
       <button 
         onClick={() => scrollTo('hero')}
-        className="font-black text-sm tracking-[0.3em] text-[#111] uppercase hover:text-[#c93b2b] transition-colors cursor-pointer"
+        className="font-extrabold text-sm tracking-[0.3em] font-display text-[#111] uppercase hover:text-[#c93b2b] transition-colors cursor-pointer"
       >
         MD AASIF
       </button>
 
-      {/* Nav items + Language Toggle */}
-      <div className="flex items-center gap-6 md:gap-9">
-        <ul className="flex gap-6 md:gap-8 list-none m-0 p-0">
-          {links.map((link) => (
-            <li key={link.id}>
-              <button
-                onClick={() => scrollTo(link.id)}
-                className={`text-xs uppercase tracking-[0.2em] font-mono transition-colors cursor-pointer ${
-                  active === link.id
-                    ? 'text-[#c93b2b] font-bold underline underline-offset-4'
-                    : 'text-[#444] hover:text-[#111]'
-                }`}
-              >
-                {link.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        {/* Language switch button [ EN / JP ] */}
-        <button
-          onClick={() => setLang(l => l === 'EN' ? 'JP' : 'EN')}
-          className="px-2.5 py-1 text-[11px] font-mono border border-black/20 rounded bg-white/60 hover:bg-white text-[#222] font-semibold transition-all cursor-pointer"
-        >
-          {lang}
-        </button>
-      </div>
+      {/* Nav items */}
+      <ul className="flex gap-6 md:gap-9 list-none m-0 p-0">
+        {links.map((link) => (
+          <li key={link.id}>
+            <button
+              onClick={() => scrollTo(link.id)}
+              className={`text-xs uppercase tracking-[0.2em] font-mono transition-colors cursor-pointer ${
+                active === link.id
+                  ? 'text-[#c93b2b] font-bold underline underline-offset-4'
+                  : 'text-[#444] hover:text-[#111]'
+              }`}
+            >
+              {link.label}
+            </button>
+          </li>
+        ))}
+      </ul>
     </nav>
   )
 }
