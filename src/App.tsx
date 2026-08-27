@@ -3,10 +3,12 @@ import { Canvas } from '@react-three/fiber'
 import Scene from './components/Scene'
 import UIOverlay from './components/UIOverlay'
 import Nav from './components/Nav'
+import Preloader from './components/Preloader'
 
 export default function App() {
   const [act, setAct] = useState<1 | 2>(1)
   const [isWarping, setIsWarping] = useState(false)
+  const [loaded, setLoaded] = useState(false)
 
   const toggleAct = (targetAct?: 1 | 2) => {
     const nextAct = targetAct !== undefined ? targetAct : (act === 1 ? 2 : 1)
@@ -24,6 +26,9 @@ export default function App() {
 
   return (
     <div className={`${act === 1 ? 'bg-[#eef2f6] text-[#161216]' : 'bg-[#161216] text-[#fffcfc]'} min-h-screen relative selection:bg-[#c93b2b] selection:text-white transition-colors duration-700`}>
+      {/* Authentic Initial Preloader Screen */}
+      <Preloader onLoaded={() => setLoaded(true)} />
+
       {/* Warp Transition Overlay */}
       <div 
         className={`fixed inset-0 z-50 bg-black pointer-events-none transition-opacity duration-500 ${
