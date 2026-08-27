@@ -5,6 +5,7 @@ import * as THREE from 'three'
 import ToriiGate from './ToriiGate'
 import LowPolyTree from './LowPolyTree'
 import Ground from './Ground'
+import RunningCat from './RunningCat'
 
 function seededRand(seed: number) {
   const x = Math.sin(seed + 1) * 10000
@@ -151,7 +152,10 @@ export default function Scene({ act, isWarping }: SceneProps) {
     <group>
       {act === 1 ? (
         <>
-          {/* ================= ACT 1: 3D PORTFOLIO BACKDROP (ELEGANT WATERMARK) ================= */}
+          {/* ================= ANIMATED RUNNING CAT ON TORII PATH ================= */}
+          <RunningCat position={[0, 0.18, 0.5]} />
+
+          {/* ================= ACT 1: 3D PORTFOLIO BACKDROP WATERMARK ================= */}
           <group ref={heroTextRef} position={[0, 0.4, -8]}>
             <Text
               position={[0, 0, 0]}

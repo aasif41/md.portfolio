@@ -35,39 +35,39 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
         /* ============================ ACT 1: SAKURA SHRINE ======================= */
         /* ========================================================================= */
         <div className="text-[#161216]">
-          {/* Hero Viewport */}
-          <section className="h-screen flex flex-col justify-between p-8 md:p-14 select-none relative">
-            <div className="max-w-xl pointer-events-auto pt-4">
-              {/* Minimal Tiny Japanese Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-black/10 text-[10px] font-mono text-[#555] mb-3 shadow-sm">
-                <span className="w-2 h-2 rounded-full bg-[#c93b2b] animate-ping" />
-                <span className="jp font-bold text-[#c93b2b]">ムハンマド アースィフ</span>
-                <span className="text-[#888]">/</span>
-                <span className="en font-bold uppercase tracking-wider text-[#161216]">2026 Edition</span>
-              </div>
+          {/* Hero Viewport with Frosted Glass Container to prevent text blending */}
+          <section className="h-screen flex flex-col justify-between p-6 md:p-14 select-none relative">
+            <div className="max-w-xl pointer-events-auto pt-2">
+              <div className="bg-white/85 backdrop-blur-md p-7 md:p-9 rounded-3xl border border-black/10 shadow-xl">
+                {/* Minimal Tiny Japanese Badge (Removed "Edition") */}
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/[0.04] border border-black/5 text-[10px] font-mono text-[#555] mb-3">
+                  <span className="w-2 h-2 rounded-full bg-[#c93b2b] animate-ping" />
+                  <span className="jp font-bold text-[#c93b2b]">ムハンマド アースィフ</span>
+                  <span className="text-[#888]">/</span>
+                  <span className="en font-bold uppercase tracking-wider text-[#161216]">2026</span>
+                </div>
 
-              {/* Main Clean English Title */}
-              <h1 className="text-4xl md:text-7xl font-bold en tracking-tight text-[#161216] mb-2 leading-none">
-                MD AASIF
-              </h1>
+                {/* Unique Main Title (Cinzel Classical Modern Serif) */}
+                <h1 className="text-4xl md:text-6xl font-black font-cinzel tracking-wider text-[#161216] mb-2 leading-none">
+                  MD AASIF
+                </h1>
 
-              {/* SubJob Title */}
-              <h2 className="text-xs md:text-sm font-bold font-mono tracking-[0.25em] text-[#c93b2b] uppercase mb-4">
-                Creative Full-Stack Developer & 3D Engineer
-              </h2>
+                {/* SubJob Title */}
+                <h2 className="text-xs md:text-sm font-bold font-mono tracking-[0.25em] text-[#c93b2b] uppercase mb-4">
+                  Creative Full-Stack Developer & 3D Engineer
+                </h2>
 
-              {/* SubDescription */}
-              <div className="text-sm md:text-base text-[#333] font-light leading-relaxed max-w-md mb-8">
-                <p>
-                  Final-year <strong className="font-bold text-[#161216]">BSc (Hons) Computer Science</strong> student. My main objective is to make cool WebGL 3D interactive experiences and scalable distributed systems accessible for everyone on the internet.
-                </p>
-              </div>
+                {/* High Contrast Crystal Clear Bio Paragraph */}
+                <div className="text-sm md:text-base text-[#222] font-light leading-relaxed mb-6">
+                  <p>
+                    Final-year <strong className="font-bold text-[#161216]">BSc (Hons) Computer Science</strong> student. My main objective is to make cool WebGL 3D interactive experiences and scalable distributed systems accessible for everyone on the internet.
+                  </p>
+                </div>
 
-              {/* CTAs */}
-              <div className="flex flex-wrap items-center gap-4">
+                {/* CTA Button */}
                 <button 
                   onClick={onContinue}
-                  className="px-8 py-3.5 bg-[#161216] text-white font-mono text-xs tracking-[0.2em] uppercase rounded-xl hover:bg-[#c93b2b] transition-all duration-300 shadow-md cursor-pointer flex items-center gap-2 group"
+                  className="px-7 py-3 bg-[#161216] text-white font-mono text-xs tracking-[0.2em] uppercase rounded-xl hover:bg-[#c93b2b] transition-all duration-300 shadow-md cursor-pointer flex items-center gap-2 group"
                 >
                   <span>Explore Universe</span>
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
@@ -107,10 +107,10 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                 ✦ EXPLORE WORKS & GALAXY
               </span>
               <h2 
-                className="text-5xl md:text-8xl font-black en tracking-tight transition-all duration-300 text-transparent group-hover:text-[#161216]"
+                className="text-5xl md:text-8xl font-black font-cinzel tracking-wider transition-all duration-300 text-transparent group-hover:text-[#161216]"
                 style={{ WebkitTextStroke: '2px #161216' }}
               >
-                Click to continue
+                CLICK TO CONTINUE
               </h2>
               <span className="inline-block mt-6 px-8 py-3 bg-[#161216] text-white text-xs font-mono tracking-[0.2em] uppercase rounded-full group-hover:bg-[#c93b2b] transition-colors shadow-lg">
                 Enter Project Universe →
