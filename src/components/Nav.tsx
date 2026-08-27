@@ -2,34 +2,30 @@ import { useState, useEffect } from 'react'
 
 export default function Nav() {
   const [active, setActive] = useState('hero')
-  const [scrolled, setScrolled] = useState(false)
+  const [lang, setLang] = useState<'EN' | 'JP'>('EN')
 
   const links = [
-    { id: 'hero', label: 'Home', jp: '起点' },
-    { id: 'about', label: 'About', jp: '自己紹介' },
-    { id: 'skills', label: 'Skills', jp: '技術' },
-    { id: 'projects', label: 'Projects', jp: '実績' },
-    { id: 'contact', label: 'Contact', jp: '連絡' },
+    { id: 'projects', label: 'Works' },
+    { id: 'about', label: 'About' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'contact', label: 'Contact' },
   ]
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40)
-
-      const sections = links.map(l => document.getElementById(l.id))
+      const sections = ['hero', 'projects', 'about', 'skills', 'contact'].map(id => document.getElementById(id))
       const scrollPosition = window.scrollY + window.innerHeight * 0.35
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = sections[i]
         if (el && scrollPosition >= el.offsetTop) {
-          setActive(links[i].id)
+          setActive(el.id)
           break
         }
       }
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -41,42 +37,42 @@ export default function Nav() {
   }
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 px-8 md:px-14 py-5 flex justify-between items-center transition-all duration-300 ${
-      scrolled ? 'bg-[#0e0e0e]/85 backdrop-blur-xl border-b border-white/5 shadow-2xl' : 'bg-transparent'
-    }`}>
+    <nav className="fixed top-0 left-0 right-0 z-50 px-8 md:px-14 py-6 flex justify-between items-center bg-transparent select-none">
       {/* Brand logo */}
       <button 
         onClick={() => scrollTo('hero')}
-        className="font-bold text-sm tracking-[0.3em] text-[#f0ece4] uppercase hover:text-[#ffaa66] transition-colors cursor-pointer group flex items-center gap-2"
+        className="font-black text-sm tracking-[0.3em] text-[#111] uppercase hover:text-[#c93b2b] transition-colors cursor-pointer"
       >
-        <span className="w-2 h-2 bg-[#c93b2b] rounded-sm rotate-45 group-hover:rotate-90 transition-transform duration-300" />
-        <span>MD AASIF</span>
+        MD AASIF
       </button>
 
-      {/* Nav items with Japanese micro sub-labels */}
-      <ul className="flex gap-6 md:gap-9 list-none m-0 p-0">
-        {links.map((link) => (
-          <li key={link.id}>
-            <button
-              onClick={() => scrollTo(link.id)}
-              className={`flex flex-col items-center group cursor-pointer transition-all duration-300`}
-            >
-              <span className={`text-[11px] uppercase tracking-[0.2em] font-medium transition-colors ${
-                active === link.id
-                  ? 'text-[#ffaa66] font-semibold drop-shadow-[0_0_8px_rgba(255,170,102,0.5)]'
-                  : 'text-[#888880] group-hover:text-[#f0ece4]'
-              }`}>
+      {/* Nav items + Language Toggle */}
+      <div className="flex items-center gap-6 md:gap-9">
+        <ul className="flex gap-6 md:gap-8 list-none m-0 p-0">
+          {links.map((link) => (
+            <li key={link.id}>
+              <button
+                onClick={() => scrollTo(link.id)}
+                className={`text-xs uppercase tracking-[0.2em] font-mono transition-colors cursor-pointer ${
+                  active === link.id
+                    ? 'text-[#c93b2b] font-bold underline underline-offset-4'
+                    : 'text-[#444] hover:text-[#111]'
+                }`}
+              >
                 {link.label}
-              </span>
-              <span className={`text-[9px] font-mono transition-opacity ${
-                active === link.id ? 'text-[#c93b2b] opacity-100' : 'text-[#555] opacity-0 group-hover:opacity-60'
-              }`}>
-                {link.jp}
-              </span>
-            </button>
-          </li>
-        ))}
-      </ul>
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        {/* Language switch button [ EN / JP ] */}
+        <button
+          onClick={() => setLang(l => l === 'EN' ? 'JP' : 'EN')}
+          className="px-2.5 py-1 text-[11px] font-mono border border-black/20 rounded bg-white/60 hover:bg-white text-[#222] font-semibold transition-all cursor-pointer"
+        >
+          {lang}
+        </button>
+      </div>
     </nav>
   )
 }

@@ -5,16 +5,14 @@ import * as THREE from 'three'
 import ToriiGate from './ToriiGate'
 import LowPolyTree from './LowPolyTree'
 import Ground from './Ground'
-import SakuraParticles from './SakuraParticles'
-import Environment3D from './Environment3D'
 
 function seededRand(seed: number) {
   const x = Math.sin(seed + 1) * 10000
   return x - Math.floor(x)
 }
 
-const GATE_COUNT = 20
-const SPACING = 8
+const GATE_COUNT = 24
+const SPACING = 7.5
 
 export default function Scene() {
   const groupRef = useRef<THREE.Group>(null)
@@ -43,26 +41,26 @@ export default function Scene() {
     return Array.from({ length: GATE_COUNT }, (_, i) => ({
       z: -i * SPACING,
       leftTree: {
-        x: -(4.5 + seededRand(i * 3) * 2.5),
-        scale: 0.95 + seededRand(i * 3 + 1) * 0.5,
-        variant: (i % 3 === 0 ? 'cherry' : i % 5 === 0 ? 'autumn' : 'pine') as 'cherry' | 'autumn' | 'pine',
-        show: seededRand(i * 3 + 2) > 0.12,
+        x: -(4.6 + seededRand(i * 3) * 2.0),
+        scale: 1.05 + seededRand(i * 3 + 1) * 0.35,
+        variant: (i % 2 === 0 ? 'sakura' : 'white') as 'sakura' | 'white',
+        show: seededRand(i * 3 + 2) > 0.1,
       },
       rightTree: {
-        x: 4.5 + seededRand(i * 5) * 2.5,
-        scale: 0.9 + seededRand(i * 5 + 1) * 0.5,
-        variant: (i % 2 === 0 ? 'pine' : i % 4 === 0 ? 'autumn' : 'cherry') as 'cherry' | 'autumn' | 'pine',
-        show: seededRand(i * 5 + 2) > 0.15,
+        x: 4.6 + seededRand(i * 5) * 2.0,
+        scale: 1.0 + seededRand(i * 5 + 1) * 0.35,
+        variant: (i % 3 === 0 ? 'white' : 'sakura') as 'sakura' | 'white',
+        show: seededRand(i * 5 + 2) > 0.12,
       },
     }))
   }, [])
 
   useFrame((state, delta) => {
-    // 60-120 FPS buttery smooth inertia dampening
+    // 120 FPS buttery smooth dampening
     currentScroll.current = THREE.MathUtils.damp(
       currentScroll.current,
       scrollTarget.current,
-      5.0,
+      4.5,
       delta
     )
 
@@ -84,24 +82,22 @@ export default function Scene() {
       }
     }
 
-    // Dynamic Camera rig with banking & smooth mouse tilt
-    const targetX = pointer.x * 0.9
-    const targetY = 2.3 + pointer.y * 0.4
-    camera.position.x = THREE.MathUtils.damp(camera.position.x, targetX, 4.0, delta)
-    camera.position.y = THREE.MathUtils.damp(camera.position.y, targetY, 4.0, delta)
-    
-    // Subtle banking roll on mouse movement
-    camera.rotation.z = THREE.MathUtils.damp(camera.rotation.z, -pointer.x * 0.035, 4.0, delta)
-    camera.lookAt(pointer.x * 0.25, 2.1, -25)
+    // Dynamic camera rig matching Renaud's wide cinematic framing
+    const targetX = pointer.x * 0.75
+    const targetY = 2.2 + pointer.y * 0.35
+    camera.position.x = THREE.MathUtils.damp(camera.position.x, targetX, 3.5, delta)
+    camera.position.y = THREE.MathUtils.damp(camera.position.y, targetY, 3.5, delta)
+    camera.rotation.z = THREE.MathUtils.damp(camera.rotation.z, -pointer.x * 0.025, 3.5, delta)
+    camera.lookAt(pointer.x * 0.15, 2.0, -25)
 
-    // Hero background text subtle float & fade
+    // Hero background text subtle float & fade on scroll
     if (heroTextRef.current) {
-      heroTextRef.current.position.y = 4.2 + Math.sin(state.clock.elapsedTime * 0.7) * 0.2
-      const textOpacity = Math.max(0, 1 - currentScroll.current * 4)
+      heroTextRef.current.position.y = 0.4 + Math.sin(state.clock.elapsedTime * 0.5) * 0.08
+      const textOpacity = Math.max(0.12, 0.85 - currentScroll.current * 1.5)
       heroTextRef.current.children.forEach((c) => {
         const mesh = c as THREE.Mesh
-        if (mesh.material && 'opacity' in mesh.material) {
-          ;(mesh.material as THREE.Material).opacity = textOpacity
+        if (mesh.material && 'fillOpacity' in mesh) {
+          ;(mesh as any).fillOpacity = textOpacity
         }
       })
     }
@@ -109,40 +105,24 @@ export default function Scene() {
 
   return (
     <group>
-      {/* Background 3D Moon & Mountains */}
-      <Environment3D gateCount={GATE_COUNT} spacing={SPACING} />
-
-      {/* Hero Backdrop 3D Typography */}
-      <group ref={heroTextRef} position={[0, 4.2, 0]}>
+      {/* ================= MASSIVE JAPANESE FOREGROUND/MIDGROUND TEXT (ポートフォリオ) ================= */}
+      <group ref={heroTextRef} position={[0, 0.4, -6.5]}>
         <Text
-          position={[0, 0.8, -26]}
-          fontSize={8.5}
-          color="#ffffff"
-          fillOpacity={0.12}
+          position={[0, 0, 0]}
+          fontSize={3.8}
+          color="#16181b"
+          fillOpacity={0.88}
           anchorX="center"
           anchorY="middle"
-          letterSpacing={-0.02}
+          letterSpacing={0.06}
         >
-          MD AASIF
-        </Text>
-
-        <Text
-          position={[0, -3.0, -22]}
-          fontSize={2.0}
-          color="#ffaa66"
-          fillOpacity={0.18}
-          anchorX="center"
-          anchorY="middle"
-          letterSpacing={0.35}
-        >
-          CREATIVE DEVELOPER · 2026
+          ポートフォリオ
         </Text>
       </group>
 
-      {/* Scrolling Torii Shrine Pathway */}
+      {/* ================= SCROLLING TORII SHRINE PATHWAY ================= */}
       <group ref={groupRef}>
         <Ground />
-        <SakuraParticles />
 
         {/* Path of Torii Gates & Low Poly Trees */}
         {elements.map((el, i) => (
