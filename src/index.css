@@ -1,10 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=M+PLUS+1p:wght@700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Aquire';
+  src: url('/fonts/Aquire.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-sans: "Space Grotesk", -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
   --font-jp: "M PLUS 1p", sans-serif;
+  --font-bytesized: "Bytesized", monospace;
+  --font-aquire: "Aquire", sans-serif;
 }
 
 @layer base {
@@ -34,6 +44,11 @@
 
 .en {
   font-family: "Space Grotesk", sans-serif;
+}
+
+.pixel-font {
+  -webkit-font-smoothing: none;
+  font-smooth: never;
 }
 
 /* Custom Sleek Scrollbar */

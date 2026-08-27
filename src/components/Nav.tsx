@@ -21,7 +21,7 @@ export default function Nav({ act, onToggleAct }: NavProps) {
           if (act !== 1) onToggleAct(1)
           window.scrollTo({ top: 0, behavior: 'smooth' })
         }}
-        className={`font-bold text-sm tracking-[0.25em] en uppercase hover:text-[#c93b2b] transition-colors cursor-pointer ${
+        className={`font-bold text-2xl tracking-[0.25em] font-aquire uppercase hover:text-[#c93b2b] transition-colors cursor-pointer ${
           act === 1 ? 'text-[#161216]' : 'text-white'
         }`}
       >

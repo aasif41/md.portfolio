@@ -70,7 +70,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               </div>
 
               {/* Clean Main Title */}
-              <h1 className="text-4xl md:text-7xl font-bold en tracking-tight text-[#161216] mb-2 leading-none">
+              <h1 className="text-4xl md:text-7xl font-bold font-aquire tracking-tight text-[#161216] mb-2 leading-none">
                 MD AASIF
               </h1>
 
@@ -367,8 +367,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                 </div>
               </div>
 
-              <footer className="text-center text-xs font-mono text-[#666] tracking-widest uppercase py-8">
-                © 2026 MD AASIF · CREATIVE 3D WEBGL PORTFOLIO
+              <footer className="text-center text-sm font-mono text-[#888] tracking-widest uppercase py-8">
+                © 2026 <span className="font-aquire text-base text-[#666]">MD AASIF</span> · CREATIVE 3D WEBGL PORTFOLIO
               </footer>
             </div>
           </section>

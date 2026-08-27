@@ -47,8 +47,8 @@ export default function HUD() {
 
       {/* Bottom Left Corner Coordinate Display */}
       <div className="absolute bottom-6 left-8 md:left-14 flex items-center gap-3">
-        <span className="text-[10px] font-mono text-[#666] tracking-widest uppercase">
-          MD AASIF · BSC (HONS) CS
+        <span className="text-xs font-mono text-[#666] tracking-widest uppercase">
+          <span className="font-aquire">MD AASIF</span> · BSC (HONS) CS
         </span>
         <span className="text-[10px] font-mono text-[#333]">/</span>
         <span className="text-[10px] font-mono text-[#c93b2b]">創造性と技術</span>
