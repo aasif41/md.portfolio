@@ -56,7 +56,7 @@ export default function Scene() {
   }, [])
 
   useFrame((state, delta) => {
-    // 120 FPS buttery smooth dampening
+    // 120 FPS smooth dampening
     currentScroll.current = THREE.MathUtils.damp(
       currentScroll.current,
       scrollTarget.current,
@@ -82,7 +82,7 @@ export default function Scene() {
       }
     }
 
-    // Dynamic camera rig with cinematic framing
+    // Dynamic camera rig matching Renaud's wide cinematic framing
     const targetX = pointer.x * 0.75
     const targetY = 2.3 + pointer.y * 0.35
     camera.position.x = THREE.MathUtils.damp(camera.position.x, targetX, 3.5, delta)
@@ -92,8 +92,8 @@ export default function Scene() {
 
     // Hero background text subtle float & fade on scroll
     if (heroTextRef.current) {
-      heroTextRef.current.position.y = 0.6 + Math.sin(state.clock.elapsedTime * 0.5) * 0.08
-      const textOpacity = Math.max(0.1, 0.85 - currentScroll.current * 1.5)
+      heroTextRef.current.position.y = 0.5 + Math.sin(state.clock.elapsedTime * 0.5) * 0.08
+      const textOpacity = Math.max(0.12, 0.9 - currentScroll.current * 1.5)
       heroTextRef.current.children.forEach((c) => {
         const mesh = c as THREE.Mesh
         if (mesh.material && 'fillOpacity' in mesh) {
@@ -105,29 +105,18 @@ export default function Scene() {
 
   return (
     <group>
-      {/* ================= MASSIVE ENGLISH 3D TEXT (MD AASIF · PORTFOLIO) ================= */}
-      <group ref={heroTextRef} position={[0, 0.6, -6.5]}>
+      {/* ================= MASSIVE JAPANESE FOREGROUND/MIDGROUND TEXT (ポートフォリオ 2026) ================= */}
+      <group ref={heroTextRef} position={[0, 0.5, -6.5]}>
         <Text
-          position={[0, 0.6, 0]}
-          fontSize={3.2}
-          color="#16181b"
-          fillOpacity={0.88}
+          position={[0, 0, 0]}
+          fontSize={3.8}
+          color="#161216"
+          fillOpacity={0.9}
           anchorX="center"
           anchorY="middle"
-          letterSpacing={0.08}
+          letterSpacing={0.06}
         >
-          MD AASIF
-        </Text>
-        <Text
-          position={[0, -0.9, 0]}
-          fontSize={1.2}
-          color="#c93b2b"
-          fillOpacity={0.85}
-          anchorX="center"
-          anchorY="middle"
-          letterSpacing={0.35}
-        >
-          PORTFOLIO · 2026
+          ポートフォリオ 2026
         </Text>
       </group>
 

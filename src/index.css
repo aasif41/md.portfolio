@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=M+PLUS+1p:wght@800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Syne", "Plus Jakarta Sans", sans-serif;
-  --font-sans: "Outfit", "Plus Jakarta Sans", -apple-system, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-jp: "M PLUS 1p", sans-serif;
+  --font-sans: "Space Grotesk", -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
 
@@ -20,28 +21,37 @@
   }
 
   body {
-    font-family: "Outfit", sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     background: #eef2f6;
-    color: #111111;
+    color: #161216;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, .font-display {
-    font-family: "Syne", sans-serif;
+  h1, h2, h3, h4, h5 {
+    font-family: "Space Grotesk", sans-serif;
   }
+}
+
+.jp {
+  font-family: "M PLUS 1p", sans-serif;
+}
+
+.en {
+  font-family: "Space Grotesk", sans-serif;
 }
 
 /* Custom Sleek Scrollbar */
 ::-webkit-scrollbar { 
-  width: 5px; 
+  width: 6px; 
 }
 ::-webkit-scrollbar-track { 
   background: #eef2f6; 
 }
 ::-webkit-scrollbar-thumb { 
-  background: #1a1a1a; 
-  border-radius: 2px; 
+  background: #161216; 
+  border-radius: 3px; 
 }
 ::-webkit-scrollbar-thumb:hover { 
   background: #c93b2b; 

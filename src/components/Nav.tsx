@@ -36,25 +36,25 @@ export default function Nav() {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 px-8 md:px-16 py-6 flex justify-between items-center bg-transparent select-none">
+    <nav className="fixed top-0 left-0 right-0 z-50 px-8 md:px-14 py-6 flex justify-between items-center bg-transparent select-none">
       {/* Brand logo */}
       <button 
         onClick={() => scrollTo('hero')}
-        className="font-extrabold text-sm tracking-[0.3em] font-display text-[#111] uppercase hover:text-[#c93b2b] transition-colors cursor-pointer"
+        className="font-bold text-sm tracking-[0.25em] en text-[#161216] uppercase hover:text-[#c93b2b] transition-colors cursor-pointer"
       >
         MD AASIF
       </button>
 
       {/* Nav items */}
-      <ul className="flex gap-6 md:gap-9 list-none m-0 p-0">
+      <ul className="flex gap-6 md:gap-8 list-none m-0 p-0">
         {links.map((link) => (
           <li key={link.id}>
             <button
               onClick={() => scrollTo(link.id)}
-              className={`text-xs uppercase tracking-[0.2em] font-mono transition-colors cursor-pointer ${
+              className={`text-xs uppercase tracking-[0.2em] en transition-colors cursor-pointer ${
                 active === link.id
                   ? 'text-[#c93b2b] font-bold underline underline-offset-4'
-                  : 'text-[#444] hover:text-[#111]'
+                  : 'text-[#555] hover:text-[#161216]'
               }`}
             >
               {link.label}
