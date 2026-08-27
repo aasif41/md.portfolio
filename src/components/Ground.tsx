@@ -1,45 +1,94 @@
 import { useMemo } from 'react'
+import * as THREE from 'three'
 
-export default function Ground() {
-  // Low-poly faceted rocks along the hillside
-  const rocks = useMemo(() => {
-    return [
-      { x: -3.8, y: 0.3, z: -8, scale: [1.4, 0.9, 1.5], rot: [0.2, 0.6, 0.1] },
-      { x: 4.2, y: 0.4, z: -16, scale: [1.8, 1.2, 1.6], rot: [-0.1, 1.3, 0.3] },
-      { x: -4.8, y: 0.5, z: -28, scale: [2.1, 1.4, 1.9], rot: [0.4, 0.2, -0.2] },
-      { x: 4.1, y: 0.3, z: -44, scale: [1.5, 1.0, 1.3], rot: [0.1, 0.9, 0.4] },
-      { x: -3.9, y: 0.4, z: -60, scale: [1.6, 1.1, 1.7], rot: [-0.3, 0.4, 0.1] },
-      { x: 4.8, y: 0.6, z: -78, scale: [2.3, 1.5, 2.1], rot: [0.2, 1.4, -0.1] },
-      { x: -4.2, y: 0.4, z: -94, scale: [1.8, 1.2, 1.6], rot: [0.5, 0.1, 0.2] },
-    ]
-  }, [])
+// Reusable black material for toon outline
+const blackMaterial = new THREE.MeshBasicMaterial({ color: 'black', side: THREE.BackSide })
+
+export default function Ground({ seed = 0 }: { seed?: number }) {
+  // Use a pseudo-random seed to place a rock occasionally
+  const hasRock = useMemo(() => {
+    const x = Math.sin(seed + 1234) * 10000
+    return (x - Math.floor(x)) > 0.75
+  }, [seed])
+
+  const rock = useMemo(() => {
+    const x = Math.sin(seed + 5678) * 10000
+    const rand = x - Math.floor(x)
+    return {
+      x: rand > 0.5 ? 4.2 + rand : -4.2 - rand,
+      y: 0.4 + rand * 0.2,
+      z: (rand - 0.5) * 6,
+      scale: 1.2 + rand * 0.8,
+      rotX: rand * Math.PI,
+      rotY: rand * Math.PI * 2,
+      rotZ: rand * Math.PI,
+    }
+  }, [seed])
+
+  // Generate random grass tufts along the path edges
+  const grassTufts = useMemo(() => {
+    const tufts = []
+    for (let i = 0; i < 4; i++) {
+      const isLeft = i % 2 === 0
+      const randX = Math.sin(seed + i * 11) * 10000
+      const randZ = Math.sin(seed + i * 17) * 10000
+      
+      const x = isLeft ? -2.6 - (randX - Math.floor(randX)) * 1.5 : 2.6 + (randX - Math.floor(randX)) * 1.5
+      const z = (randZ - Math.floor(randZ)) * 7.5 - 3.75
+      const rotY = (randX - Math.floor(randX)) * Math.PI * 2
+      
+      tufts.push({ x, z, rotY })
+    }
+    return tufts
+  }, [seed])
+
+  const coneGeo = useMemo(() => new THREE.ConeGeometry(0.15, 0.5, 3), [])
 
   return (
     <group>
-      {/* Main Ground Earth - Soft Sage Green */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, -100]}>
-        <planeGeometry args={[70, 260]} />
+      {/* Ground Segment - Slightly longer than 7.5 to prevent seams */}
+      <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]}>
+        <planeGeometry args={[70, 7.6]} />
         <meshStandardMaterial color="#88b59e" roughness={0.9} flatShading />
       </mesh>
 
-      {/* Center Pathway Strip - Light Stone Grey */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, -100]}>
-        <planeGeometry args={[4.8, 260]} />
+      {/* Center Pathway Strip */}
+      <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
+        <planeGeometry args={[4.8, 7.6]} />
         <meshStandardMaterial color="#d4ded9" roughness={0.8} flatShading />
       </mesh>
 
-      {/* Low-Poly Boulders */}
-      {rocks.map((r, i) => (
-        <mesh 
-          key={i} 
-          position={[r.x, r.y, r.z]} 
-          rotation={r.rot as [number, number, number]}
-          scale={r.scale as [number, number, number]}
-        >
-          <dodecahedronGeometry args={[1, 0]} />
-          <meshStandardMaterial color="#b8c0c4" roughness={0.75} flatShading />
-        </mesh>
+      {/* Grass Tufts */}
+      {grassTufts.map((tuft, i) => (
+        <group key={`grass-${i}`} position={[tuft.x, 0.25, tuft.z]} rotation={[0, tuft.rotY, 0]}>
+          <mesh geometry={coneGeo} castShadow rotation={[0.1, 0, 0.2]} position={[-0.1, 0, 0]}>
+            <meshStandardMaterial color="#6fa883" roughness={0.9} flatShading />
+          </mesh>
+          <mesh geometry={coneGeo} scale={1.1} rotation={[0.1, 0, 0.2]} position={[-0.1, 0, 0]} material={blackMaterial} />
+          
+          <mesh geometry={coneGeo} castShadow rotation={[-0.1, 0.5, -0.2]} position={[0.1, -0.05, 0]}>
+            <meshStandardMaterial color="#6fa883" roughness={0.9} flatShading />
+          </mesh>
+          <mesh geometry={coneGeo} scale={1.1} rotation={[-0.1, 0.5, -0.2]} position={[0.1, -0.05, 0]} material={blackMaterial} />
+        </group>
       ))}
+
+      {/* Low-Poly Boulder */}
+      {hasRock && (
+        <group 
+          position={[rock.x, rock.y, rock.z]} 
+          rotation={[rock.rotX, rock.rotY, rock.rotZ]}
+          scale={[rock.scale, rock.scale, rock.scale]}
+        >
+          <mesh castShadow receiveShadow>
+            <dodecahedronGeometry args={[1, 0]} />
+            <meshStandardMaterial color="#b8c0c4" roughness={0.75} flatShading />
+          </mesh>
+          <mesh scale={1.015} material={blackMaterial}>
+            <dodecahedronGeometry args={[1, 0]} />
+          </mesh>
+        </group>
+      )}
     </group>
   )
 }

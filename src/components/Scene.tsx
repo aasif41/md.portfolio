@@ -1,6 +1,6 @@
 import { useRef, useMemo, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Text } from '@react-three/drei'
+import { Text, Text3D, Center } from '@react-three/drei'
 import * as THREE from 'three'
 import ToriiGate from './ToriiGate'
 import LowPolyTree from './LowPolyTree'
@@ -76,6 +76,16 @@ export default function Scene({ act, isWarping }: SceneProps) {
     return geo
   }, [])
 
+  const hasReachedEnd = useRef(false)
+
+  // Reset the text visibility flag when switching acts so it doesn't stay visible
+  // when returning to Act 1 from Act 2.
+  useEffect(() => {
+    if (act === 1) {
+      hasReachedEnd.current = false
+    }
+  }, [act])
+
   useFrame((state, delta) => {
     // Scroll dampening
     currentScroll.current = THREE.MathUtils.damp(
@@ -84,6 +94,10 @@ export default function Scene({ act, isWarping }: SceneProps) {
       4.5,
       delta
     )
+
+    if (currentScroll.current > 0.98) {
+      hasReachedEnd.current = true
+    }
 
     if (act === 1) {
       const totalTravel = GATE_COUNT * SPACING * 0.88
@@ -95,6 +109,7 @@ export default function Scene({ act, isWarping }: SceneProps) {
         const children = groupRef.current.children
         for (let i = 0; i < children.length; i++) {
           const child = children[i]
+          
           const worldZ = child.position.z + forwardZ
           if (worldZ > 14) {
             child.position.z -= GATE_COUNT * SPACING
@@ -102,22 +117,46 @@ export default function Scene({ act, isWarping }: SceneProps) {
         }
       }
 
-      const targetX = pointer.x * 0.75
-      const targetY = 2.3 + pointer.y * 0.35
-      camera.position.x = THREE.MathUtils.damp(camera.position.x, targetX, 3.5, delta)
-      camera.position.y = THREE.MathUtils.damp(camera.position.y, targetY, 3.5, delta)
-      camera.rotation.z = THREE.MathUtils.damp(camera.rotation.z, -pointer.x * 0.025, 3.5, delta)
-      camera.lookAt(pointer.x * 0.15, 2.1, -25)
+      // "Head-turn" rotation effect: position stays centered, only perspective rotates
+      camera.position.x = THREE.MathUtils.damp(camera.position.x, 0, 3.5, delta)
+      camera.position.y = THREE.MathUtils.damp(camera.position.y, 2.3, 3.5, delta)
+      
+      const targetYaw = -pointer.x * 0.4 // Look left/right
+      const targetPitch = pointer.y * 0.2 // Look up/down
+      const targetRoll = -pointer.x * 0.05 // Slight tilt
+      
+      camera.rotation.order = 'YXZ'
+      camera.rotation.x = THREE.MathUtils.damp(camera.rotation.x, targetPitch, 3.5, delta)
+      camera.rotation.y = THREE.MathUtils.damp(camera.rotation.y, targetYaw, 3.5, delta)
+      camera.rotation.z = THREE.MathUtils.damp(camera.rotation.z, targetRoll, 3.5, delta)
 
       if (heroTextRef.current) {
         heroTextRef.current.position.y = 0.5 + Math.sin(state.clock.elapsedTime * 0.5) * 0.08
-        const textOpacity = Math.max(0.08, 0.45 - currentScroll.current * 1.2)
-        heroTextRef.current.children.forEach((c) => {
-          const mesh = c as THREE.Mesh
-          if (mesh.material && 'fillOpacity' in mesh) {
-            ;(mesh as any).fillOpacity = textOpacity
-          }
-        })
+        
+        // Text is completely invisible by default.
+        // Once the user reaches the bottom, and scrolls back up past the halfway point (0.5),
+        // where the road starts to disappear into the fog, the text smoothly fades in.
+        let textOpacity = 0
+        if (hasReachedEnd.current && currentScroll.current < 0.5) {
+          textOpacity = Math.min(1, (0.5 - currentScroll.current) * 2.5) // Ramps from 0 to 1.0 smoothly
+        }
+        
+        heroTextRef.current.visible = textOpacity > 0.005
+
+        if (heroTextRef.current.visible) {
+          heroTextRef.current.traverse((child) => {
+            const mesh = child as any
+            if (mesh.isMesh) {
+              if (mesh.material) {
+                mesh.material.opacity = textOpacity
+                mesh.material.transparent = true
+              }
+              if ('fillOpacity' in mesh) mesh.fillOpacity = textOpacity
+              if ('outlineOpacity' in mesh) mesh.outlineOpacity = textOpacity
+              if (typeof mesh.sync === 'function') mesh.sync()
+            }
+          })
+        }
       }
     } else {
       // Act 2: Rotating 3D Saturn Planet & Deep Space Stars
@@ -152,24 +191,27 @@ export default function Scene({ act, isWarping }: SceneProps) {
       {act === 1 ? (
         <>
           {/* ================= ACT 1: 3D PORTFOLIO BACKDROP WATERMARK ================= */}
-          <group ref={heroTextRef} position={[0, 0.4, -8]}>
+          <group ref={heroTextRef} position={[0, 0.4, -8]} visible={false}>
             <Text
               position={[0, 0, 0]}
-              fontSize={4.2}
-              color="#161216"
-              fillOpacity={0.35}
+              scale={[1, 1.2, 1]}
+              font="/fonts/Movement-DirectBlack.otf"
+              fontSize={5.0}
+              color="#c93b2b"
+              outlineWidth={0.06}
+              outlineColor="#8a2318"
               anchorX="center"
               anchorY="middle"
-              letterSpacing={0.12}
+              letterSpacing={0.2}
             >
               PORTFOLIO
             </Text>
           </group>
 
           <group ref={groupRef}>
-            <Ground />
             {elements.map((el, i) => (
               <group key={i} position={[0, 0, el.z]}>
+                <Ground seed={i} />
                 <ToriiGate />
                 {el.leftTree.show && (
                   <LowPolyTree
@@ -198,13 +240,13 @@ export default function Scene({ act, isWarping }: SceneProps) {
 
           <group ref={saturnRef} position={[2.5, 0.5, -12]} rotation={[0.3, 0, -0.2]}>
             {/* Low-Poly Planet Sphere */}
-            <mesh>
+            <mesh castShadow receiveShadow>
               <dodecahedronGeometry args={[2.4, 2]} />
               <meshStandardMaterial color="#c93b2b" roughness={0.6} flatShading />
             </mesh>
 
             {/* Low-Poly Orbit Ring */}
-            <mesh rotation={[Math.PI / 2.3, 0, 0]}>
+            <mesh castShadow receiveShadow rotation={[Math.PI / 2.3, 0, 0]}>
               <ringGeometry args={[3.2, 4.4, 32]} />
               <meshStandardMaterial color="#eef2f6" roughness={0.4} side={THREE.DoubleSide} transparent opacity={0.75} />
             </mesh>

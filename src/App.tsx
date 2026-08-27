@@ -42,6 +42,7 @@ export default function App() {
       {/* Fixed Fullscreen 3D Canvas Background */}
       <div className="fixed inset-0 w-screen h-screen z-0 pointer-events-none">
         <Canvas
+          shadows
           camera={{ position: [0, 2.4, 7], fov: 46 }}
           dpr={Math.min(window.devicePixelRatio, 2)}
           gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
@@ -52,17 +53,30 @@ export default function App() {
             <>
               <color attach="background" args={['#eef2f6']} />
               <fog attach="fog" args={['#eef2f6', 16, 80]} />
-              <ambientLight intensity={0.9} color="#ffffff" />
-              <directionalLight position={[10, 16, 8]} intensity={1.2} color="#ffffff" />
-              <directionalLight position={[-10, 8, -5]} intensity={0.4} color="#d4e4f7" />
+              <ambientLight intensity={0.3} color="#ffffff" />
+              <directionalLight 
+                castShadow
+                position={[15, 20, 10]} 
+                intensity={2.5} 
+                color="#ffffff" 
+                shadow-mapSize-width={2048}
+                shadow-mapSize-height={2048}
+                shadow-camera-left={-30}
+                shadow-camera-right={30}
+                shadow-camera-top={30}
+                shadow-camera-bottom={-30}
+                shadow-camera-far={100}
+                shadow-bias={-0.0005}
+              />
+              <directionalLight position={[-10, 8, -5]} intensity={0.8} color="#d4e4f7" />
             </>
           ) : (
             <>
               <color attach="background" args={['#161216']} />
               <fog attach="fog" args={['#161216', 12, 60]} />
-              <ambientLight intensity={0.4} color="#ffffff" />
-              <pointLight position={[0, 10, 0]} intensity={1.5} color="#c93b2b" />
-              <directionalLight position={[5, 10, 5]} intensity={0.8} color="#ffffff" />
+              <ambientLight intensity={0.1} color="#ffffff" />
+              <pointLight position={[0, 10, 0]} intensity={2.0} color="#c93b2b" castShadow />
+              <directionalLight position={[5, 10, 5]} intensity={1.5} color="#ffffff" castShadow />
             </>
           )}
           

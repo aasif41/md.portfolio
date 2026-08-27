@@ -1,56 +1,69 @@
-// High Fidelity Low-Poly Faceted Japanese Tree
+import { useMemo } from 'react'
+import * as THREE from 'three'
 
 interface LowPolyTreeProps {
   position?: [number, number, number]
   scale?: number
-  variant?: 'sakura' | 'white' | 'pine'
+  leafColor?: string
+  trunkColor?: string
 }
 
-export default function LowPolyTree({ 
-  position = [0, 0, 0], 
+// Reusable black material for toon outline (Inverted Hull technique)
+const blackMaterial = new THREE.MeshBasicMaterial({ color: 'black', side: THREE.BackSide })
+
+export default function LowPolyTree({
+  position = [0, 0, 0],
   scale = 1,
-  variant = 'sakura'
+  leafColor = '#d48ea1',
+  trunkColor = '#5c4033',
 }: LowPolyTreeProps) {
-  const trunkColor = "#785f54" // Stylized tree bark
   
-  // Exact anime pastel palette matching Renaud's live portfolio
-  const leafColor = variant === 'sakura' 
-    ? "#dea4ab"  // Soft pink cherry blossom
-    : variant === 'white'
-    ? "#e6ebed"  // Cloud white
-    : "#88ab94"  // Sage pine
+  // Pre-create geometries
+  const trunkGeo = useMemo(() => new THREE.CylinderGeometry(0.3, 0.45, 2.8, 7), [])
+  const leafGeoBig = useMemo(() => new THREE.DodecahedronGeometry(2.3, 0), [])
+  const leafGeoSmall = useMemo(() => new THREE.DodecahedronGeometry(1.4, 0), [])
 
   return (
     <group position={position} scale={scale} dispose={null}>
-      {/* Curved faceted trunk */}
-      <mesh position={[0, 1.6, 0]} rotation={[0.08, 0.2, -0.06]}>
-        <cylinderGeometry args={[0.26, 0.52, 3.4, 6]} />
-        <meshStandardMaterial color={trunkColor} roughness={0.8} flatShading />
-      </mesh>
+      {/* Base Trunk */}
+      <group position={[0, 1.4, 0]} rotation={[0.05, 0.2, -0.02]}>
+        <mesh castShadow receiveShadow geometry={trunkGeo}>
+          <meshStandardMaterial color={trunkColor} roughness={0.8} flatShading />
+        </mesh>
+        <mesh geometry={trunkGeo} scale={[1.08, 1.02, 1.08]} material={blackMaterial} />
+      </group>
 
-      {/* Main big cloud cluster */}
-      <mesh position={[0, 4.4, 0]} rotation={[0.2, 0.5, 0.1]}>
-        <dodecahedronGeometry args={[2.3, 0]} />
-        <meshStandardMaterial color={leafColor} roughness={0.65} flatShading />
-      </mesh>
+      {/* Main Central Foliage */}
+      <group position={[0, 3.8, 0]} rotation={[0.2, 0.5, 0.1]}>
+        <mesh castShadow receiveShadow geometry={leafGeoBig}>
+          <meshStandardMaterial color={leafColor} roughness={0.65} flatShading />
+        </mesh>
+        <mesh geometry={leafGeoBig} scale={1.03} material={blackMaterial} />
+      </group>
 
-      {/* Left cloud cluster */}
-      <mesh position={[-1.5, 3.7, 0.5]} rotation={[0.1, 0.8, -0.2]}>
-        <dodecahedronGeometry args={[1.6, 0]} />
-        <meshStandardMaterial color={leafColor} roughness={0.65} flatShading />
-      </mesh>
+      {/* Small Left Cluster */}
+      <group position={[-1.2, 3.2, 0.5]} rotation={[0.1, 0.8, -0.2]}>
+        <mesh castShadow receiveShadow geometry={leafGeoSmall}>
+          <meshStandardMaterial color={leafColor} roughness={0.65} flatShading />
+        </mesh>
+        <mesh geometry={leafGeoSmall} scale={1.04} material={blackMaterial} />
+      </group>
 
-      {/* Right cloud cluster */}
-      <mesh position={[1.5, 3.5, -0.4]} rotation={[-0.2, 0.3, 0.3]}>
-        <dodecahedronGeometry args={[1.7, 0]} />
-        <meshStandardMaterial color={leafColor} roughness={0.65} flatShading />
-      </mesh>
-
-      {/* Top crown peak */}
-      <mesh position={[0.2, 5.9, 0.2]} rotation={[0.3, -0.2, 0.1]}>
-        <dodecahedronGeometry args={[1.4, 0]} />
-        <meshStandardMaterial color={leafColor} roughness={0.65} flatShading />
-      </mesh>
+      {/* Small Right Cluster */}
+      <group position={[1.4, 3.0, -0.4]} rotation={[-0.2, 0.3, 0.3]}>
+        <mesh castShadow receiveShadow geometry={leafGeoSmall}>
+          <meshStandardMaterial color={leafColor} roughness={0.65} flatShading />
+        </mesh>
+        <mesh geometry={leafGeoSmall} scale={1.04} material={blackMaterial} />
+      </group>
+      
+      {/* Small Top-Back Cluster */}
+      <group position={[0.3, 4.6, -1.0]} rotation={[-0.3, 0.5, -0.1]}>
+        <mesh castShadow receiveShadow geometry={leafGeoSmall}>
+          <meshStandardMaterial color={leafColor} roughness={0.65} flatShading />
+        </mesh>
+        <mesh geometry={leafGeoSmall} scale={1.04} material={blackMaterial} />
+      </group>
     </group>
   )
 }
