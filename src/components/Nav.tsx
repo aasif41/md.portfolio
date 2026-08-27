@@ -1,3 +1,5 @@
+import { Globe, Shrub } from 'lucide-react'
+
 interface NavProps {
   act: 1 | 2
   onToggleAct: (act?: 1 | 2) => void
@@ -52,7 +54,11 @@ export default function Nav({ act, onToggleAct }: NavProps) {
               : 'bg-white/[0.08] border-white/20 text-white hover:bg-white/[0.15] hover:border-[#c93b2b]'
           }`}
         >
-          <span>{act === 1 ? '🪐 Galaxy Act' : '⛩️ Shrine Act'}</span>
+          {act === 1 ? (
+            <><Globe size={12} /> Galaxy Act</>
+          ) : (
+            <><Shrub size={12} /> Shrine Act</>
+          )}
         </button>
       </div>
     </nav>

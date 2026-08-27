@@ -1,4 +1,20 @@
 import { useState, useEffect } from 'react'
+import {
+  Briefcase,
+  Zap,
+  GitMerge,
+  Coffee,
+  Globe,
+  MapPin,
+  Clock,
+  Copy,
+  Check,
+  Download,
+  ArrowRight,
+  Star,
+  ChevronDown,
+  Shrub,
+} from 'lucide-react'
 
 interface UIOverlayProps {
   act: 1 | 2
@@ -6,11 +22,18 @@ interface UIOverlayProps {
   onSwitchAct: (act: 1 | 2) => void
 }
 
+const TOPICS = [
+  { label: 'Full-Time Role 2026', icon: <Briefcase size={12} /> },
+  { label: '3D Project',          icon: <Globe size={12} /> },
+  { label: 'Open-Source Collab',  icon: <GitMerge size={12} /> },
+  { label: 'Tech Chat',           icon: <Coffee size={12} /> },
+]
+
 export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayProps) {
   const [copied, setCopied] = useState(false)
   const [currentTime, setCurrentTime] = useState('')
   const [message, setMessage] = useState('')
-  const [selectedTopic, setSelectedTopic] = useState('Full-Time Role 2026')
+  const [selectedTopic, setSelectedTopic] = useState(TOPICS[0].label)
 
   useEffect(() => {
     const updateTime = () => {
@@ -65,12 +88,12 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
 
               {/* CTAs */}
               <div className="flex flex-wrap items-center gap-4">
-                <button 
+                <button
                   onClick={onContinue}
                   className="px-8 py-3.5 bg-[#161216] text-white font-mono text-xs tracking-[0.2em] uppercase rounded-xl hover:bg-[#c93b2b] transition-all duration-300 shadow-md cursor-pointer flex items-center gap-2 group"
                 >
                   <span>Explore Universe</span>
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
             </div>
@@ -93,7 +116,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               <span className="text-[11px] font-bold en tracking-[0.25em] uppercase text-[#161216] mb-2">
                 SCROLL TO START
               </span>
-              <div className="w-[1px] h-10 bg-[#161216] animate-pulse" />
+              <ChevronDown size={18} className="text-[#161216] animate-bounce" />
             </div>
           </section>
 
@@ -103,17 +126,20 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               onClick={onContinue}
               className="pointer-events-auto group cursor-pointer text-center p-8 transition-transform duration-300 hover:scale-105"
             >
-              <span className="text-xs font-mono tracking-[0.3em] uppercase text-[#c93b2b] font-bold block mb-4 animate-pulse">
-                ✦ EXPLORE WORKS & GALAXY
+              <span className="flex items-center justify-center gap-2 text-xs font-mono tracking-[0.3em] uppercase text-[#c93b2b] font-bold mb-4">
+                <Star size={11} className="animate-pulse" />
+                EXPLORE WORKS & GALAXY
+                <Star size={11} className="animate-pulse" />
               </span>
-              <h2 
+              <h2
                 className="text-5xl md:text-8xl font-black en tracking-tight transition-all duration-300 text-transparent group-hover:text-[#161216]"
                 style={{ WebkitTextStroke: '2px #161216' }}
               >
                 Click to continue
               </h2>
-              <span className="inline-block mt-6 px-8 py-3 bg-[#161216] text-white text-xs font-mono tracking-[0.2em] uppercase rounded-full group-hover:bg-[#c93b2b] transition-colors shadow-lg">
-                Enter Project Universe →
+              <span className="inline-flex items-center gap-2 mt-6 px-8 py-3 bg-[#161216] text-white text-xs font-mono tracking-[0.2em] uppercase rounded-full group-hover:bg-[#c93b2b] transition-colors shadow-lg">
+                Enter Project Universe
+                <ArrowRight size={13} />
               </span>
             </button>
           </section>
@@ -133,8 +159,9 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                     Last Project recognitions
                   </h1>
                   <h2 className="text-xl md:text-2xl font-bold en text-[#c93b2b] mb-6">
-                    <a href="https://github.com/aasif41" target="_blank" rel="noreferrer" className="hover:underline">
-                      3D Odyssey & Systems →
+                    <a href="https://github.com/aasif41" target="_blank" rel="noreferrer" className="hover:underline inline-flex items-center gap-2">
+                      3D Odyssey & Systems
+                      <ArrowRight size={20} />
                     </a>
                   </h2>
 
@@ -162,7 +189,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                 {/* Floating Preview Window */}
                 <div className="p-6 bg-white/[0.04] backdrop-blur-md rounded-3xl border border-white/10 shadow-2xl">
                   <div className="w-full h-56 bg-gradient-to-br from-[#c93b2b]/20 to-black rounded-2xl flex flex-col items-center justify-center p-6 text-center border border-white/10 mb-4">
-                    <span className="text-3xl mb-2">🪐</span>
+                    <Globe size={36} className="text-[#c93b2b] mb-3" />
                     <span className="text-xs font-mono uppercase tracking-widest text-[#c93b2b] font-bold">Interactive 3D Galaxy Viewport</span>
                     <p className="text-xs text-[#888] mt-1 max-w-xs">Real-time WebGL rendering with physics simulation and dynamic lighting.</p>
                   </div>
@@ -190,13 +217,14 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                   <p className="text-sm md:text-base text-[#aaa] leading-relaxed font-light mb-4">
                     I write technical in-depth breakdowns on WebGL computer graphics, GLSL shaders, and distributed system architectures. You can explore my open-source code and experiments directly on GitHub.
                   </p>
-                  <a 
-                    href="https://github.com/aasif41" 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className="text-xs font-mono text-[#c93b2b] hover:underline font-bold"
+                  <a
+                    href="https://github.com/aasif41"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs font-mono text-[#c93b2b] hover:underline font-bold inline-flex items-center gap-1"
                   >
-                    Follow on GitHub @aasif41 →
+                    Follow on GitHub @aasif41
+                    <ArrowRight size={11} />
                   </a>
                 </div>
 
@@ -241,8 +269,15 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                         Let's Build Together.
                       </h2>
                     </div>
-                    <div className="p-3 bg-white/[0.05] rounded-xl border border-white/10 font-mono text-xs text-[#aaa]">
-                      <span>● NEW DELHI, INDIA · {currentTime} IST</span>
+                    <div className="p-3 bg-white/[0.05] rounded-xl border border-white/10 font-mono text-xs text-[#aaa] flex flex-col gap-1">
+                      <span className="flex items-center gap-1.5">
+                        <MapPin size={10} className="text-[#c93b2b]" />
+                        NEW DELHI, INDIA
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <Clock size={10} className="text-[#aaa]" />
+                        {currentTime} IST
+                      </span>
                     </div>
                   </div>
 
@@ -252,22 +287,18 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                       Select Topic:
                     </span>
                     <div className="flex flex-wrap gap-2 font-mono text-xs">
-                      {[
-                        '💼 Full-Time Role 2026',
-                        '⚡ 3D Project',
-                        '🤝 Open-Source Collaboration',
-                        '☕ Tech Chat'
-                      ].map(topic => (
+                      {TOPICS.map(({ label, icon }) => (
                         <button
-                          key={topic}
-                          onClick={() => setSelectedTopic(topic)}
-                          className={`px-4 py-2 rounded-xl border transition-all cursor-pointer ${
-                            selectedTopic === topic
+                          key={label}
+                          onClick={() => setSelectedTopic(label)}
+                          className={`px-4 py-2 rounded-xl border transition-all cursor-pointer flex items-center gap-1.5 ${
+                            selectedTopic === label
                               ? 'bg-[#c93b2b] text-white border-[#c93b2b] font-bold'
                               : 'bg-white/[0.04] border-white/10 text-[#aaa] hover:bg-white/[0.08]'
                           }`}
                         >
-                          {topic}
+                          {icon}
+                          {label}
                         </button>
                       ))}
                     </div>
@@ -286,9 +317,10 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                       <span className="text-xs font-mono text-[#888]">Destination: contact@mdaasif.dev</span>
                       <a
                         href={`mailto:contact@mdaasif.dev?subject=${encodeURIComponent(`[${selectedTopic}] Inquiry`)}&body=${encodeURIComponent(message)}`}
-                        className="px-6 py-2 bg-[#c93b2b] text-white font-mono text-xs font-bold uppercase rounded-xl hover:bg-[#d94838] transition-all cursor-pointer"
+                        className="px-6 py-2 bg-[#c93b2b] text-white font-mono text-xs font-bold uppercase rounded-xl hover:bg-[#d94838] transition-all cursor-pointer inline-flex items-center gap-2"
                       >
-                        Send Email →
+                        Send Email
+                        <ArrowRight size={12} />
                       </a>
                     </div>
                   </div>
@@ -303,8 +335,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                         <span className="text-[10px] text-[#777] block uppercase">Direct Email</span>
                         <span className="text-sm font-bold text-white">contact@mdaasif.dev</span>
                       </div>
-                      <span className="px-3 py-1.5 bg-white/[0.08] rounded-lg text-xs font-mono text-white">
-                        {copied ? '✓ Copied!' : 'Copy'}
+                      <span className="px-3 py-1.5 bg-white/[0.08] rounded-lg text-xs font-mono text-white flex items-center gap-1">
+                        {copied ? <><Check size={12} /> Copied!</> : <><Copy size={12} /> Copy</>}
                       </span>
                     </button>
 
@@ -316,8 +348,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                         <span className="text-[10px] text-[#777] block uppercase">Resume (PDF)</span>
                         <span className="text-sm font-bold text-white">Download CV</span>
                       </div>
-                      <span className="px-3 py-1.5 bg-white/[0.08] rounded-lg text-xs font-mono text-white">
-                        Download ↓
+                      <span className="px-3 py-1.5 bg-white/[0.08] rounded-lg text-xs font-mono text-white flex items-center gap-1">
+                        <Download size={12} /> Download
                       </span>
                     </a>
                   </div>
@@ -328,7 +360,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                       onClick={() => onSwitchAct(1)}
                       className="px-8 py-3 bg-white/[0.05] border border-white/15 text-xs font-mono tracking-widest uppercase rounded-full hover:bg-white/[0.1] transition-all cursor-pointer inline-flex items-center gap-2"
                     >
-                      <span>⛩️ Return to Shrine Act 1</span>
+                      <Shrub size={13} />
+                      Return to Shrine Act 1
                     </button>
                   </div>
                 </div>
