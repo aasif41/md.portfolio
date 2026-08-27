@@ -52,7 +52,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               </h1>
 
               {/* SubJob Title */}
-              <h2 className="text-xs md:text-sm font-bold font-mono tracking-[0.25em] text-[#c93b2b] uppercase mb-4">
+              <h2 className="text-sm md:text-lg font-bold en tracking-wider text-[#161216] uppercase mb-4">
                 Creative Full-Stack Developer & 3D Engineer
               </h2>
 
