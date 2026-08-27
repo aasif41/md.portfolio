@@ -110,7 +110,7 @@ export default function Scene({ act, isWarping }: SceneProps) {
       camera.lookAt(pointer.x * 0.15, 2.1, -25)
 
       if (heroTextRef.current) {
-        heroTextRef.current.position.y = 0.5 + Math.sin(state.clock.elapsedTime * 0.5) * 0.08
+        heroTextRef.current.position.y = 0.6 + Math.sin(state.clock.elapsedTime * 0.5) * 0.08
         const textOpacity = Math.max(0.12, 0.9 - currentScroll.current * 1.5)
         heroTextRef.current.children.forEach((c) => {
           const mesh = c as THREE.Mesh
@@ -151,18 +151,29 @@ export default function Scene({ act, isWarping }: SceneProps) {
     <group>
       {act === 1 ? (
         <>
-          {/* ================= ACT 1: SHINTO TORII SHRINE PATHWAY ================= */}
-          <group ref={heroTextRef} position={[0, 0.5, -6.5]}>
+          {/* ================= ACT 1: 3D ENGLISH TEXT (MD AASIF · PORTFOLIO) ================= */}
+          <group ref={heroTextRef} position={[0, 0.6, -6.5]}>
             <Text
-              position={[0, 0, 0]}
-              fontSize={3.8}
+              position={[0, 0.5, 0]}
+              fontSize={3.2}
               color="#161216"
-              fillOpacity={0.9}
+              fillOpacity={0.88}
               anchorX="center"
               anchorY="middle"
-              letterSpacing={0.06}
+              letterSpacing={0.08}
             >
-              ポートフォリオ 2026
+              MD AASIF
+            </Text>
+            <Text
+              position={[0, -0.9, 0]}
+              fontSize={1.1}
+              color="#c93b2b"
+              fillOpacity={0.85}
+              anchorX="center"
+              anchorY="middle"
+              letterSpacing={0.35}
+            >
+              PORTFOLIO · 2026
             </Text>
           </group>
 

@@ -37,20 +37,41 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
         <div className="text-[#161216]">
           {/* Hero Viewport */}
           <section className="h-screen flex flex-col justify-between p-8 md:p-14 select-none relative">
-            <div className="max-w-xl pointer-events-auto pt-4">
-              <h1 className="text-4xl md:text-7xl font-black jp tracking-tight text-[#161216] mb-1.5 leading-none">
-                ムハンマド アースィフ
-              </h1>
-              <h2 className="text-xs md:text-sm font-bold en tracking-[0.25em] text-[#161216] uppercase mb-3">
+            <div className="max-w-2xl pointer-events-auto pt-4">
+              {/* Minimal Tiny Japanese Accent Tag */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-black/10 text-[10px] font-mono text-[#555] mb-3 shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-[#c93b2b] animate-ping" />
+                <span className="jp font-bold text-[#c93b2b]">ムハンマド アースィフ</span>
+                <span className="text-[#888]">/</span>
+                <span className="en font-bold uppercase tracking-wider text-[#161216]">2026 Edition</span>
+              </div>
+
+              {/* Main Huge English Title */}
+              <h1 className="text-5xl md:text-8xl font-extrabold font-display tracking-tight text-[#161216] mb-2 leading-[0.9]">
                 MD AASIF
-              </h2>
-              <h3 className="text-base md:text-xl font-medium en text-[#161216] mb-4">
+              </h1>
+
+              {/* SubJob Title */}
+              <h2 className="text-xs md:text-sm font-bold font-mono tracking-[0.25em] text-[#c93b2b] uppercase mb-4">
                 Creative Full-Stack Developer & 3D Engineer
-              </h3>
-              <div className="text-sm md:text-base text-[#333] font-light leading-relaxed max-w-md">
+              </h2>
+
+              {/* SubDescription */}
+              <div className="text-sm md:text-base text-[#333] font-light leading-relaxed max-w-lg mb-8">
                 <p>
                   Final-year <strong className="font-bold text-[#161216]">BSc (Hons) Computer Science</strong> student. My main objective is to make cool WebGL 3D interactive experiences and scalable distributed systems accessible for everyone on the internet.
                 </p>
+              </div>
+
+              {/* CTAs */}
+              <div className="flex flex-wrap items-center gap-4">
+                <button 
+                  onClick={onContinue}
+                  className="px-8 py-3.5 bg-[#161216] text-white font-mono text-xs tracking-[0.2em] uppercase rounded-xl hover:bg-[#c93b2b] transition-all duration-300 shadow-md cursor-pointer flex items-center gap-2 group"
+                >
+                  <span>Explore Universe</span>
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </button>
               </div>
             </div>
 
@@ -108,7 +129,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               {/* Header & Floating Preview */}
               <div className="grid md:grid-cols-2 gap-8 items-start mb-16 pointer-events-auto">
                 <div>
-                  <h1 className="text-4xl md:text-7xl font-bold en tracking-tight mb-4">
+                  <h1 className="text-4xl md:text-7xl font-bold font-display tracking-tight mb-4">
                     Last Project recognitions
                   </h1>
                   <h2 className="text-xl md:text-2xl font-bold en text-[#c93b2b] mb-6">
@@ -119,19 +140,19 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
 
                   {/* Recognitions List */}
                   <div className="space-y-3 font-mono text-xs md:text-sm text-[#bbb] mb-8">
-                    <div className="p-3 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center hover:border-[#c93b2b] transition-all">
+                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center hover:border-[#c93b2b] transition-all">
                       <span>2026 | 3D Japanese Shrine Odyssey</span>
                       <span className="text-[#c93b2b] font-bold">[ WebGL / R3F ]</span>
                     </div>
-                    <div className="p-3 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center hover:border-[#c93b2b] transition-all">
+                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center hover:border-[#c93b2b] transition-all">
                       <span>2025 | Cloud Collaborative Workspace</span>
                       <span className="text-[#c93b2b] font-bold">[ Distributed TS ]</span>
                     </div>
-                    <div className="p-3 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center hover:border-[#c93b2b] transition-all">
+                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center hover:border-[#c93b2b] transition-all">
                       <span>2025 | Neural Hand Gesture 3D Control</span>
                       <span className="text-[#c93b2b] font-bold">[ AI / Vision ]</span>
                     </div>
-                    <div className="p-3 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center hover:border-[#c93b2b] transition-all">
+                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center hover:border-[#c93b2b] transition-all">
                       <span>2025 | Microservices Async Benchmark</span>
                       <span className="text-[#c93b2b] font-bold">[ Go / gRPC ]</span>
                     </div>
@@ -154,7 +175,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
 
               {/* Big Section Headline */}
               <div className="text-center my-14 pointer-events-auto">
-                <h2 className="text-3xl md:text-6xl font-light en tracking-wider mb-2">
+                <h2 className="text-3xl md:text-6xl font-extrabold font-display tracking-wider mb-2">
                   3D Creative Web Developer
                 </h2>
                 <div className="w-16 h-[2px] bg-[#c93b2b] mx-auto mt-4" />
@@ -163,7 +184,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               {/* Two-Column Editorial Story */}
               <div className="grid md:grid-cols-2 gap-10 mb-20 pointer-events-auto">
                 <div className="p-8 bg-white/[0.03] rounded-3xl border border-white/10">
-                  <h3 className="text-2xl font-bold en text-[#fffcfc] mb-4">
+                  <h3 className="text-2xl font-bold font-display text-[#fffcfc] mb-4">
                     Tutorials & Articles
                   </h3>
                   <p className="text-sm md:text-base text-[#aaa] leading-relaxed font-light mb-4">
@@ -180,7 +201,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                 </div>
 
                 <div className="p-8 bg-white/[0.03] rounded-3xl border border-white/10">
-                  <h3 className="text-2xl font-bold en text-[#fffcfc] mb-4">
+                  <h3 className="text-2xl font-bold font-display text-[#fffcfc] mb-4">
                     Education & Mission
                   </h3>
                   <p className="text-sm md:text-base text-[#aaa] leading-relaxed font-light mb-4">
@@ -216,7 +237,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                       <span className="text-xs font-mono tracking-[0.3em] uppercase text-[#c93b2b] font-bold block mb-1">
                         04 // INITIATE TRANSMISSION
                       </span>
-                      <h2 className="text-3xl md:text-5xl font-bold en text-[#fffcfc]">
+                      <h2 className="text-3xl md:text-5xl font-extrabold font-display text-[#fffcfc]">
                         Let's Build Together.
                       </h2>
                     </div>
