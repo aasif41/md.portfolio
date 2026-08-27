@@ -35,44 +35,45 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
         /* ============================ ACT 1: SAKURA SHRINE ======================= */
         /* ========================================================================= */
         <div className="text-[#161216]">
-          {/* Hero Viewport with Frosted Glass Container to prevent text blending */}
-          <section className="h-screen flex flex-col justify-between p-6 md:p-14 select-none relative">
-            <div className="max-w-xl pointer-events-auto pt-2">
-              <div className="bg-white/85 backdrop-blur-md p-7 md:p-9 rounded-3xl border border-black/10 shadow-xl">
-                {/* Minimal Tiny Japanese Badge (Removed "Edition") */}
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/[0.04] border border-black/5 text-[10px] font-mono text-[#555] mb-3">
-                  <span className="w-2 h-2 rounded-full bg-[#c93b2b] animate-ping" />
-                  <span className="jp font-bold text-[#c93b2b]">ムハンマド アースィフ</span>
-                  <span className="text-[#888]">/</span>
-                  <span className="en font-bold uppercase tracking-wider text-[#161216]">2026</span>
-                </div>
-
-                {/* Unique Main Title (Cinzel Classical Modern Serif) */}
-                <h1 className="text-4xl md:text-6xl font-black font-cinzel tracking-wider text-[#161216] mb-2 leading-none">
-                  MD AASIF
-                </h1>
-
-                {/* SubJob Title */}
-                <h2 className="text-xs md:text-sm font-bold font-mono tracking-[0.25em] text-[#c93b2b] uppercase mb-4">
-                  Creative Full-Stack Developer & 3D Engineer
-                </h2>
-
-                {/* High Contrast Crystal Clear Bio Paragraph */}
-                <div className="text-sm md:text-base text-[#222] font-light leading-relaxed mb-6">
-                  <p>
-                    Final-year <strong className="font-bold text-[#161216]">BSc (Hons) Computer Science</strong> student. My main objective is to make cool WebGL 3D interactive experiences and scalable distributed systems accessible for everyone on the internet.
-                  </p>
-                </div>
-
-                {/* CTA Button */}
-                <button 
-                  onClick={onContinue}
-                  className="px-7 py-3 bg-[#161216] text-white font-mono text-xs tracking-[0.2em] uppercase rounded-xl hover:bg-[#c93b2b] transition-all duration-300 shadow-md cursor-pointer flex items-center gap-2 group"
-                >
-                  <span>Explore Universe</span>
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </button>
+          {/* Hero Viewport (Direct on canvas without background box) */}
+          <section className="h-screen flex flex-col justify-between p-8 md:p-14 select-none relative">
+            <div className="max-w-xl pointer-events-auto pt-4">
+              {/* Minimal Tiny Japanese Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/70 border border-black/10 text-[10px] font-mono text-[#555] mb-3 shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-[#c93b2b] animate-ping" />
+                <span className="jp font-bold text-[#c93b2b]">ムハンマド アースィフ</span>
+                <span className="text-[#888]">/</span>
+                <span className="en font-bold uppercase tracking-wider text-[#161216]">2026</span>
               </div>
+
+              {/* Glitchy Uneven Futuristic Title */}
+              <h1 
+                data-text="MD AASIF"
+                className="text-5xl md:text-8xl font-black font-chakra tracking-tight text-[#161216] mb-2 leading-none glitch-hover cursor-default"
+              >
+                MD AASIF
+              </h1>
+
+              {/* SubJob Title */}
+              <h2 className="text-xs md:text-sm font-bold font-mono tracking-[0.25em] text-[#c93b2b] uppercase mb-4">
+                Creative Full-Stack Developer & 3D Engineer
+              </h2>
+
+              {/* Crystal Clear Bio Paragraph directly on canvas */}
+              <div className="text-sm md:text-base text-[#161216] font-light leading-relaxed max-w-md mb-8">
+                <p>
+                  Final-year <strong className="font-bold text-[#161216]">BSc (Hons) Computer Science</strong> student. My main objective is to make cool WebGL 3D interactive experiences and scalable distributed systems accessible for everyone on the internet.
+                </p>
+              </div>
+
+              {/* CTA Button */}
+              <button 
+                onClick={onContinue}
+                className="px-8 py-3.5 bg-[#161216] text-white font-mono text-xs tracking-[0.2em] uppercase rounded-xl hover:bg-[#c93b2b] transition-all duration-300 shadow-md cursor-pointer flex items-center gap-2 group"
+              >
+                <span>Explore Universe</span>
+                <span className="group-hover:translate-x-1 transition-transform">→</span>
+              </button>
             </div>
 
             {/* Rotated Handle */}
@@ -97,7 +98,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
             </div>
           </section>
 
-          {/* Act 1 Scroll Travel & Huge Click to Continue Prompt */}
+          {/* Act 1 Scroll Travel & Glitchy Click to Continue Prompt */}
           <section className="h-screen flex flex-col items-center justify-center p-8 select-none">
             <button
               onClick={onContinue}
@@ -107,7 +108,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                 ✦ EXPLORE WORKS & GALAXY
               </span>
               <h2 
-                className="text-5xl md:text-8xl font-black font-cinzel tracking-wider transition-all duration-300 text-transparent group-hover:text-[#161216]"
+                data-text="CLICK TO CONTINUE"
+                className="text-5xl md:text-8xl font-black font-chakra tracking-wider transition-all duration-300 text-transparent group-hover:text-[#161216] glitch-hover"
                 style={{ WebkitTextStroke: '2px #161216' }}
               >
                 CLICK TO CONTINUE
@@ -129,7 +131,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               {/* Header & Floating Preview */}
               <div className="grid md:grid-cols-2 gap-8 items-start mb-16 pointer-events-auto">
                 <div>
-                  <h1 className="text-4xl md:text-7xl font-bold en tracking-tight mb-4">
+                  <h1 className="text-4xl md:text-7xl font-bold font-chakra tracking-tight mb-4">
                     Last Project recognitions
                   </h1>
                   <h2 className="text-xl md:text-2xl font-bold en text-[#c93b2b] mb-6">
