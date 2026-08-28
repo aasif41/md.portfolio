@@ -120,6 +120,30 @@ const PROJECTS_DATA: ProjectItem[] = [
       { label: 'Output', val: 'Resume + Portfolio' },
     ],
   },
+  {
+    id: 'multimodal_ai',
+    folderTab: '04 // MULTIMODAL_AI',
+    title: 'Multimodal AI Chat & Vision Assistant',
+    badge: 'CONVERSATIONAL & VISION AI',
+    year: '2026',
+    shortDesc: 'ChatGPT/Gemini-inspired AI chatbot engineered with Groq API for ultra-fast text inference and Hugging Face Vision models for image recognition, instant recipe extraction, and live photo Q&A.',
+    fullDesc: 'Engineered a full-featured multimodal AI web assistant inspired by modern conversational AI platforms. Integrates Groq API for near-instant text generation and Hugging Face Vision APIs for computer vision tasks — enabling users to upload dish photos for recipe and ingredient breakdowns or snap live camera photos for contextual visual analysis.',
+    tech: ['React.js', 'JavaScript', 'Groq API', 'Hugging Face API', 'Tailwind CSS', 'HTML5 / CSS3'],
+    githubUrl: 'https://github.com/aasif41/MultimodelAI',
+    liveDemoUrl: 'https://multimodal-ai-seven.vercel.app/',
+    modules: [
+      { name: 'Ultra-Fast Chat Inference Engine', tech: 'Groq Llama 3 API', status: 'Active' },
+      { name: 'Image & Recipe Recognition Vision Pipeline', tech: 'Hugging Face Vision', status: 'Active' },
+      { name: 'Live Camera Capture & Visual Inspector', tech: 'WebRTC / Canvas', status: 'Active' },
+      { name: 'ChatGPT-Style Responsive Stream UI/UX', tech: 'React / Markdown', status: 'Active' },
+    ],
+    metrics: [
+      { label: 'LLM Speed', val: 'Groq Ultra-Fast' },
+      { label: 'Vision AI', val: 'Hugging Face API' },
+      { label: 'Input Mode', val: 'Text + Image + Cam' },
+      { label: 'Interface', val: 'Chatbot UX / UI' },
+    ],
+  },
 ]
 
 export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayProps) {
@@ -353,7 +377,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                     {/* Render Stacked Folders behind (Layers 3 & 2) with clean low opacity and zero body text */}
                     {PROJECTS_DATA.map((proj, idx) => {
                       const offset = (idx - activeProjectIndex + PROJECTS_DATA.length) % PROJECTS_DATA.length
-                      if (offset === 0) return null
+                      if (offset === 0 || offset > 2) return null
 
                       const isNext = offset === 1
                       const translateX = isNext ? 22 : 44
