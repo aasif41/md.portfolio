@@ -42,7 +42,7 @@ export interface ProjectItem {
   fullDesc: string
   tech: string[]
   githubUrl: string
-  liveDemoUrl: string
+  liveDemoUrl?: string
   modules: { name: string; tech: string; status: string }[]
   metrics: { label: string; val: string }[]
 }
@@ -142,6 +142,29 @@ const PROJECTS_DATA: ProjectItem[] = [
       { label: 'Vision AI', val: 'Hugging Face API' },
       { label: 'Input Mode', val: 'Text + Image + Cam' },
       { label: 'Interface', val: 'Chatbot UX / UI' },
+    ],
+  },
+  {
+    id: 'notespace_app',
+    folderTab: '05 // NOTESPACE_APP',
+    title: 'NoteSpace — Note-Taking & Task App',
+    badge: 'CROSS-PLATFORM FLUTTER APP',
+    year: '2026',
+    shortDesc: 'Feature-rich multi-format note-taking & task management app built with Flutter/Dart. Supports mind mapping, voice memos, checklists, private locked notes, canvas sketches, and JSON backups.',
+    fullDesc: 'Engineered a versatile, high-performance note-taking and productivity app built with Flutter and Dart for Android, iOS, and Windows. Accommodates rich text notes, interactive checklists, integrated to-dos, audio voice notes, freehand sketches, biometric/PIN private note locks, customizable desktop/home screen widgets, and complete JSON file import/export backups.',
+    tech: ['Flutter', 'Dart', 'SQLite', 'Audio Recording API', 'Biometric Auth', 'Cross-Platform'],
+    githubUrl: 'https://github.com/aasif41/NoteSpace',
+    modules: [
+      { name: 'Multi-Format Input Engine', tech: 'Voice / Sketch / Text', status: 'Active' },
+      { name: 'Encrypted Private Note Vault', tech: 'Biometric / PIN Auth', status: 'Active' },
+      { name: 'To-Do & Interactive Checklists', tech: 'Stateful Task Engine', status: 'Active' },
+      { name: 'JSON Portable Backup & Restore', tech: 'File I/O / Serialization', status: 'Active' },
+    ],
+    metrics: [
+      { label: 'Platform', val: 'Android / iOS / Win' },
+      { label: 'Framework', val: 'Flutter & Dart' },
+      { label: 'Storage', val: 'Local SQLite DB' },
+      { label: 'Privacy', val: 'PIN / Biometric Lock' },
     ],
   },
 ]
@@ -546,16 +569,18 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                                   <GitMerge size={13} />
                                   GitHub
                                 </a>
-                                <a
-                                  href={activeProject.liveDemoUrl}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  onClick={(e) => e.stopPropagation()}
-                                  className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-white font-mono text-xs font-bold rounded-xl transition-all inline-flex items-center gap-2"
-                                >
-                                  <ExternalLink size={13} />
-                                  Live Demo
-                                </a>
+                                {activeProject.liveDemoUrl && (
+                                  <a
+                                    href={activeProject.liveDemoUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-white font-mono text-xs font-bold rounded-xl transition-all inline-flex items-center gap-2"
+                                  >
+                                    <ExternalLink size={13} />
+                                    Live Demo
+                                  </a>
+                                )}
                               </div>
 
                               <div className="flex items-center gap-3">
