@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   Briefcase,
   GitMerge,
@@ -11,7 +11,12 @@ import {
   Download,
   ArrowRight,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Shrub,
+  FileCode,
+  ExternalLink,
+  X,
 } from 'lucide-react'
 
 interface UIOverlayProps {
@@ -27,11 +32,105 @@ const TOPICS = [
   { label: 'Tech Chat',           icon: <Coffee size={12} /> },
 ]
 
+export interface ProjectItem {
+  id: string
+  folderTab: string
+  title: string
+  badge: string
+  year: string
+  shortDesc: string
+  fullDesc: string
+  tech: string[]
+  githubUrl: string
+  liveDemoUrl: string
+  modules: { name: string; tech: string; status: string }[]
+  metrics: { label: string; val: string }[]
+}
+
+const PROJECTS_DATA: ProjectItem[] = [
+  {
+    id: 'tribhuvan_portal',
+    folderTab: '01 // TRIBHUVAN_PORTAL',
+    title: 'Tribhuvan College Portal & App',
+    badge: 'FEATURED FULL-STACK & MOBILE',
+    year: '2026',
+    shortDesc: 'Comprehensive multi-role institutional ecosystem with dedicated dashboards for Admins, Teachers, and Students, automated attendance tracking, dynamic timetables & cross-platform React Native app.',
+    fullDesc: 'A complete full-stack enterprise campus management system. Engineered secure role-based access control (RBAC), subject-wise attendance logs, timetable builders, announcement feeds, and a React Native mobile application for student smartphones.',
+    tech: ['React.js', 'Node.js', 'PostgreSQL', 'React Native', 'JWT / RBAC', 'Tailwind CSS'],
+    githubUrl: 'https://github.com/aasif41/tribhuvan_portal',
+    liveDemoUrl: 'https://github.com/aasif41/tribhuvan_portal',
+    modules: [
+      { name: 'Admin Control & Institutional RBAC', tech: 'Node.js / Express', status: 'Active' },
+      { name: 'Teacher Class & Subject Attendance Engine', tech: 'PostgreSQL / SQL', status: 'Active' },
+      { name: 'Student Timetable, Notices & Profile Hub', tech: 'React / TypeScript', status: 'Active' },
+      { name: 'Cross-Platform Student Mobile Client', tech: 'React Native / Expo', status: 'Active' },
+    ],
+    metrics: [
+      { label: 'Architecture', val: 'Multi-Role RBAC' },
+      { label: 'Security', val: 'Zero-Vulnerability JWT' },
+      { label: 'Platforms', val: 'Web + Android/iOS' },
+      { label: 'Database', val: 'PostgreSQL Relational' },
+    ],
+  },
+  {
+    id: 'project_02',
+    folderTab: '02 // 3D_ODYSSEY',
+    title: '3D Japanese Shrine Odyssey',
+    badge: 'WEBGL & 3D INTERACTION',
+    year: '2026',
+    shortDesc: 'Interactive 3D WebGL experience featuring custom GLSL toon shaders, infinite procedural map streaming, smooth scroll camera physics, and dimensional wireframe warps.',
+    fullDesc: 'High-performance WebGL & React Three Fiber application pushing modern web graphics. Built with custom vertex/fragment shaders, instanced low-poly geometry pipelines, and immersive audio-visual act transitions.',
+    tech: ['Three.js', 'React Three Fiber', 'GLSL Shaders', 'TypeScript', 'Tailwind CSS'],
+    githubUrl: 'https://github.com/aasif41/md.portfolio',
+    liveDemoUrl: 'https://github.com/aasif41/md.portfolio',
+    modules: [
+      { name: 'Procedural Ground & Torii Streamer', tech: 'Three.js / Instanced', status: 'Active' },
+      { name: 'Custom GLSL Wireframe Warp Engine', tech: 'GLSL Vertex Shaders', status: 'Active' },
+      { name: 'Omnidirectional Orbit Physics Rig', tech: 'TypeScript / Math', status: 'Active' },
+    ],
+    metrics: [
+      { label: 'Rendering', val: '120 FPS WebGL 2.0' },
+      { label: 'Pipeline', val: 'Custom Shaders' },
+      { label: 'Interaction', val: 'Physics Orbit' },
+      { label: 'Stack', val: 'R3F / Three.js' },
+    ],
+  },
+  {
+    id: 'project_03',
+    folderTab: '03 // DISTRIBUTED_SYS',
+    title: 'High-Throughput Microservices Cluster',
+    badge: 'SCALABLE BACKEND SYSTEMS',
+    year: '2026',
+    shortDesc: 'Distributed asynchronous microservices architecture engineered for high concurrency, low-latency gRPC RPC communications, and Redis in-memory cache clustering.',
+    fullDesc: 'Scalable backend infrastructure developed for multi-tenant throughput. Features protobuf service definitions, async worker queues, connection pooling, and Dockerized microservice orchestrations.',
+    tech: ['Go', 'gRPC / Protobuf', 'Redis', 'PostgreSQL', 'Docker'],
+    githubUrl: 'https://github.com/aasif41',
+    liveDemoUrl: 'https://github.com/aasif41',
+    modules: [
+      { name: 'gRPC Inter-Service RPC Mesh', tech: 'Go / Protobuf', status: 'Active' },
+      { name: 'Distributed Memory Caching Layer', tech: 'Redis Cluster', status: 'Active' },
+      { name: 'Asynchronous Event Pipeline', tech: 'Go Workers', status: 'Active' },
+    ],
+    metrics: [
+      { label: 'Latency', val: '< 12ms Avg Response' },
+      { label: 'Concurrency', val: 'High Throughput' },
+      { label: 'Protocol', val: 'HTTP/2 gRPC' },
+      { label: 'Storage', val: 'PostgreSQL + Redis' },
+    ],
+  },
+]
+
 export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayProps) {
   const [copied, setCopied] = useState(false)
   const [currentTime, setCurrentTime] = useState('')
   const [message, setMessage] = useState('')
   const [selectedTopic, setSelectedTopic] = useState(TOPICS[0].label)
+
+  // Stacked Folder State (Detail is closed by default as requested!)
+  const [activeProjectIndex, setActiveProjectIndex] = useState(0)
+  const [isDetailOpen, setIsDetailOpen] = useState(false)
+
+  const folderContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const updateTime = () => {
@@ -43,11 +142,43 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
     return () => clearInterval(timer)
   }, [])
 
+  const isWheelThrottled = useRef(false)
+  const handleFolderWheel = (e: WheelEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (isWheelThrottled.current) return
+
+    if (Math.abs(e.deltaY) > 5) {
+      isWheelThrottled.current = true
+      if (e.deltaY > 0) {
+        setActiveProjectIndex((prev) => (prev + 1) % PROJECTS_DATA.length)
+      } else {
+        setActiveProjectIndex((prev) => (prev - 1 + PROJECTS_DATA.length) % PROJECTS_DATA.length)
+      }
+      setTimeout(() => {
+        isWheelThrottled.current = false
+      }, 220)
+    }
+  }
+
+  // Callback ref to bind non-passive wheel listener immediately upon mounting in DOM
+  const folderRefCallback = (node: HTMLDivElement | null) => {
+    if (folderContainerRef.current) {
+      folderContainerRef.current.removeEventListener('wheel', handleFolderWheel)
+    }
+    folderContainerRef.current = node
+    if (node) {
+      node.addEventListener('wheel', handleFolderWheel, { passive: false })
+    }
+  }
+
   const copyEmail = () => {
     navigator.clipboard.writeText('contact@mdaasif.dev')
     setCopied(true)
     setTimeout(() => setCopied(false), 2500)
   }
+
+  const activeProject = PROJECTS_DATA[activeProjectIndex]
 
   return (
     <div className="relative z-10 w-full pointer-events-none">
@@ -74,7 +205,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
 
               {/* SubJob Title */}
               <h2 className="text-sm md:text-lg font-bold font-movement tracking-widest text-[#161216] uppercase mb-4">
-                Creative Full-Stack Developer & 3D Engineer
+                Creative Full-Stack Developer &amp; 3D Engineer
               </h2>
 
               {/* SubDescription */}
@@ -135,13 +266,13 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
         </div>
       ) : (
         /* ========================================================================= */
-        /* ============================ ACT 2: DETECTIVE GALAXY ==================== */
+        /* ============================ ACT 2: GALAXY SPACE ======================== */
         /* ========================================================================= */
         <div className="text-[#fffcfc]">
 
           {/* ── SECTION 1: PROJECTS ── full screen */}
-          <section id="projects" className="min-h-screen px-8 md:px-14 py-20 relative">
-            <div className="max-w-6xl mx-auto">
+          <section id="projects" className="min-h-screen px-6 md:px-12 py-20 relative">
+            <div className="max-w-7xl mx-auto">
               {/* Header & Floating Preview */}
               <div className="grid md:grid-cols-2 gap-8 items-start mb-16 pointer-events-auto">
                 <div>
@@ -149,29 +280,29 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                     Last Project recognitions
                   </h1>
                   <h2 className="text-xl md:text-2xl font-bold en text-[#c93b2b] mb-6">
-                    <a href="https://github.com/aasif41" target="_blank" rel="noreferrer" className="hover:underline inline-flex items-center gap-2">
-                      3D Odyssey &amp; Systems
+                    <a href="https://github.com/aasif41/tribhuvan_portal" target="_blank" rel="noreferrer" className="hover:underline inline-flex items-center gap-2">
+                      Full stack College Portal &amp; App
                       <ArrowRight size={20} />
                     </a>
                   </h2>
 
-                  {/* Recognitions List */}
+                  {/* Recognitions / Features List */}
                   <div className="space-y-3 font-mono text-xs md:text-sm text-[#bbb] mb-8">
-                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center hover:border-[#c93b2b] transition-all">
-                      <span>2026 | 3D Japanese Shrine Odyssey</span>
-                      <span className="text-[#c93b2b] font-bold">[ WebGL / R3F ]</span>
+                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center gap-3 hover:border-[#c93b2b] transition-all whitespace-nowrap">
+                      <span>2026 | Admin, Teacher &amp; Student Portal</span>
+                      <span className="text-[#c93b2b] font-bold shrink-0">[ React / Node.js ]</span>
                     </div>
-                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center hover:border-[#c93b2b] transition-all">
-                      <span>2025 | Cloud Collaborative Workspace</span>
-                      <span className="text-[#c93b2b] font-bold">[ Distributed TS ]</span>
+                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center gap-3 hover:border-[#c93b2b] transition-all whitespace-nowrap">
+                      <span>2026 | Teacher Hub &amp; Subject Attendance</span>
+                      <span className="text-[#c93b2b] font-bold shrink-0">[ PostgreSQL ]</span>
                     </div>
-                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center hover:border-[#c93b2b] transition-all">
-                      <span>2025 | Neural Hand Gesture 3D Control</span>
-                      <span className="text-[#c93b2b] font-bold">[ AI / Vision ]</span>
+                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center gap-3 hover:border-[#c93b2b] transition-all whitespace-nowrap">
+                      <span>2026 | Student Timetable &amp; Notices Engine</span>
+                      <span className="text-[#c93b2b] font-bold shrink-0">[ Secure RBAC ]</span>
                     </div>
-                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center hover:border-[#c93b2b] transition-all">
-                      <span>2025 | Microservices Async Benchmark</span>
-                      <span className="text-[#c93b2b] font-bold">[ Go / gRPC ]</span>
+                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center gap-3 hover:border-[#c93b2b] transition-all whitespace-nowrap">
+                      <span>2026 | Cross-Platform Mobile Application</span>
+                      <span className="text-[#c93b2b] font-bold shrink-0">[ React Native ]</span>
                     </div>
                   </div>
                 </div>
@@ -193,42 +324,351 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               {/* Big Section Headline */}
               <div className="text-center my-14 pointer-events-auto">
                 <h2 className="text-3xl md:text-6xl font-light en tracking-wider mb-2">
-                  3D Creative Web Developer
+                  Developed Projects
                 </h2>
                 <div className="w-16 h-[2px] bg-[#c93b2b] mx-auto mt-4" />
               </div>
 
-              {/* Two-Column Editorial Story */}
-              <div className="grid md:grid-cols-2 gap-10 pointer-events-auto">
-                <div className="p-8 bg-white/[0.03] rounded-3xl border border-white/10">
-                  <h3 className="text-2xl font-bold en text-[#fffcfc] mb-4">
-                    Tutorials &amp; Articles
-                  </h3>
-                  <p className="text-sm md:text-base text-[#aaa] leading-relaxed font-light mb-4">
-                    I write technical in-depth breakdowns on WebGL computer graphics, GLSL shaders, and distributed system architectures. You can explore my open-source code and experiments directly on GitHub.
-                  </p>
-                  <a
-                    href="https://github.com/aasif41"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-xs font-mono text-[#c93b2b] hover:underline font-bold inline-flex items-center gap-1"
+              {/* ── 50/50 Screen Split: Left Folder & Right Dossier (Matching Identical Dimensions) ── */}
+              <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-stretch pointer-events-auto mt-6">
+                
+                {/* ── LEFT HALF: Authentic Folder Stack (50% Split, Exact Reference Silhouette) ── */}
+                <div className="w-full flex flex-col justify-center">
+                  
+                  {/* ── THE FOLDER STACK CONTAINER (Intercepts scroll wheel & prevents page scroll) ── */}
+                  <div 
+                    ref={folderRefCallback}
+                    className="relative w-full h-[450px] select-none cursor-pointer group"
+                    onClick={() => setIsDetailOpen(true)}
                   >
-                    Follow on GitHub @aasif41
-                    <ArrowRight size={11} />
-                  </a>
+                    {/* Render Stacked Folders behind (Layers 3 & 2) with clean low opacity and zero body text */}
+                    {PROJECTS_DATA.map((proj, idx) => {
+                      const offset = (idx - activeProjectIndex + PROJECTS_DATA.length) % PROJECTS_DATA.length
+                      if (offset === 0) return null
+
+                      const isNext = offset === 1
+                      const translateX = isNext ? 22 : 44
+                      const translateY = isNext ? -18 : -34
+                      const scale = isNext ? 0.97 : 0.94
+                      const opacity = isNext ? 0.6 : 0.35
+                      const zIndex = isNext ? 20 : 10
+
+                      return (
+                        <div
+                          key={proj.id}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setActiveProjectIndex(idx)
+                          }}
+                          className="absolute inset-0 transition-all duration-300 ease-out hover:brightness-125 cursor-pointer"
+                          style={{
+                            transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
+                            opacity,
+                            zIndex,
+                          }}
+                        >
+                          {/* Exact Folder Silhouette SVG */}
+                          <svg viewBox="0 0 560 450" className="w-full h-full drop-shadow-xl" preserveAspectRatio="none">
+                            {/* Back Plate with Tab */}
+                            <path
+                              d="M 18 68 L 18 36 C 18 20, 30 12, 48 12 L 180 12 C 200 12, 214 22, 228 38 C 244 54, 258 60, 278 60 L 530 60 C 546 60, 554 70, 554 86 L 554 430 C 554 444, 540 450, 524 450 L 48 450 C 32 450, 18 444, 18 430 Z"
+                              fill="#16161e"
+                              stroke="rgba(255, 255, 255, 0.15)"
+                              strokeWidth="1.5"
+                            />
+                            {/* Front Pocket */}
+                            <path
+                              d="M 18 80 C 18 64, 30 54, 48 54 L 530 54 C 546 54, 554 64, 554 80 L 554 430 C 554 444, 540 450, 524 450 L 48 450 C 32 450, 18 444, 18 430 Z"
+                              fill="#101015"
+                              stroke="rgba(255, 255, 255, 0.12)"
+                              strokeWidth="1.5"
+                            />
+                          </svg>
+
+                          {/* Clean Dim Tab Indicator (No body text, prevents collision with front file) */}
+                          <div 
+                            className="absolute top-[28px] left-8 font-mono text-[11px] text-white/50 font-bold flex items-center gap-1.5"
+                            style={{ opacity: isNext ? 0.7 : 0.4 }}
+                          >
+                            <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+                            <span>{proj.folderTab.split(' // ')[0]}</span>
+                          </div>
+                        </div>
+                      )
+                    })}
+
+                    {/* ── ACTIVE FRONT FOLDER (Solid Opaque Charcoal Body to Prevent Ghosting) ── */}
+                    <div 
+                      className="absolute inset-0 z-30 transition-all duration-300 drop-shadow-2xl"
+                    >
+                      <div className="relative w-full h-full">
+                        
+                        {/* 1. Vector SVG Folder Shell Matching Reference Design */}
+                        <svg viewBox="0 0 560 450" className="w-full h-full absolute inset-0 pointer-events-none" preserveAspectRatio="none">
+                          <defs>
+                            <linearGradient id="folderBackGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stopColor="#22222c" />
+                              <stop offset="100%" stopColor="#16161f" />
+                            </linearGradient>
+                            <linearGradient id="folderFrontGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                              <stop offset="0%" stopColor="#181822" />
+                              <stop offset="40%" stopColor="#13131b" />
+                              <stop offset="100%" stopColor="#0d0d12" />
+                            </linearGradient>
+                          </defs>
+
+                          {/* Back Flap with Smooth Curved Tab */}
+                          <path
+                            d="M 18 68 L 18 36 C 18 20, 30 12, 48 12 L 180 12 C 200 12, 214 22, 228 38 C 244 54, 258 60, 278 60 L 530 60 C 546 60, 554 70, 554 86 L 554 430 C 554 444, 540 450, 524 450 L 48 450 C 32 450, 18 444, 18 430 Z"
+                            fill="url(#folderBackGrad)"
+                            stroke="rgba(255, 255, 255, 0.25)"
+                            strokeWidth="1.5"
+                          />
+
+                          {/* Front Pocket with Rounded Corners (Solid Opaque to completely block background bleed) */}
+                          <path
+                            d="M 18 80 C 18 64, 30 54, 48 54 L 530 54 C 546 54, 554 64, 554 80 L 554 430 C 554 444, 540 450, 524 450 L 48 450 C 32 450, 18 444, 18 430 Z"
+                            fill="url(#folderFrontGrad)"
+                            stroke="rgba(255, 255, 255, 0.22)"
+                            strokeWidth="1.5"
+                          />
+
+                          {/* 2 Bottom Embossed Accent Lines (Matching Reference Icon) */}
+                          <line x1="48" y1="418" x2="524" y2="418" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1.5" />
+                          <line x1="48" y1="428" x2="524" y2="428" stroke="rgba(255, 255, 255, 0.12)" strokeWidth="1.5" />
+                        </svg>
+
+                        {/* 2. Top-Left Tab Content (Vertically centered with balanced padding) */}
+                        <div className="absolute top-[26px] left-8 z-10 flex items-center gap-2 font-mono text-xs text-[#fffcfc] font-bold">
+                          <span className="w-2 h-2 rounded-full bg-[#c93b2b] animate-pulse" />
+                          <span>{activeProject.folderTab}</span>
+                        </div>
+
+                        {/* Top-Right Quick Project Change Buttons (No numbers, sleek compact stepper placed higher on rim) */}
+                        <div className="absolute top-[2px] right-7 z-20 flex items-center gap-1 bg-black/60 backdrop-blur-md p-1 rounded-xl border border-white/15 shadow-md">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setActiveProjectIndex((prev) => (prev - 1 + PROJECTS_DATA.length) % PROJECTS_DATA.length)
+                            }}
+                            className="p-1.5 text-[#bbb] hover:text-white hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
+                            title="Previous Project"
+                          >
+                            <ChevronLeft size={14} />
+                          </button>
+                          <div className="w-[1px] h-3.5 bg-white/15" />
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setActiveProjectIndex((prev) => (prev + 1) % PROJECTS_DATA.length)
+                            }}
+                            className="p-1.5 text-[#bbb] hover:text-white hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
+                            title="Next Project"
+                          >
+                            <ChevronRight size={14} />
+                          </button>
+                        </div>
+
+                        {/* 3. Front Pocket Content Container */}
+                        <div className="absolute top-16 inset-x-8 bottom-10 z-20 flex flex-col justify-between p-4">
+                          
+                          {/* Info Header */}
+                          <div>
+                            <div className="flex items-center justify-between gap-2 mb-2.5">
+                              <span className="px-3 py-0.5 bg-[#c93b2b]/15 border border-[#c93b2b]/30 rounded text-[11px] font-mono text-[#c93b2b] font-bold uppercase tracking-wider">
+                                {activeProject.badge}
+                              </span>
+                              <span className="text-xs font-mono text-[#888]">{activeProject.year}</span>
+                            </div>
+
+                            <h3 className="text-2xl md:text-3xl font-bold en text-[#fffcfc] mb-3 leading-snug group-hover:text-[#c93b2b] transition-colors">
+                              {activeProject.title}
+                            </h3>
+
+                            <p className="text-xs md:text-sm text-[#bbb] leading-relaxed line-clamp-3 font-light mb-3">
+                              {activeProject.shortDesc}
+                            </p>
+                          </div>
+
+                          {/* Tech Stack & Action Bar */}
+                          <div>
+                            <div className="flex flex-wrap gap-2 mb-5">
+                              {activeProject.tech.slice(0, 4).map((t) => (
+                                <span key={t} className="px-3 py-1 bg-white/[0.06] border border-white/10 rounded-lg text-xs font-mono text-[#ddd]">
+                                  {t}
+                                </span>
+                              ))}
+                              {activeProject.tech.length > 4 && (
+                                <span className="px-2 py-1 text-xs font-mono text-[#888]">
+                                  +{activeProject.tech.length - 4} more
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Buttons on Front */}
+                            <div className="flex items-center justify-between gap-3 pt-3.5 border-t border-white/10">
+                              <div className="flex items-center gap-3">
+                                <a
+                                  href={activeProject.githubUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="px-4 py-2 bg-[#c93b2b] text-white font-mono text-xs font-bold rounded-xl hover:bg-[#d94838] transition-all inline-flex items-center gap-2 shadow-md shadow-[#c93b2b]/30"
+                                >
+                                  <GitMerge size={13} />
+                                  GitHub
+                                </a>
+                                <a
+                                  href={activeProject.liveDemoUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-white font-mono text-xs font-bold rounded-xl transition-all inline-flex items-center gap-2"
+                                >
+                                  <ExternalLink size={13} />
+                                  Live Demo
+                                </a>
+                              </div>
+
+                              <div className="flex items-center gap-3">
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    setActiveProjectIndex((prev) => (prev + 1) % PROJECTS_DATA.length)
+                                  }}
+                                  className="text-xs font-mono text-[#bbb] hover:text-white inline-flex items-center gap-1 cursor-pointer transition-colors"
+                                  title="Cycle to next project"
+                                >
+                                  <span>Next</span>
+                                  <ArrowRight size={12} />
+                                </button>
+
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    setIsDetailOpen(true)
+                                  }}
+                                  className="text-xs font-mono text-[#c93b2b] hover:underline font-bold inline-flex items-center gap-1.5 cursor-pointer"
+                                >
+                                  <span>Open File ↗</span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="p-8 bg-white/[0.03] rounded-3xl border border-white/10">
-                  <h3 className="text-2xl font-bold en text-[#fffcfc] mb-4">
-                    Education &amp; Mission
-                  </h3>
-                  <p className="text-sm md:text-base text-[#aaa] leading-relaxed font-light mb-4">
-                    Final-year BSc (Hons) Computer Science student graduating in 2026. Specialized in full-stack architecture, high-performance 3D rendering pipelines, and scalable backend infrastructure.
-                  </p>
-                  <span className="text-xs font-mono text-[#48cae4] font-bold">
-                    Class of 2026 · Available for Full-Time Roles
-                  </span>
+                {/* ── RIGHT HALF: Slide-Out Project Dossier (Matching 50% Width & 450px Height) ── */}
+                <div className="w-full flex flex-col justify-center">
+                  {isDetailOpen ? (
+                    <div className="w-full h-[450px] bg-white/[0.04] backdrop-blur-2xl rounded-3xl border border-white/15 shadow-2xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden animate-in fade-in slide-in-from-left-6 duration-300">
+                      
+                      {/* Top Red Rim Line */}
+                      <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#c93b2b] to-transparent" />
+
+                      {/* Header + Cut / Close Button */}
+                      <div className="flex items-center justify-between pb-3.5 border-b border-white/10">
+                        <div className="flex items-center gap-2.5">
+                          <div className="p-2 bg-[#c93b2b]/20 rounded-xl border border-[#c93b2b]/40 text-[#c93b2b]">
+                            <FileCode size={18} />
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-mono tracking-widest uppercase text-[#c93b2b] font-bold block">
+                              EXTRACTED SYSTEM DOSSIER
+                            </span>
+                            <h4 className="text-lg md:text-xl font-bold en text-[#fffcfc]">
+                              {activeProject.title}
+                            </h4>
+                          </div>
+                        </div>
+
+                        {/* Cut / Close Button */}
+                        <button
+                          onClick={() => setIsDetailOpen(false)}
+                          className="px-3.5 py-1.5 bg-white/[0.08] hover:bg-[#c93b2b] border border-white/15 hover:border-[#c93b2b] rounded-xl text-xs font-mono text-white transition-all cursor-pointer inline-flex items-center gap-1.5 group shadow-md"
+                          title="Close dossier back into file"
+                        >
+                          <span>Cut / Close</span>
+                          <X size={14} className="group-hover:rotate-90 transition-transform" />
+                        </button>
+                      </div>
+
+                      {/* Full Project Description */}
+                      <p className="text-xs md:text-sm text-[#ccc] leading-relaxed font-light line-clamp-3">
+                        {activeProject.fullDesc}
+                      </p>
+
+                      {/* Architecture Metrics Grid */}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                        {activeProject.metrics.map((m) => (
+                          <div key={m.label} className="p-2.5 bg-black/50 rounded-xl border border-white/10 text-center">
+                            <span className="text-[9px] font-mono uppercase tracking-wider text-[#888] block mb-1">
+                              {m.label}
+                            </span>
+                            <span className="text-xs font-mono font-bold text-white block truncate">
+                              {m.val}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* System Modules List */}
+                      <div>
+                        <span className="text-[10px] font-mono uppercase tracking-widest text-[#888] block mb-2">
+                          SYSTEM ARCHITECTURE &amp; MODULES:
+                        </span>
+                        <div className="grid sm:grid-cols-2 gap-2 font-mono text-xs">
+                          {activeProject.modules.map((mod) => (
+                            <div key={mod.name} className="p-2.5 bg-white/[0.03] rounded-xl border border-white/10 flex items-center justify-between">
+                              <div>
+                                <span className="text-[#eee] font-medium block text-[11px] truncate max-w-[170px]">
+                                  {mod.name}
+                                </span>
+                                <span className="text-[10px] text-[#777]">{mod.tech}</span>
+                              </div>
+                              <span className="text-[9px] text-[#48cae4] px-1.5 py-0.5 bg-[#48cae4]/10 rounded border border-[#48cae4]/20 shrink-0">
+                                {mod.status}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Action Links */}
+                      <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10">
+                        <div className="flex items-center gap-2">
+                          <a
+                            href={activeProject.githubUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="px-4 py-2 bg-[#c93b2b] text-white font-mono text-xs font-bold uppercase rounded-xl hover:bg-[#d94838] transition-all inline-flex items-center gap-2 shadow-lg shadow-[#c93b2b]/20"
+                          >
+                            <GitMerge size={13} />
+                            View Source Code
+                            <ArrowRight size={12} />
+                          </a>
+                          <a
+                            href={activeProject.liveDemoUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-white font-mono text-xs font-bold rounded-xl transition-all inline-flex items-center gap-1.5"
+                          >
+                            <ExternalLink size={12} />
+                            Live Demo App
+                          </a>
+                        </div>
+                        <span className="text-[10px] font-mono text-[#888]">
+                          Repository: {activeProject.id}
+                        </span>
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
+
               </div>
             </div>
           </section>
@@ -371,7 +811,6 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               </footer>
             </div>
           </section>
-
         </div>
       )}
     </div>
