@@ -90,3 +90,97 @@
 ::-webkit-scrollbar-thumb:hover { 
   background: #c93b2b; 
 }
+
+/* ── Premium Dossier Spring Unfurl ── */
+
+/* OPEN: panel unfurls from left edge with spring bounce */
+@keyframes dossier-reveal {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.05) scaleY(0.12) translateX(-36px);
+    filter: blur(16px) brightness(0.2);
+  }
+  15% {
+    opacity: 0.4;
+    transform: scaleX(0.3) scaleY(0.55) translateX(-18px);
+    filter: blur(8px) brightness(0.5);
+  }
+  40% {
+    opacity: 0.85;
+    transform: scaleX(0.88) scaleY(0.96) translateX(-3px);
+    filter: blur(1.5px) brightness(0.88);
+  }
+  60% {
+    opacity: 1;
+    transform: scaleX(1.035) scaleY(1.018) translateX(4px);
+    filter: blur(0) brightness(1);
+  }
+  76% {
+    transform: scaleX(0.987) scaleY(0.993) translateX(-1.5px);
+  }
+  90% {
+    transform: scaleX(1.006) scaleY(1.002) translateX(0.8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1) scaleY(1) translateX(0);
+    filter: blur(0) brightness(1);
+  }
+}
+
+/* CLOSE: snaps shut back toward left folder */
+@keyframes dossier-fold {
+  0% {
+    opacity: 1;
+    transform: scaleX(1) scaleY(1) translateX(0);
+    filter: blur(0) brightness(1);
+  }
+  18% {
+    opacity: 0.88;
+    transform: scaleX(0.97) scaleY(0.97) translateX(-3px);
+  }
+  65% {
+    opacity: 0.25;
+    transform: scaleX(0.22) scaleY(0.65) translateX(-22px);
+    filter: blur(6px) brightness(0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(0.02) scaleY(0.05) translateX(-36px);
+    filter: blur(16px) brightness(0.05);
+  }
+}
+
+/* Content stagger: internal elements fade-slide in after panel opens */
+@keyframes dossier-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dossier-open {
+  animation: dossier-reveal 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity, filter;
+  transform-origin: left center;
+}
+
+.dossier-open > * {
+  opacity: 0;
+  animation: dossier-content-in 0.3s ease forwards;
+}
+.dossier-open > *:nth-child(1) { animation-delay: 0.28s; }
+.dossier-open > *:nth-child(2) { animation-delay: 0.36s; }
+.dossier-open > *:nth-child(3) { animation-delay: 0.42s; }
+.dossier-open > *:nth-child(4) { animation-delay: 0.47s; }
+.dossier-open > *:nth-child(5) { animation-delay: 0.52s; }
+
+.dossier-close {
+  animation: dossier-fold 0.3s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+  will-change: transform, opacity, filter;
+  transform-origin: left center;
+}

@@ -58,7 +58,7 @@ const PROJECTS_DATA: ProjectItem[] = [
     fullDesc: 'A complete full-stack enterprise campus management system. Engineered secure role-based access control (RBAC), subject-wise attendance logs, timetable builders, announcement feeds, and a React Native mobile application for student smartphones.',
     tech: ['React.js', 'Node.js', 'PostgreSQL', 'React Native', 'JWT / RBAC', 'Tailwind CSS'],
     githubUrl: 'https://github.com/aasif41/tribhuvan_portal',
-    liveDemoUrl: 'https://github.com/aasif41/tribhuvan_portal',
+    liveDemoUrl: 'https://tribhuvan-portal-web.vercel.app/',
     modules: [
       { name: 'Admin Control & Institutional RBAC', tech: 'Node.js / Express', status: 'Active' },
       { name: 'Teacher Class & Subject Attendance Engine', tech: 'PostgreSQL / SQL', status: 'Active' },
@@ -129,6 +129,15 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
   // Stacked Folder State (Detail is closed by default as requested!)
   const [activeProjectIndex, setActiveProjectIndex] = useState(0)
   const [isDetailOpen, setIsDetailOpen] = useState(false)
+  const [isDossierClosing, setIsDossierClosing] = useState(false)
+
+  const closeDossier = () => {
+    setIsDossierClosing(true)
+    setTimeout(() => {
+      setIsDetailOpen(false)
+      setIsDossierClosing(false)
+    }, 370)
+  }
 
   const folderContainerRef = useRef<HTMLDivElement>(null)
 
@@ -240,12 +249,10 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               </a>
             </div>
 
-            {/* Scroll indicator */}
-            <div className="flex flex-col items-center justify-center pb-4 pointer-events-none">
-              <span className="text-[11px] font-bold en tracking-[0.25em] uppercase text-[#161216] mb-2">
-                SCROLL TO START
-              </span>
-              <ChevronDown size={18} className="text-[#161216] animate-bounce" />
+            {/* Bottom-Left Minimal Pure Text Scroll Indicator */}
+            <div className="pointer-events-none self-start pb-2 flex items-center gap-2 font-mono text-[11px] font-bold tracking-[0.25em] uppercase text-[#161216]">
+              <span>SCROLL TO WALK</span>
+              <ChevronDown size={14} className="animate-bounce text-[#c93b2b]" />
             </div>
           </section>
 
@@ -270,7 +277,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
         /* ========================================================================= */
         <div className="text-[#fffcfc]">
 
-          {/* ── SECTION 1: PROJECTS ── full screen */}
+          {/* â”€â”€ SECTION 1: PROJECTS â”€â”€ full screen */}
           <section id="projects" className="min-h-screen px-6 md:px-12 py-20 relative">
             <div className="max-w-7xl mx-auto">
               {/* Header & Floating Preview */}
@@ -329,13 +336,13 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                 <div className="w-16 h-[2px] bg-[#c93b2b] mx-auto mt-4" />
               </div>
 
-              {/* ── 50/50 Screen Split: Left Folder & Right Dossier (Matching Identical Dimensions) ── */}
+              {/* â”€â”€ 50/50 Screen Split: Left Folder & Right Dossier (Matching Identical Dimensions) â”€â”€ */}
               <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-stretch pointer-events-auto mt-6">
                 
-                {/* ── LEFT HALF: Authentic Folder Stack (50% Split, Exact Reference Silhouette) ── */}
+                {/* â”€â”€ LEFT HALF: Authentic Folder Stack (50% Split, Exact Reference Silhouette) â”€â”€ */}
                 <div className="w-full flex flex-col justify-center">
                   
-                  {/* ── THE FOLDER STACK CONTAINER (Intercepts scroll wheel & prevents page scroll) ── */}
+                  {/* â”€â”€ THE FOLDER STACK CONTAINER (Intercepts scroll wheel & prevents page scroll) â”€â”€ */}
                   <div 
                     ref={folderRefCallback}
                     className="relative w-full h-[450px] select-none cursor-pointer group"
@@ -397,7 +404,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                       )
                     })}
 
-                    {/* ── ACTIVE FRONT FOLDER (Solid Opaque Charcoal Body to Prevent Ghosting) ── */}
+                    {/* â”€â”€ ACTIVE FRONT FOLDER (Solid Opaque Charcoal Body to Prevent Ghosting) â”€â”€ */}
                     <div 
                       className="absolute inset-0 z-30 transition-all duration-300 drop-shadow-2xl"
                     >
@@ -550,7 +557,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                                   }}
                                   className="text-xs font-mono text-[#c93b2b] hover:underline font-bold inline-flex items-center gap-1.5 cursor-pointer"
                                 >
-                                  <span>Open File ↗</span>
+                                  <span>Open File â†—</span>
                                 </button>
                               </div>
                             </div>
@@ -562,118 +569,121 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                   </div>
                 </div>
 
-                {/* ── RIGHT HALF: Slide-Out Project Dossier (Matching 50% Width & 450px Height) ── */}
+                {/* â”€â”€ RIGHT HALF: Mac-Genie Expansion from Left Folder â”€â”€ */}
                 <div className="w-full flex flex-col justify-center">
-                  {isDetailOpen ? (
-                    <div className="w-full h-[450px] bg-white/[0.04] backdrop-blur-2xl rounded-3xl border border-white/15 shadow-2xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden animate-in fade-in slide-in-from-left-6 duration-300">
-                      
-                      {/* Top Red Rim Line */}
-                      <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#c93b2b] to-transparent" />
+                  {isDetailOpen && (
+                  <div
+                    className={`w-full h-[450px] bg-white/[0.04] backdrop-blur-2xl rounded-3xl border border-white/15 shadow-2xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden origin-left ${
+                      isDossierClosing ? 'dossier-close pointer-events-none' : 'dossier-open'
+                    }`}
+                  >
+                    {/* Top Red Rim Line */}
+                    <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#c93b2b] to-transparent" />
 
-                      {/* Header + Cut / Close Button */}
-                      <div className="flex items-center justify-between pb-3.5 border-b border-white/10">
-                        <div className="flex items-center gap-2.5">
-                          <div className="p-2 bg-[#c93b2b]/20 rounded-xl border border-[#c93b2b]/40 text-[#c93b2b]">
-                            <FileCode size={18} />
-                          </div>
-                          <div>
-                            <span className="text-[10px] font-mono tracking-widest uppercase text-[#c93b2b] font-bold block">
-                              EXTRACTED SYSTEM DOSSIER
-                            </span>
-                            <h4 className="text-lg md:text-xl font-bold en text-[#fffcfc]">
-                              {activeProject.title}
-                            </h4>
-                          </div>
+                    {/* Header + Cut / Close Button */}
+                    <div className="flex items-center justify-between pb-3.5 border-b border-white/10">
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-2 bg-[#c93b2b]/20 rounded-xl border border-[#c93b2b]/40 text-[#c93b2b]">
+                          <FileCode size={18} />
                         </div>
-
-                        {/* Cut / Close Button */}
-                        <button
-                          onClick={() => setIsDetailOpen(false)}
-                          className="px-3.5 py-1.5 bg-white/[0.08] hover:bg-[#c93b2b] border border-white/15 hover:border-[#c93b2b] rounded-xl text-xs font-mono text-white transition-all cursor-pointer inline-flex items-center gap-1.5 group shadow-md"
-                          title="Close dossier back into file"
-                        >
-                          <span>Cut / Close</span>
-                          <X size={14} className="group-hover:rotate-90 transition-transform" />
-                        </button>
+                        <div>
+                          <span className="text-[10px] font-mono tracking-widest uppercase text-[#c93b2b] font-bold block">
+                            EXTRACTED SYSTEM DOSSIER
+                          </span>
+                          <h4 className="text-lg md:text-xl font-bold en text-[#fffcfc]">
+                            {activeProject.title}
+                          </h4>
+                        </div>
                       </div>
 
-                      {/* Full Project Description */}
-                      <p className="text-xs md:text-sm text-[#ccc] leading-relaxed font-light line-clamp-3">
-                        {activeProject.fullDesc}
-                      </p>
+                      {/* Cut / Close Button */}
+                      <button
+                        onClick={closeDossier}
+                        className="px-3.5 py-1.5 bg-white/[0.08] hover:bg-[#c93b2b] border border-white/15 hover:border-[#c93b2b] rounded-xl text-xs font-mono text-white transition-all cursor-pointer inline-flex items-center gap-1.5 group shadow-md"
+                        title="Close dossier back into file"
+                      >
+                        <span>Cut / Close</span>
+                        <X size={14} className="group-hover:rotate-90 transition-transform" />
+                      </button>
+                    </div>
 
-                      {/* Architecture Metrics Grid */}
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                        {activeProject.metrics.map((m) => (
-                          <div key={m.label} className="p-2.5 bg-black/50 rounded-xl border border-white/10 text-center">
-                            <span className="text-[9px] font-mono uppercase tracking-wider text-[#888] block mb-1">
-                              {m.label}
-                            </span>
-                            <span className="text-xs font-mono font-bold text-white block truncate">
-                              {m.val}
+                    {/* Full Project Description */}
+                    <p className="text-xs md:text-sm text-[#ccc] leading-relaxed font-light line-clamp-3">
+                      {activeProject.fullDesc}
+                    </p>
+
+                    {/* Architecture Metrics Grid */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                      {activeProject.metrics.map((m) => (
+                        <div key={m.label} className="p-2.5 bg-black/50 rounded-xl border border-white/10 text-center">
+                          <span className="text-[9px] font-mono uppercase tracking-wider text-[#888] block mb-1">
+                            {m.label}
+                          </span>
+                          <span className="text-xs font-mono font-bold text-white block truncate">
+                            {m.val}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* System Modules List */}
+                    <div>
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-[#888] block mb-2">
+                        SYSTEM ARCHITECTURE &amp; MODULES:
+                      </span>
+                      <div className="grid sm:grid-cols-2 gap-2 font-mono text-xs">
+                        {activeProject.modules.map((mod) => (
+                          <div key={mod.name} className="p-2.5 bg-white/[0.03] rounded-xl border border-white/10 flex items-center justify-between">
+                            <div>
+                              <span className="text-[#eee] font-medium block text-[11px] truncate max-w-[170px]">
+                                {mod.name}
+                              </span>
+                              <span className="text-[10px] text-[#777]">{mod.tech}</span>
+                            </div>
+                            <span className="text-[9px] text-[#48cae4] px-1.5 py-0.5 bg-[#48cae4]/10 rounded border border-[#48cae4]/20 shrink-0">
+                              {mod.status}
                             </span>
                           </div>
                         ))}
                       </div>
-
-                      {/* System Modules List */}
-                      <div>
-                        <span className="text-[10px] font-mono uppercase tracking-widest text-[#888] block mb-2">
-                          SYSTEM ARCHITECTURE &amp; MODULES:
-                        </span>
-                        <div className="grid sm:grid-cols-2 gap-2 font-mono text-xs">
-                          {activeProject.modules.map((mod) => (
-                            <div key={mod.name} className="p-2.5 bg-white/[0.03] rounded-xl border border-white/10 flex items-center justify-between">
-                              <div>
-                                <span className="text-[#eee] font-medium block text-[11px] truncate max-w-[170px]">
-                                  {mod.name}
-                                </span>
-                                <span className="text-[10px] text-[#777]">{mod.tech}</span>
-                              </div>
-                              <span className="text-[9px] text-[#48cae4] px-1.5 py-0.5 bg-[#48cae4]/10 rounded border border-[#48cae4]/20 shrink-0">
-                                {mod.status}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Action Links */}
-                      <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10">
-                        <div className="flex items-center gap-2">
-                          <a
-                            href={activeProject.githubUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="px-4 py-2 bg-[#c93b2b] text-white font-mono text-xs font-bold uppercase rounded-xl hover:bg-[#d94838] transition-all inline-flex items-center gap-2 shadow-lg shadow-[#c93b2b]/20"
-                          >
-                            <GitMerge size={13} />
-                            View Source Code
-                            <ArrowRight size={12} />
-                          </a>
-                          <a
-                            href={activeProject.liveDemoUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-white font-mono text-xs font-bold rounded-xl transition-all inline-flex items-center gap-1.5"
-                          >
-                            <ExternalLink size={12} />
-                            Live Demo App
-                          </a>
-                        </div>
-                        <span className="text-[10px] font-mono text-[#888]">
-                          Repository: {activeProject.id}
-                        </span>
-                      </div>
                     </div>
-                  ) : null}
+
+                    {/* Action Links */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10">
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={activeProject.githubUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="px-4 py-2 bg-[#c93b2b] text-white font-mono text-xs font-bold uppercase rounded-xl hover:bg-[#d94838] transition-all inline-flex items-center gap-2 shadow-lg shadow-[#c93b2b]/20"
+                        >
+                          <GitMerge size={13} />
+                          View Source Code
+                          <ArrowRight size={12} />
+                        </a>
+                        <a
+                          href={activeProject.liveDemoUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-white font-mono text-xs font-bold rounded-xl transition-all inline-flex items-center gap-1.5"
+                        >
+                          <ExternalLink size={12} />
+                          Live Demo App
+                        </a>
+                      </div>
+                      <span className="text-[10px] font-mono text-[#888]">
+                        Repository: {activeProject.id}
+                      </span>
+                    </div>
+                  </div>
+                  )}
                 </div>
 
               </div>
             </div>
           </section>
 
-          {/* ── SECTION 2: SKILLS ── full screen */}
+          {/* â”€â”€ SECTION 2: SKILLS â”€â”€ full screen */}
           <section id="skills" className="min-h-screen px-8 md:px-14 py-20 flex items-center">
             <div className="max-w-6xl mx-auto w-full pointer-events-auto">
               <div className="max-w-xl">
@@ -696,7 +706,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
             </div>
           </section>
 
-          {/* ── SECTION 3: CONTACT ── full screen */}
+          {/* â”€â”€ SECTION 3: CONTACT â”€â”€ full screen */}
           <section id="contact" className="min-h-screen px-8 md:px-14 py-20 flex items-center">
             <div className="max-w-6xl mx-auto w-full pointer-events-auto">
               <div className="max-w-2xl p-8 md:p-12 bg-white/[0.04] backdrop-blur-md rounded-3xl border border-white/10 shadow-2xl">
@@ -807,7 +817,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               </div>
 
               <footer className="text-center text-sm font-mono text-[#888] tracking-widest uppercase py-8">
-                © 2026 <span className="font-aquire text-base text-[#666]">MD AASIF</span> · CREATIVE 3D WEBGL PORTFOLIO
+                Â© 2026 <span className="font-aquire text-base text-[#666]">MD AASIF</span> Â· CREATIVE 3D WEBGL PORTFOLIO
               </footer>
             </div>
           </section>
