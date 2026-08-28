@@ -9,19 +9,35 @@ export default function App() {
   const [act, setAct] = useState<1 | 2>(1)
   const [isWarping, setIsWarping] = useState(false)
   const [loaded, setLoaded] = useState(false)
+  // warpPhase drives the renaud-style wireframe transition in Scene
+  // 'idle' | 'wireframe' | 'zoomout' | 'zoomin'
+  const [warpPhase, setWarpPhase] = useState<'idle' | 'wireframe' | 'zoomout' | 'zoomin'>('idle')
 
   const toggleAct = (targetAct?: 1 | 2) => {
     const nextAct = targetAct !== undefined ? targetAct : (act === 1 ? 2 : 1)
     if (nextAct === act) return
 
+    // Phase 1: go wireframe (0 → 600ms)
     setIsWarping(true)
+    setWarpPhase('wireframe')
+
+    // Phase 2: zoom out (600ms → 1100ms)
+    setTimeout(() => {
+      setWarpPhase('zoomout')
+    }, 600)
+
+    // Phase 3: switch act + start zoom in (1100ms → 1700ms)
     setTimeout(() => {
       setAct(nextAct)
       window.scrollTo({ top: 0, behavior: 'instant' })
-      setTimeout(() => {
-        setIsWarping(false)
-      }, 500)
-    }, 600)
+      setWarpPhase('zoomin')
+    }, 1100)
+
+    // Phase 4: done (1700ms)
+    setTimeout(() => {
+      setIsWarping(false)
+      setWarpPhase('idle')
+    }, 1800)
   }
 
   return (
@@ -29,11 +45,17 @@ export default function App() {
       {/* Authentic Initial Preloader Screen */}
       <Preloader onLoaded={() => setLoaded(true)} />
 
-      {/* Warp Transition Overlay */}
+      {/* Warp Transition Overlay — only flashes black at the exact act-switch moment */}
       <div 
-        className={`fixed inset-0 z-50 bg-black pointer-events-none transition-opacity duration-500 ${
-          isWarping ? 'opacity-100' : 'opacity-0'
-        }`} 
+        className="fixed inset-0 z-50 bg-black pointer-events-none"
+        style={{
+          opacity:
+            warpPhase === 'wireframe' ? 0       // transparent — show 3D wireframe
+          : warpPhase === 'zoomout'  ? 0       // transparent — show zoom-out
+          : warpPhase === 'zoomin'   ? 0       // transparent — show zoom-in of new act
+          : 0,                                  // idle — transparent
+          transition: warpPhase === 'zoomin' ? 'opacity 0.4s ease-out' : 'none',
+        }}
       />
 
       {/* Navigation Header with Act Switcher */}
@@ -48,8 +70,13 @@ export default function App() {
           gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
           className="w-full h-full"
         >
-          {/* Background & Fog according to Act */}
-          {act === 1 ? (
+          {/* Background & Fog: pure black during wireframe/zoomout so skeleton lines pop */}
+          {(warpPhase === 'wireframe' || warpPhase === 'zoomout') ? (
+            <>
+              <color attach="background" args={['#000000']} />
+              <ambientLight intensity={1.5} color="#ffffff" />
+            </>
+          ) : act === 1 ? (
             <>
               <color attach="background" args={['#eef2f6']} />
               <fog attach="fog" args={['#eef2f6', 16, 80]} />
@@ -80,12 +107,20 @@ export default function App() {
             </>
           )}
           
-          <Scene act={act} isWarping={isWarping} />
+          <Scene act={act} isWarping={isWarping} warpPhase={warpPhase} />
         </Canvas>
       </div>
 
-      {/* Foreground Interactive Content */}
-      <UIOverlay act={act} onContinue={() => toggleAct(2)} onSwitchAct={toggleAct} />
+      {/* Foreground Interactive Content — hidden during warp transition */}
+      <div
+        style={{
+          opacity: isWarping ? 0 : 1,
+          transition: isWarping ? 'none' : 'opacity 0.5s ease-in',
+          pointerEvents: isWarping ? 'none' : 'auto',
+        }}
+      >
+        <UIOverlay act={act} onContinue={() => toggleAct(2)} onSwitchAct={toggleAct} />
+      </div>
     </div>
   )
 }

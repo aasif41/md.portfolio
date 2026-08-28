@@ -17,18 +17,24 @@ const SPACING = 7.5
 interface SceneProps {
   act: 1 | 2
   isWarping: boolean
+  warpPhase?: 'idle' | 'wireframe' | 'zoomout' | 'zoomin'
 }
 
-export default function Scene({ act, isWarping }: SceneProps) {
+export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps) {
   const groupRef = useRef<THREE.Group>(null)
   const heroTextRef = useRef<THREE.Group>(null)
   const saturnRef = useRef<THREE.Group>(null)
   const starsRef = useRef<THREE.Points>(null)
-  const { camera, pointer } = useThree()
+  const { camera, pointer, scene } = useThree()
 
   // Track window scroll progress (0 -> 1)
   const scrollTarget = useRef(0)
   const currentScroll = useRef(0)
+
+  // Warp animation state
+  const warpCameraY = useRef(2.4)   // camera pull-up target
+  const warpCameraZ = useRef(7)     // camera pull-back target
+  const warpScale = useRef(1)       // scene scale for zoom out
 
   useEffect(() => {
     const handleScroll = () => {
@@ -86,6 +92,54 @@ export default function Scene({ act, isWarping }: SceneProps) {
     }
   }, [act])
 
+  // Apply/remove wireframe on ALL meshes in the scene based on warpPhase
+  useEffect(() => {
+    const isWireframe = warpPhase === 'wireframe' || warpPhase === 'zoomout'
+
+    scene.traverse((obj) => {
+      const mesh = obj as THREE.Mesh
+      if (!mesh.isMesh) return
+      if (!mesh.material) return
+
+      const applyWireframe = (mat: THREE.Material) => {
+        // @ts-ignore
+        mat.wireframe = isWireframe
+        // When wireframe: force white color so it looks like renaud's white lines on black
+        if (mat instanceof THREE.MeshStandardMaterial || mat instanceof THREE.MeshPhongMaterial || mat instanceof THREE.MeshBasicMaterial) {
+          if (isWireframe) {
+            // @ts-ignore — save original color
+            if (!mat._origColor) mat._origColor = mat.color.clone()
+            mat.color.set('#ffffff')
+          } else {
+            // @ts-ignore — restore original
+            if (mat._origColor) {
+              mat.color.copy(mat._origColor)
+              // @ts-ignore
+              delete mat._origColor
+            }
+          }
+        }
+        mat.needsUpdate = true
+      }
+
+      if (Array.isArray(mesh.material)) {
+        mesh.material.forEach(applyWireframe)
+      } else {
+        applyWireframe(mesh.material)
+      }
+    })
+  }, [warpPhase, scene, act])
+
+  // Force black background during wireframe/zoomout phase (both acts)
+  useEffect(() => {
+    if (warpPhase === 'wireframe' || warpPhase === 'zoomout') {
+      scene.background = new THREE.Color('#000000')
+      // Fog off so wireframe lines are sharp on pure black
+      scene.fog = null
+    }
+    // background/fog restored by the Canvas color/fog tags when warpPhase goes idle/zoomin
+  }, [warpPhase, scene, act])
+
   useFrame((state, delta) => {
     // Scroll dampening
     currentScroll.current = THREE.MathUtils.damp(
@@ -98,6 +152,41 @@ export default function Scene({ act, isWarping }: SceneProps) {
     if (currentScroll.current > 0.98) {
       hasReachedEnd.current = true
     }
+
+    // =====================================================================
+    // WARP TRANSITION — Renaud-style pull back → zoom out → zoom in
+    // =====================================================================
+    if (warpPhase === 'wireframe') {
+      // Camera slowly starts pulling back & up
+      camera.position.y = THREE.MathUtils.damp(camera.position.y, 12, 3.0, delta)
+      camera.position.z = THREE.MathUtils.damp(camera.position.z, 22, 3.0, delta)
+      camera.position.x = THREE.MathUtils.damp(camera.position.x, 0, 6.0, delta)
+      camera.lookAt(0, 0, 0)
+      camera.fov = THREE.MathUtils.damp(camera.fov, 55, 3.0, delta)
+      camera.updateProjectionMatrix()
+      return
+    }
+
+    if (warpPhase === 'zoomout') {
+      // Camera aggressively pulls back — scene becomes tiny dot
+      camera.position.y = THREE.MathUtils.damp(camera.position.y, 35, 5.0, delta)
+      camera.position.z = THREE.MathUtils.damp(camera.position.z, 65, 5.0, delta)
+      camera.lookAt(0, 0, 0)
+      camera.fov = THREE.MathUtils.damp(camera.fov, 38, 4.0, delta)
+      camera.updateProjectionMatrix()
+      return
+    }
+
+    if (warpPhase === 'zoomin') {
+      // Reset camera to default position as new act zooms in
+      camera.position.y = THREE.MathUtils.damp(camera.position.y, 2.4, 4.0, delta)
+      camera.position.z = THREE.MathUtils.damp(camera.position.z, 7, 4.0, delta)
+      camera.position.x = THREE.MathUtils.damp(camera.position.x, 0, 4.0, delta)
+      camera.fov = THREE.MathUtils.damp(camera.fov, 46, 4.0, delta)
+      camera.updateProjectionMatrix()
+      // Fall through to normal act logic below so the new scene renders correctly
+    }
+    // =====================================================================
 
     if (act === 1) {
       const totalTravel = GATE_COUNT * SPACING * 0.88
@@ -177,10 +266,10 @@ export default function Scene({ act, isWarping }: SceneProps) {
       camera.lookAt(0, 0, -20)
     }
 
-    if (isWarping) {
+    if (isWarping && warpPhase === 'idle') {
       camera.fov = THREE.MathUtils.damp(camera.fov, 110, 8.0, delta)
       camera.updateProjectionMatrix()
-    } else {
+    } else if (warpPhase === 'idle') {
       camera.fov = THREE.MathUtils.damp(camera.fov, 46, 4.0, delta)
       camera.updateProjectionMatrix()
     }
@@ -251,6 +340,25 @@ export default function Scene({ act, isWarping }: SceneProps) {
               <meshStandardMaterial color="#eef2f6" roughness={0.4} side={THREE.DoubleSide} transparent opacity={0.75} />
             </mesh>
           </group>
+        </>
+      )}
+
+      {/* ── Full-screen wireframe grid fill ── only during warp transition ──
+          Fills the empty black screen areas with the same square grid pattern
+          so the entire screen is covered, not just the road/scene area.        */}
+      {(warpPhase === 'wireframe' || warpPhase === 'zoomout') && act === 1 && (
+        <>
+          {/* Ground plane — fills lower portion + recedes to horizon via perspective */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, -400]}>
+            <planeGeometry args={[2000, 2000, 80, 80]} />
+            <meshBasicMaterial color="#ffffff" wireframe side={THREE.DoubleSide} />
+          </mesh>
+
+          {/* Ceiling plane — fills the upper black sky area */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 60, -400]}>
+            <planeGeometry args={[2000, 2000, 80, 80]} />
+            <meshBasicMaterial color="#ffffff" wireframe side={THREE.DoubleSide} />
+          </mesh>
         </>
       )}
     </group>
