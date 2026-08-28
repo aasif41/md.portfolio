@@ -62,7 +62,7 @@ export default function Model(props: any) {
     screenNodes.forEach((node: any) => {
       if (node && node.isMesh && node.material) {
         const mats = Array.isArray(node.material) ? node.material : [node.material]
-        mats.forEach(mat => {
+        mats.forEach((mat: any) => {
           // The Asus ROG wallpaper is an emissive map. We only want to remove that, not the chassis colors.
           if (mat.name.toLowerCase().includes('screen') || mat.name.toLowerCase().includes('wallpaper') || mat.emissiveMap) {
             mat.map = null

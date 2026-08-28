@@ -2,7 +2,6 @@ import { useRef } from 'react'
 import { Text } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import gsap from 'gsap'
 
 export default function Typography3D() {
   const textRef1 = useRef<THREE.Mesh>(null)

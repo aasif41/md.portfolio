@@ -8,7 +8,7 @@ import Preloader from './components/Preloader'
 export default function App() {
   const [act, setAct] = useState<1 | 2>(1)
   const [isWarping, setIsWarping] = useState(false)
-  const [loaded, setLoaded] = useState(false)
+  const [, setLoaded] = useState(false)
   // warpPhase drives the renaud-style wireframe transition in Scene
   // 'idle' | 'wireframe' | 'zoomout' | 'zoomin'
   const [warpPhase, setWarpPhase] = useState<'idle' | 'wireframe' | 'zoomout' | 'zoomin'>('idle')
@@ -62,7 +62,7 @@ export default function App() {
       <Nav act={act} onToggleAct={toggleAct} />
       
       {/* Fixed Fullscreen 3D Canvas Background */}
-      <div className="fixed inset-0 w-screen h-screen z-0 pointer-events-none">
+      <div className={`fixed inset-0 w-screen h-screen z-0 ${act === 2 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
         <Canvas
           shadows
           camera={{ position: [0, 2.4, 7], fov: 46 }}
@@ -99,11 +99,15 @@ export default function App() {
             </>
           ) : (
             <>
-              <color attach="background" args={['#161216']} />
-              <fog attach="fog" args={['#161216', 12, 60]} />
-              <ambientLight intensity={0.1} color="#ffffff" />
-              <pointLight position={[0, 10, 0]} intensity={2.0} color="#c93b2b" castShadow />
-              <directionalLight position={[5, 10, 5]} intensity={1.5} color="#ffffff" castShadow />
+              <color attach="background" args={['#0e0c10']} />
+              <fog attach="fog" args={['#0e0c10', 80, 250]} />
+              <ambientLight intensity={0.4} color="#2b2838" />
+              {/* Key directional light — crisp highlights on low-poly facets */}
+              <directionalLight position={[-8, 14, 8]} intensity={2.8} color="#fff6eb" />
+              {/* Deep cosmic rim / back-light — stunning edge glow on planet & ring */}
+              <directionalLight position={[12, -4, -15]} intensity={2.2} color="#48cae4" />
+              {/* Subtle crimson fill from core */}
+              <pointLight position={[5, 2, -10]} intensity={1.5} color="#c93b2b" distance={25} />
             </>
           )}
           

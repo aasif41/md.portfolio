@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import {
   Briefcase,
-  Zap,
   GitMerge,
   Coffee,
   Globe,
@@ -11,7 +10,6 @@ import {
   Check,
   Download,
   ArrowRight,
-  Star,
   ChevronDown,
   Shrub,
 } from 'lucide-react'
@@ -139,8 +137,9 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
         /* ========================================================================= */
         /* ============================ ACT 2: DETECTIVE GALAXY ==================== */
         /* ========================================================================= */
-        <div className="text-[#fffcfc] min-h-screen">
-          {/* Works & Recognitions Section */}
+        <div className="text-[#fffcfc]">
+
+          {/* ── SECTION 1: PROJECTS ── full screen */}
           <section id="projects" className="min-h-screen px-8 md:px-14 py-20 relative">
             <div className="max-w-6xl mx-auto">
               {/* Header & Floating Preview */}
@@ -151,7 +150,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                   </h1>
                   <h2 className="text-xl md:text-2xl font-bold en text-[#c93b2b] mb-6">
                     <a href="https://github.com/aasif41" target="_blank" rel="noreferrer" className="hover:underline inline-flex items-center gap-2">
-                      3D Odyssey & Systems
+                      3D Odyssey &amp; Systems
                       <ArrowRight size={20} />
                     </a>
                   </h2>
@@ -200,10 +199,10 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               </div>
 
               {/* Two-Column Editorial Story */}
-              <div className="grid md:grid-cols-2 gap-10 mb-20 pointer-events-auto">
+              <div className="grid md:grid-cols-2 gap-10 pointer-events-auto">
                 <div className="p-8 bg-white/[0.03] rounded-3xl border border-white/10">
                   <h3 className="text-2xl font-bold en text-[#fffcfc] mb-4">
-                    Tutorials & Articles
+                    Tutorials &amp; Articles
                   </h3>
                   <p className="text-sm md:text-base text-[#aaa] leading-relaxed font-light mb-4">
                     I write technical in-depth breakdowns on WebGL computer graphics, GLSL shaders, and distributed system architectures. You can explore my open-source code and experiments directly on GitHub.
@@ -221,7 +220,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
 
                 <div className="p-8 bg-white/[0.03] rounded-3xl border border-white/10">
                   <h3 className="text-2xl font-bold en text-[#fffcfc] mb-4">
-                    Education & Mission
+                    Education &amp; Mission
                   </h3>
                   <p className="text-sm md:text-base text-[#aaa] leading-relaxed font-light mb-4">
                     Final-year BSc (Hons) Computer Science student graduating in 2026. Specialized in full-stack architecture, high-performance 3D rendering pipelines, and scalable backend infrastructure.
@@ -231,14 +230,21 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                   </span>
                 </div>
               </div>
+            </div>
+          </section>
 
-              {/* Technical Stack */}
-              <div id="skills" className="mb-20 pointer-events-auto">
-                <div className="p-8 md:p-12 bg-white/[0.03] rounded-3xl border border-white/10">
-                  <span className="text-xs font-mono uppercase tracking-widest text-[#c93b2b] font-bold block mb-4">
-                    Technical Capabilities
-                  </span>
-                  <div className="flex flex-wrap gap-2 text-xs font-mono">
+          {/* ── SECTION 2: SKILLS ── full screen */}
+          <section id="skills" className="min-h-screen px-8 md:px-14 py-20 flex items-center">
+            <div className="max-w-6xl mx-auto w-full pointer-events-auto">
+              <div className="max-w-xl">
+                <span className="text-xs font-mono uppercase tracking-widest text-[#c93b2b] font-bold block mb-4">
+                  Technical Capabilities
+                </span>
+                <h2 className="text-4xl md:text-7xl font-bold en tracking-tight mb-8">
+                  Skills &amp; Stack
+                </h2>
+                <div className="p-8 md:p-10 bg-white/[0.03] backdrop-blur-md rounded-3xl border border-white/10">
+                  <div className="flex flex-wrap gap-3 text-xs font-mono">
                     {['React.js', 'TypeScript', 'Three.js', 'React Three Fiber', 'GLSL Shaders', 'Node.js', 'Python', 'Go', 'Docker', 'PostgreSQL', 'Redis', 'WebSockets', 'gRPC', 'Tailwind CSS'].map(tag => (
                       <span key={tag} className="px-4 py-2 bg-white/[0.05] rounded-xl border border-white/10 text-white font-medium hover:border-[#c93b2b] transition-colors">
                         {tag}
@@ -247,114 +253,116 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                   </div>
                 </div>
               </div>
+            </div>
+          </section>
 
-              {/* Contact Transmission Terminal */}
-              <div id="contact" className="mb-14 pointer-events-auto">
-                <div className="p-8 md:p-14 bg-white/[0.04] backdrop-blur-md rounded-3xl border border-white/10 shadow-2xl">
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-6 border-b border-white/10">
-                    <div>
-                      <span className="text-xs font-mono tracking-[0.3em] uppercase text-[#c93b2b] font-bold block mb-1">
-                        04 // INITIATE TRANSMISSION
-                      </span>
-                      <h2 className="text-3xl md:text-5xl font-bold en text-[#fffcfc]">
-                        Let's Build Together.
-                      </h2>
-                    </div>
-                    <div className="p-3 bg-white/[0.05] rounded-xl border border-white/10 font-mono text-xs text-[#aaa] flex flex-col gap-1">
-                      <span className="flex items-center gap-1.5">
-                        <MapPin size={10} className="text-[#c93b2b]" />
-                        NEW DELHI, INDIA
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <Clock size={10} className="text-[#aaa]" />
-                        {currentTime} IST
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Topic Select Chips */}
-                  <div className="mb-6">
-                    <span className="text-xs font-mono uppercase tracking-widest text-[#888] block mb-3">
-                      Select Topic:
+          {/* ── SECTION 3: CONTACT ── full screen */}
+          <section id="contact" className="min-h-screen px-8 md:px-14 py-20 flex items-center">
+            <div className="max-w-6xl mx-auto w-full pointer-events-auto">
+              <div className="max-w-2xl p-8 md:p-12 bg-white/[0.04] backdrop-blur-md rounded-3xl border border-white/10 shadow-2xl">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-6 border-b border-white/10">
+                  <div>
+                    <span className="text-xs font-mono tracking-[0.3em] uppercase text-[#c93b2b] font-bold block mb-1">
+                      04 // INITIATE TRANSMISSION
                     </span>
-                    <div className="flex flex-wrap gap-2 font-mono text-xs">
-                      {TOPICS.map(({ label, icon }) => (
-                        <button
-                          key={label}
-                          onClick={() => setSelectedTopic(label)}
-                          className={`px-4 py-2 rounded-xl border transition-all cursor-pointer flex items-center gap-1.5 ${
-                            selectedTopic === label
-                              ? 'bg-[#c93b2b] text-white border-[#c93b2b] font-bold'
-                              : 'bg-white/[0.04] border-white/10 text-[#aaa] hover:bg-white/[0.08]'
-                          }`}
-                        >
-                          {icon}
-                          {label}
-                        </button>
-                      ))}
-                    </div>
+                    <h2 className="text-3xl md:text-5xl font-bold en text-[#fffcfc]">
+                      Let's Build Together.
+                    </h2>
                   </div>
+                  <div className="p-3 bg-white/[0.05] rounded-xl border border-white/10 font-mono text-xs text-[#aaa] flex flex-col gap-1">
+                    <span className="flex items-center gap-1.5">
+                      <MapPin size={10} className="text-[#c93b2b]" />
+                      NEW DELHI, INDIA
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Clock size={10} className="text-[#aaa]" />
+                      {currentTime} IST
+                    </span>
+                  </div>
+                </div>
 
-                  {/* Message Dispatcher */}
-                  <div className="p-4 bg-black/40 rounded-2xl border border-white/10 mb-8">
-                    <textarea
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      placeholder="Write your message here..."
-                      rows={3}
-                      className="w-full bg-transparent p-2 text-sm font-sans text-white focus:outline-none resize-none"
-                    />
-                    <div className="flex justify-between items-center pt-3 border-t border-white/10">
-                      <span className="text-xs font-mono text-[#888]">Destination: contact@mdaasif.dev</span>
-                      <a
-                        href={`mailto:contact@mdaasif.dev?subject=${encodeURIComponent(`[${selectedTopic}] Inquiry`)}&body=${encodeURIComponent(message)}`}
-                        className="px-6 py-2 bg-[#c93b2b] text-white font-mono text-xs font-bold uppercase rounded-xl hover:bg-[#d94838] transition-all cursor-pointer inline-flex items-center gap-2"
+                {/* Topic Select Chips */}
+                <div className="mb-6">
+                  <span className="text-xs font-mono uppercase tracking-widest text-[#888] block mb-3">
+                    Select Topic:
+                  </span>
+                  <div className="flex flex-wrap gap-2 font-mono text-xs">
+                    {TOPICS.map(({ label, icon }) => (
+                      <button
+                        key={label}
+                        onClick={() => setSelectedTopic(label)}
+                        className={`px-4 py-2 rounded-xl border transition-all cursor-pointer flex items-center gap-1.5 ${
+                          selectedTopic === label
+                            ? 'bg-[#c93b2b] text-white border-[#c93b2b] font-bold'
+                            : 'bg-white/[0.04] border-white/10 text-[#aaa] hover:bg-white/[0.08]'
+                        }`}
                       >
-                        Send Email
-                        <ArrowRight size={12} />
-                      </a>
-                    </div>
+                        {icon}
+                        {label}
+                      </button>
+                    ))}
                   </div>
+                </div>
 
-                  {/* Copy Email & Actions */}
-                  <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                    <button
-                      onClick={copyEmail}
-                      className="p-4 bg-white/[0.03] rounded-2xl border border-white/10 hover:border-[#c93b2b] transition-all flex justify-between items-center cursor-pointer"
-                    >
-                      <div className="text-left font-mono">
-                        <span className="text-[10px] text-[#777] block uppercase">Direct Email</span>
-                        <span className="text-sm font-bold text-white">contact@mdaasif.dev</span>
-                      </div>
-                      <span className="px-3 py-1.5 bg-white/[0.08] rounded-lg text-xs font-mono text-white flex items-center gap-1">
-                        {copied ? <><Check size={12} /> Copied!</> : <><Copy size={12} /> Copy</>}
-                      </span>
-                    </button>
-
+                {/* Message Dispatcher */}
+                <div className="p-4 bg-black/40 rounded-2xl border border-white/10 mb-8">
+                  <textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Write your message here..."
+                    rows={3}
+                    className="w-full bg-transparent p-2 text-sm font-sans text-white focus:outline-none resize-none"
+                  />
+                  <div className="flex justify-between items-center pt-3 border-t border-white/10">
+                    <span className="text-xs font-mono text-[#888]">Destination: contact@mdaasif.dev</span>
                     <a
-                      href="#"
-                      className="p-4 bg-white/[0.03] rounded-2xl border border-white/10 hover:border-white transition-all flex justify-between items-center cursor-pointer"
+                      href={`mailto:contact@mdaasif.dev?subject=${encodeURIComponent(`[${selectedTopic}] Inquiry`)}&body=${encodeURIComponent(message)}`}
+                      className="px-6 py-2 bg-[#c93b2b] text-white font-mono text-xs font-bold uppercase rounded-xl hover:bg-[#d94838] transition-all cursor-pointer inline-flex items-center gap-2"
                     >
-                      <div className="text-left font-mono">
-                        <span className="text-[10px] text-[#777] block uppercase">Resume (PDF)</span>
-                        <span className="text-sm font-bold text-white">Download CV</span>
-                      </div>
-                      <span className="px-3 py-1.5 bg-white/[0.08] rounded-lg text-xs font-mono text-white flex items-center gap-1">
-                        <Download size={12} /> Download
-                      </span>
+                      Send Email
+                      <ArrowRight size={12} />
                     </a>
                   </div>
+                </div>
 
-                  {/* Switch Back to Act 1 Button */}
-                  <div className="text-center pt-6 border-t border-white/10">
-                    <button
-                      onClick={() => onSwitchAct(1)}
-                      className="px-8 py-3 bg-white/[0.05] border border-white/15 text-xs font-mono tracking-widest uppercase rounded-full hover:bg-white/[0.1] transition-all cursor-pointer inline-flex items-center gap-2"
-                    >
-                      <Shrub size={13} />
-                      Return to Shrine Act 1
-                    </button>
-                  </div>
+                {/* Copy Email & Actions */}
+                <div className="grid sm:grid-cols-2 gap-4 mb-8">
+                  <button
+                    onClick={copyEmail}
+                    className="p-4 bg-white/[0.03] rounded-2xl border border-white/10 hover:border-[#c93b2b] transition-all flex justify-between items-center cursor-pointer"
+                  >
+                    <div className="text-left font-mono">
+                      <span className="text-[10px] text-[#777] block uppercase">Direct Email</span>
+                      <span className="text-sm font-bold text-white">contact@mdaasif.dev</span>
+                    </div>
+                    <span className="px-3 py-1.5 bg-white/[0.08] rounded-lg text-xs font-mono text-white flex items-center gap-1">
+                      {copied ? <><Check size={12} /> Copied!</> : <><Copy size={12} /> Copy</>}
+                    </span>
+                  </button>
+
+                  <a
+                    href="#"
+                    className="p-4 bg-white/[0.03] rounded-2xl border border-white/10 hover:border-white transition-all flex justify-between items-center cursor-pointer"
+                  >
+                    <div className="text-left font-mono">
+                      <span className="text-[10px] text-[#777] block uppercase">Resume (PDF)</span>
+                      <span className="text-sm font-bold text-white">Download CV</span>
+                    </div>
+                    <span className="px-3 py-1.5 bg-white/[0.08] rounded-lg text-xs font-mono text-white flex items-center gap-1">
+                      <Download size={12} /> Download
+                    </span>
+                  </a>
+                </div>
+
+                {/* Switch Back to Act 1 Button */}
+                <div className="text-center pt-6 border-t border-white/10">
+                  <button
+                    onClick={() => onSwitchAct(1)}
+                    className="px-8 py-3 bg-white/[0.05] border border-white/15 text-xs font-mono tracking-widest uppercase rounded-full hover:bg-white/[0.1] transition-all cursor-pointer inline-flex items-center gap-2"
+                  >
+                    <Shrub size={13} />
+                    Return to Shrine Act 1
+                  </button>
                 </div>
               </div>
 
@@ -363,6 +371,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               </footer>
             </div>
           </section>
+
         </div>
       )}
     </div>

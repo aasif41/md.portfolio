@@ -10,7 +10,7 @@ const STONE_BASE = "#9aa3a8"     // Chiseled stone footing
 // Thin black outline material for crisp toon edges
 const blackMaterial = new THREE.MeshBasicMaterial({ color: 'black', side: THREE.BackSide })
 
-export default function ToriiGate(props: JSX.IntrinsicElements['group']) {
+export default function ToriiGate(props?: any) {
   // Curved upper Kasagi beam geometry
   const kasagiGeo = useMemo(() => {
     const shape = new THREE.Shape()

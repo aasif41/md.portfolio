@@ -19,19 +19,20 @@ export default function InfiniteMap() {
   const scrollProxy = useRef({ z: 0 })
   
   useFrame(() => {
-    if (!groupRef.current) return
+    const grp = groupRef.current
+    if (!grp) return
     
     // GSAP updates scrollProxy.z. We move the entire group towards the camera (positive Z)
-    groupRef.current.position.z = scrollProxy.current.z
+    grp.position.z = scrollProxy.current.z
     
     // Infinite loop logic:
     // If a child (gate/tree) passes behind the camera (z > 5 relative to camera),
     // move it to the back of the line.
     // The camera is around z=6. The group is moving forward.
-    groupRef.current.children.forEach((child) => {
+    grp.children.forEach((child) => {
       // child.position.z is negative. groupRef.current.position.z is positive.
-      // Total world Z = child.position.z + groupRef.current.position.z
-      const worldZ = child.position.z + groupRef.current.position.z
+      // Total world Z = child.position.z + grp.position.z
+      const worldZ = child.position.z + grp.position.z
       
       // If the object has passed behind the camera (e.g. worldZ > 10)
       if (worldZ > 10) {
