@@ -574,15 +574,15 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                 <div className="w-full flex flex-col justify-center">
                   {isDetailOpen && (
                   <div
-                    className={`w-full h-[450px] bg-white/[0.04] backdrop-blur-2xl rounded-3xl border border-white/15 shadow-2xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden origin-left ${
+                    className={`w-full h-[450px] bg-white/[0.04] backdrop-blur-2xl rounded-3xl border border-white/15 shadow-2xl p-6 md:p-8 flex flex-col gap-4 relative overflow-hidden origin-left ${
                       isDossierClosing ? 'dossier-close pointer-events-none' : 'dossier-open'
                     }`}
                   >
                     {/* Top Red Rim Line */}
                     <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#c93b2b] to-transparent" />
 
-                    {/* Header + Cut / Close Button */}
-                    <div className="flex items-center justify-between pb-3.5 border-b border-white/10">
+                    {/* Header + Close Button */}
+                    <div className="flex items-center justify-between pb-3 border-b border-white/10 shrink-0">
                       <div className="flex items-center gap-2.5">
                         <div className="p-2 bg-[#c93b2b]/20 rounded-xl border border-[#c93b2b]/40 text-[#c93b2b]">
                           <FileCode size={18} />
@@ -596,31 +596,43 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                           </h4>
                         </div>
                       </div>
-
-                      {/* Cut / Close Button */}
                       <button
                         onClick={closeDossier}
-                        className="px-3.5 py-1.5 bg-white/[0.08] hover:bg-[#c93b2b] border border-white/15 hover:border-[#c93b2b] rounded-xl text-xs font-mono text-white transition-all cursor-pointer inline-flex items-center gap-1.5 group shadow-md"
+                        className="px-3.5 py-1.5 bg-white/[0.08] hover:bg-[#c93b2b] border border-white/15 hover:border-[#c93b2b] rounded-xl text-xs font-mono text-white transition-all cursor-pointer inline-flex items-center gap-1.5 group shadow-md shrink-0"
                         title="Close dossier back into file"
                       >
-                        <span>Cut / Close</span>
+                        <span>Close</span>
                         <X size={14} className="group-hover:rotate-90 transition-transform" />
                       </button>
                     </div>
 
-                    {/* Full Project Description */}
-                    <p className="text-xs md:text-sm text-[#ccc] leading-relaxed font-light line-clamp-3">
+                    {/* Full Project Description — no clamp */}
+                    <p className="text-xs md:text-sm text-[#ccc] leading-relaxed font-light shrink-0">
                       {activeProject.fullDesc}
                     </p>
 
+                    {/* Tech Stack chips */}
+                    <div className="shrink-0">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-[#888] block mb-2">
+                        TECH STACK:
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {activeProject.tech.map((t) => (
+                          <span key={t} className="px-2.5 py-1 text-[10px] font-mono font-medium bg-white/[0.06] border border-white/15 text-[#ddd] rounded-lg">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
                     {/* Architecture Metrics Grid */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 shrink-0">
                       {activeProject.metrics.map((m) => (
                         <div key={m.label} className="p-2.5 bg-black/50 rounded-xl border border-white/10 text-center">
                           <span className="text-[9px] font-mono uppercase tracking-wider text-[#888] block mb-1">
                             {m.label}
                           </span>
-                          <span className="text-xs font-mono font-bold text-white block truncate">
+                          <span className="text-[10px] font-mono font-bold text-white block truncate">
                             {m.val}
                           </span>
                         </div>
@@ -628,15 +640,15 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                     </div>
 
                     {/* System Modules List */}
-                    <div>
+                    <div className="flex-1 min-h-0 overflow-hidden">
                       <span className="text-[10px] font-mono uppercase tracking-widest text-[#888] block mb-2">
-                        SYSTEM ARCHITECTURE &amp; MODULES:
+                        MODULES:
                       </span>
-                      <div className="grid sm:grid-cols-2 gap-2 font-mono text-xs">
+                      <div className="grid sm:grid-cols-2 gap-1.5 font-mono text-xs">
                         {activeProject.modules.map((mod) => (
-                          <div key={mod.name} className="p-2.5 bg-white/[0.03] rounded-xl border border-white/10 flex items-center justify-between">
-                            <div>
-                              <span className="text-[#eee] font-medium block text-[11px] truncate max-w-[170px]">
+                          <div key={mod.name} className="p-2 bg-white/[0.03] rounded-xl border border-white/10 flex items-center justify-between">
+                            <div className="min-w-0 pr-2">
+                              <span className="text-[#eee] font-medium block text-[11px] truncate">
                                 {mod.name}
                               </span>
                               <span className="text-[10px] text-[#777]">{mod.tech}</span>
@@ -649,33 +661,6 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                       </div>
                     </div>
 
-                    {/* Action Links */}
-                    <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10">
-                      <div className="flex items-center gap-2">
-                        <a
-                          href={activeProject.githubUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="px-4 py-2 bg-[#c93b2b] text-white font-mono text-xs font-bold uppercase rounded-xl hover:bg-[#d94838] transition-all inline-flex items-center gap-2 shadow-lg shadow-[#c93b2b]/20"
-                        >
-                          <GitMerge size={13} />
-                          View Source Code
-                          <ArrowRight size={12} />
-                        </a>
-                        <a
-                          href={activeProject.liveDemoUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-white font-mono text-xs font-bold rounded-xl transition-all inline-flex items-center gap-1.5"
-                        >
-                          <ExternalLink size={12} />
-                          Live Demo App
-                        </a>
-                      </div>
-                      <span className="text-[10px] font-mono text-[#888]">
-                        Repository: {activeProject.id}
-                      </span>
-                    </div>
                   </div>
                   )}
                 </div>
