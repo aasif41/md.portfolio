@@ -19,6 +19,8 @@ import {
   X,
 } from 'lucide-react'
 
+import SkillsSection from './SkillsSection'
+
 interface UIOverlayProps {
   act: 1 | 2
   onContinue: () => void
@@ -700,28 +702,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
             </div>
           </section>
 
-          {/* â”€â”€ SECTION 2: SKILLS â”€â”€ full screen */}
-          <section id="skills" className="min-h-screen px-8 md:px-14 py-20 flex items-center">
-            <div className="max-w-6xl mx-auto w-full pointer-events-auto">
-              <div className="max-w-xl">
-                <span className="text-xs font-mono uppercase tracking-widest text-[#c93b2b] font-bold block mb-4">
-                  Technical Capabilities
-                </span>
-                <h2 className="text-4xl md:text-7xl font-bold en tracking-tight mb-8">
-                  Skills &amp; Stack
-                </h2>
-                <div className="p-8 md:p-10 bg-white/[0.03] backdrop-blur-md rounded-3xl border border-white/10">
-                  <div className="flex flex-wrap gap-3 text-xs font-mono">
-                    {['React.js', 'TypeScript', 'Three.js', 'React Three Fiber', 'GLSL Shaders', 'Node.js', 'Python', 'Go', 'Docker', 'PostgreSQL', 'Redis', 'WebSockets', 'gRPC', 'Tailwind CSS'].map(tag => (
-                      <span key={tag} className="px-4 py-2 bg-white/[0.05] rounded-xl border border-white/10 text-white font-medium hover:border-[#c93b2b] transition-colors">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          {/* ── SECTION 2: SKILLS ── */}
+          <SkillsSection />
 
           {/* â”€â”€ SECTION 3: CONTACT â”€â”€ full screen */}
           <section id="contact" className="min-h-screen px-8 md:px-14 py-20 flex items-center">
