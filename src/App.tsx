@@ -56,7 +56,7 @@ export default function App() {
   }
 
   return (
-    <div className={`${act === 1 ? 'bg-[#eef2f6] text-[#161216]' : 'bg-[#08080c] text-[#fffcfc]'} min-h-screen w-full max-w-full overflow-x-hidden relative selection:bg-[#c93b2b] selection:text-white transition-colors duration-700`}>
+    <div className={`${act === 1 ? 'bg-[#eef2f6] text-[#161216]' : 'bg-[#08080c] text-[#fffcfc]'} min-h-screen w-full max-w-full relative selection:bg-[#c93b2b] selection:text-white transition-colors duration-700`}>
       {/* Authentic Initial Preloader Screen */}
       <Preloader onLoaded={() => setLoaded(true)} />
 

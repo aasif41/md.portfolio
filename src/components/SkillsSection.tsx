@@ -450,9 +450,11 @@ export default function SkillsSection() {
   const displaySkill = hoveredSkill || filteredSkills[0] || SKILLS_DATA[0]
 
   return (
-    <section id="skills" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-24 relative selection:bg-[#c93b2b] selection:text-white w-full max-w-full overflow-x-hidden">
+    <section id="skills" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-24 relative selection:bg-[#c93b2b] selection:text-white w-full max-w-full">
       {/* Background ambient lighting accents */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[750px] h-[450px] bg-gradient-to-tr from-[#c93b2b]/10 via-[#48cae4]/5 to-transparent blur-[140px] pointer-events-none -z-10" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[750px] h-[450px] bg-gradient-to-tr from-[#c93b2b]/10 via-[#48cae4]/5 to-transparent blur-[140px]" />
+      </div>
 
       <div className="max-w-7xl mx-auto w-full pointer-events-auto">
         
@@ -657,8 +659,8 @@ export default function SkillsSection() {
             </div>
           </div>
 
-          {/* ── RIGHT TELEMETRY INSPECTOR HUD (4 cols on lg) ── */}
-          <div className="lg:col-span-4 sticky top-24">
+          {/* ── RIGHT TELEMETRY INSPECTOR HUD (4 cols on lg - Sticky follows user down the entire grid) ── */}
+          <div className="lg:col-span-4 lg:sticky lg:top-28 self-start">
             <div className="p-6 rounded-3xl bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-2xl relative overflow-hidden">
               
               {/* Luminous corner aura based on display skill brand color */}
