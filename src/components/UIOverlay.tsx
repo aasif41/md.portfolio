@@ -512,7 +512,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
 
                           {/* Clean Dim Tab Indicator (No body text, prevents collision with front file) */}
                           <div 
-                            className="absolute top-[26px] sm:top-[28px] left-6 sm:left-8 font-mono text-[10px] sm:text-[11px] text-white/50 font-bold flex items-center gap-1.5 truncate max-w-[150px] sm:max-w-none"
+                            className="absolute top-[26px] sm:top-[28px] left-4 sm:left-8 font-mono text-[9px] sm:text-[11px] text-white/50 font-bold flex items-center gap-1.5 truncate max-w-[105px] sm:max-w-none"
                             style={{ opacity: isNext ? 0.7 : 0.4 }}
                           >
                             <span className="w-1.5 h-1.5 rounded-full bg-white/30 shrink-0" />
@@ -563,9 +563,9 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                           <line x1="48" y1="428" x2="524" y2="428" stroke="rgba(255, 255, 255, 0.12)" strokeWidth="1.5" />
                         </svg>
 
-                        {/* 2. Top-Left Tab Content (Vertically centered with balanced padding) */}
-                        <div className="absolute top-[24px] sm:top-[26px] left-5 sm:left-8 z-10 flex items-center gap-1.5 sm:gap-2 font-mono text-[11px] sm:text-xs text-[#fffcfc] font-bold max-w-[170px] sm:max-w-none">
-                          <span className="w-2 h-2 rounded-full bg-[#c93b2b] animate-pulse shrink-0" />
+                        {/* 2. Top-Left Tab Content (Strictly fitted within mobile tab flap silhouette) */}
+                        <div className="absolute top-[24px] sm:top-[26px] left-4 sm:left-8 z-10 flex items-center gap-1.5 sm:gap-2 font-mono text-[10px] sm:text-xs text-[#fffcfc] font-bold max-w-[115px] sm:max-w-none">
+                          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#c93b2b] animate-pulse shrink-0" />
                           <span className="truncate">{activeProject.folderTab}</span>
                         </div>
 
@@ -594,8 +594,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                           </button>
                         </div>
 
-                        {/* 3. Front Pocket Content Container */}
-                        <div className="absolute top-14 sm:top-16 inset-x-3.5 sm:inset-x-8 bottom-6 sm:bottom-8 z-20 flex flex-col justify-between p-2.5 sm:p-4">
+                        {/* 3. Front Pocket Content Container (Safe 46px clearance above bottom embossed lines) */}
+                        <div className="absolute top-13 sm:top-16 inset-x-3.5 sm:inset-x-8 bottom-[46px] sm:bottom-9 z-20 flex flex-col justify-between p-2 sm:p-4">
                           
                           {/* Info Header */}
                           <div>
@@ -625,8 +625,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                               ))}
                             </div>
 
-                            {/* Buttons on Front */}
-                            <div className="flex items-center justify-between gap-1.5 sm:gap-3 pt-2.5 sm:pt-3.5 border-t border-white/10">
+                            {/* Buttons on Front (Evenly centered between top border & bottom embossed line) */}
+                            <div className="flex items-center justify-between gap-1.5 sm:gap-3 py-2 sm:py-3 border-t border-white/10">
                               <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
                                 <a
                                   href={activeProject.githubUrl}
