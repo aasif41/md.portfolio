@@ -38,10 +38,12 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
   const angularVelocity = useRef({ x: 0, y: 0 })
   const cumulativeRot   = useRef({ x: 0, y: 0 })
 
-  // ── Stabilized Mobile Gyroscope State ─────────────────────────────────────
+  // ── Stabilized Mobile Gyroscope State (BGMI Precision) ────────────────────
   const gyroTarget      = useRef({ x: 0, y: 0 })
   const gyroSmoothed    = useRef({ x: 0, y: 0 })
   const baseOrientation = useRef<{ gamma: number; beta: number } | null>(null)
+  const calibCount      = useRef(0)
+  const calibSum        = useRef({ gamma: 0, beta: 0 })
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,30 +67,42 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
       mouseDelta.current.dy = dy
     }
 
-    // ── Mobile Gyroscope / DeviceOrientation Tilt Support ──
+    // ── Mobile Gyroscope / DeviceOrientation Tilt Support (BGMI Physics) ──
     const handleDeviceOrientation = (e: DeviceOrientationEvent) => {
       if (e.gamma === null || e.beta === null) return
       
-      // Auto-calibrate on first sensor event so camera ALWAYS starts dead-center (0, 0)
-      if (!baseOrientation.current) {
-        baseOrientation.current = { gamma: e.gamma, beta: e.beta }
+      // Auto-calibrate average baseline over first 6 samples for rock-solid stability
+      if (calibCount.current < 6) {
+        calibSum.current.gamma += e.gamma
+        calibSum.current.beta += e.beta
+        calibCount.current++
+        baseOrientation.current = {
+          gamma: calibSum.current.gamma / calibCount.current,
+          beta: calibSum.current.beta / calibCount.current,
+        }
         return
       }
 
-      // Delta relative to calibrated baseline
+      if (!baseOrientation.current) return
+
+      // Very slow natural drift compensation (alpha = 0.002) so posture changes smoothly recenter
+      baseOrientation.current.gamma += (e.gamma - baseOrientation.current.gamma) * 0.002
+      baseOrientation.current.beta += (e.beta - baseOrientation.current.beta) * 0.002
+
+      // Pure delta relative to resting posture
       const deltaGamma = e.gamma - baseOrientation.current.gamma
       const deltaBeta = e.beta - baseOrientation.current.beta
 
-      // Fast, light deadzone (0.6°) to remove resting micro-tremors without sacrificing responsiveness
-      const rawX = Math.abs(deltaGamma) < 0.6 ? 0 : deltaGamma
-      const rawY = Math.abs(deltaBeta) < 0.6 ? 0 : deltaBeta
+      // Light 0.4° micro-deadzone eliminates hardware sensor jitter
+      const rawX = Math.abs(deltaGamma) < 0.4 ? 0 : deltaGamma
+      const rawY = Math.abs(deltaBeta) < 0.4 ? 0 : deltaBeta
 
-      // Responsive sensitivity: comfortably calibrated sweet-spot
-      const normX = Math.min(Math.max(rawX / 19, -1), 1)
-      const normY = Math.min(Math.max(-rawY / 19, -1), 1)
+      // Proportional linear response (-1 to 1) over comfortable 22° wrist range
+      const normX = Math.min(Math.max(rawX / 22, -1), 1)
+      const normY = Math.min(Math.max(-rawY / 22, -1), 1)
 
-      gyroTarget.current.x = normX * 0.72
-      gyroTarget.current.y = normY * 0.72
+      gyroTarget.current.x = normX
+      gyroTarget.current.y = normY
     }
 
     // Attach gyroscope listeners (with iOS permission request fallback if required)
@@ -176,8 +190,23 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
 
   const hasReachedEnd = useRef(false)
 
+  // When switching from Galaxy Act (Act 2) back to Shrine Act (Act 1), reset completely to the starting hero view
   useEffect(() => {
-    if (act === 1) hasReachedEnd.current = false
+    if (act === 1) {
+      hasReachedEnd.current = false
+      scrollTarget.current = 0
+      currentScroll.current = 0
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+
+      // Reset all Torii gates to their original starting positions
+      if (groupRef.current) {
+        groupRef.current.position.z = 0
+        const children = groupRef.current.children
+        for (let i = 0; i < children.length; i++) {
+          children[i].position.z = -i * SPACING
+        }
+      }
+    }
   }, [act])
 
   // ── Wireframe effect (transition) ──────────────────────────────────────────
@@ -252,9 +281,18 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
       pCam.updateProjectionMatrix()
     }
 
-    // Smoothly interpolate calibrated mobile gyroscope tilt
-    gyroSmoothed.current.x = THREE.MathUtils.damp(gyroSmoothed.current.x, gyroTarget.current.x, 4.2, delta)
-    gyroSmoothed.current.y = THREE.MathUtils.damp(gyroSmoothed.current.y, gyroTarget.current.y, 4.2, delta)
+    // Detect touch / mobile device
+    const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+
+    // Smoothly interpolate calibrated mobile gyroscope tilt (crisp & immediate damping like BGMI)
+    gyroSmoothed.current.x = THREE.MathUtils.damp(gyroSmoothed.current.x, gyroTarget.current.x, 5.5, delta)
+    gyroSmoothed.current.y = THREE.MathUtils.damp(gyroSmoothed.current.y, gyroTarget.current.y, 5.5, delta)
+
+    // On mobile touch devices: parallax is 100% pure gyroscope!
+    // Synthetic tap-mouse coordinates will NEVER corrupt or offset the camera!
+    // When the user brings the phone back to neutral, curMx & curMy return EXACTLY to 0!
+    const curMx = isTouchDevice ? gyroSmoothed.current.x : mouseNDC.current.x
+    const curMy = isTouchDevice ? gyroSmoothed.current.y : mouseNDC.current.y
 
     // ── ACT 1 ──
     if (act === 1) {
@@ -271,11 +309,9 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
       }
       pCam.position.x = THREE.MathUtils.damp(pCam.position.x, 0,   3.5, delta)
       pCam.position.y = THREE.MathUtils.damp(pCam.position.y, 2.3, 3.5, delta)
-      const curMx = mouseNDC.current.x + gyroSmoothed.current.x
-      const curMy = mouseNDC.current.y + gyroSmoothed.current.y
-      pCam.rotation.x = THREE.MathUtils.damp(pCam.rotation.x,  curMy * 0.32, 4.0, delta)
-      pCam.rotation.y = THREE.MathUtils.damp(pCam.rotation.y, -curMx * 0.42, 4.0, delta)
-      pCam.rotation.z = THREE.MathUtils.damp(pCam.rotation.z, -curMx * 0.06, 4.0, delta)
+      pCam.rotation.x = THREE.MathUtils.damp(pCam.rotation.x,  curMy * 0.25, 4.5, delta)
+      pCam.rotation.y = THREE.MathUtils.damp(pCam.rotation.y, -curMx * 0.35, 4.5, delta)
+      pCam.rotation.z = THREE.MathUtils.damp(pCam.rotation.z, -curMx * 0.05, 4.5, delta)
 
       if (heroTextRef.current) {
         heroTextRef.current.position.y = 0.5 + Math.sin(state.clock.elapsedTime * 0.5) * 0.08
@@ -372,13 +408,11 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
         )
       }
 
-      // Camera parallax (mouse hover on desktop, gyro tilt on mobile)
-      const curMx = mouseNDC.current.x + gyroSmoothed.current.x
-      const curMy = mouseNDC.current.y + gyroSmoothed.current.y
-      const targetX = curMx * 0.52
-      const targetY = 1.8 + curMy * 0.55
-      pCam.position.x = THREE.MathUtils.damp(pCam.position.x, targetX, 4.0, delta)
-      pCam.position.y = THREE.MathUtils.damp(pCam.position.y, targetY, 4.0, delta)
+      // Camera parallax
+      const targetX = curMx * 0.48
+      const targetY = 1.8 + curMy * 0.48
+      pCam.position.x = THREE.MathUtils.damp(pCam.position.x, targetX, 4.5, delta)
+      pCam.position.y = THREE.MathUtils.damp(pCam.position.y, targetY, 4.5, delta)
       pCam.lookAt(0, 0, -20)
     }
 

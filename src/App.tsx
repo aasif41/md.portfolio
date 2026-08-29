@@ -13,6 +13,14 @@ export default function App() {
   // 'idle' | 'wireframe' | 'zoomout' | 'zoomin'
   const [warpPhase, setWarpPhase] = useState<'idle' | 'wireframe' | 'zoomout' | 'zoomin'>('idle')
 
+  // Guarantee initial load/reload starts strictly at top: 0
+  useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual'
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [])
+
   // Keep root HTML and body background color strictly synchronized with active act
   useEffect(() => {
     const bg = act === 1 ? '#eef2f6' : '#08080c'
