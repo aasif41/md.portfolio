@@ -688,7 +688,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                 <div className="w-full flex flex-col justify-center">
                   {isDetailOpen && (
                   <div
-                    className={`w-full h-[450px] bg-white/[0.04] backdrop-blur-2xl rounded-3xl border border-white/15 shadow-2xl p-6 md:p-7 flex flex-col justify-between relative overflow-hidden origin-left ${
+                    className={`w-full min-h-[450px] h-auto sm:h-[450px] bg-white/[0.04] backdrop-blur-2xl rounded-3xl border border-white/15 shadow-2xl p-4 sm:p-6 md:p-7 flex flex-col justify-between gap-3.5 sm:gap-0 relative overflow-hidden origin-left ${
                       isDossierClosing ? 'dossier-close pointer-events-none' : 'dossier-open'
                     }`}
                   >
@@ -697,15 +697,15 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
 
                     {/* Header + Close Button */}
                     <div className="flex items-center justify-between pb-2.5 border-b border-white/10 shrink-0">
-                      <div className="flex items-center gap-2.5">
-                        <div className="p-2 bg-[#c93b2b]/20 rounded-xl border border-[#c93b2b]/40 text-[#c93b2b]">
+                      <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                        <div className="p-2 bg-[#c93b2b]/20 rounded-xl border border-[#c93b2b]/40 text-[#c93b2b] shrink-0">
                           <FileCode size={18} />
                         </div>
-                        <div>
-                          <span className="text-[10px] font-mono tracking-widest uppercase text-[#c93b2b] font-bold block">
+                        <div className="min-w-0">
+                          <span className="text-[10px] font-mono tracking-widest uppercase text-[#c93b2b] font-bold block truncate">
                             EXTRACTED SYSTEM DOSSIER
                           </span>
-                          <h4 className="text-lg md:text-xl font-bold en text-[#fffcfc]">
+                          <h4 className="text-base sm:text-lg md:text-xl font-bold en text-[#fffcfc] truncate">
                             {activeProject.title}
                           </h4>
                         </div>
@@ -728,7 +728,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                     {/* Architecture Metrics Grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {activeProject.metrics.map((m) => (
-                        <div key={m.label} className="p-2.5 bg-black/50 rounded-xl border border-white/10 text-center">
+                        <div key={m.label} className="p-2 sm:p-2.5 bg-black/50 rounded-xl border border-white/10 text-center">
                           <span className="text-[9px] font-mono uppercase tracking-wider text-[#888] block mb-1">
                             {m.label}
                           </span>
@@ -740,13 +740,13 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                     </div>
 
                     {/* System Modules List */}
-                    <div>
+                    <div className="pb-1">
                       <span className="text-[10px] font-mono uppercase tracking-widest text-[#888] block mb-1.5">
                         SYSTEM ARCHITECTURE &amp; MODULES:
                       </span>
-                      <div className="grid sm:grid-cols-2 gap-2 font-mono text-xs">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-xs">
                         {activeProject.modules.map((mod) => (
-                          <div key={mod.name} className="p-2.5 bg-white/[0.03] rounded-xl border border-white/10 flex items-center justify-between">
+                          <div key={mod.name} className="p-2 sm:p-2.5 bg-white/[0.03] rounded-xl border border-white/10 flex items-center justify-between">
                             <div className="min-w-0 pr-2">
                               <span className="text-[#eee] font-medium block text-[11px] truncate">
                                 {mod.name}
