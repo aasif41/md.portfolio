@@ -25,14 +25,14 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
   const heroTextRef = useRef<THREE.Group>(null)
   const saturnRef   = useRef<THREE.Group>(null)
   const starsRef    = useRef<THREE.Points>(null)
-  const { camera, pointer, scene } = useThree()
+  const { camera, scene } = useThree()
 
   // Scroll tracking
   const scrollTarget  = useRef(0)
   const currentScroll = useRef(0)
 
   // ── Precision Planet Hover & 3D Movement State ────────────────────────────
-  const mouseNDC        = useRef({ x: 9999, y: 9999 })
+  const mouseNDC        = useRef({ x: 0, y: 0 })
   const mouseDelta      = useRef({ dx: 0, dy: 0 })
   const lastMousePos    = useRef({ x: 0, y: 0 })
   const angularVelocity = useRef({ x: 0, y: 0 })
@@ -216,10 +216,11 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
       }
       pCam.position.x = THREE.MathUtils.damp(pCam.position.x, 0,   3.5, delta)
       pCam.position.y = THREE.MathUtils.damp(pCam.position.y, 2.3, 3.5, delta)
-      pCam.rotation.order = 'YXZ'
-      pCam.rotation.x = THREE.MathUtils.damp(pCam.rotation.x,  pointer.y * 0.2,  3.5, delta)
-      pCam.rotation.y = THREE.MathUtils.damp(pCam.rotation.y, -pointer.x * 0.4,  3.5, delta)
-      pCam.rotation.z = THREE.MathUtils.damp(pCam.rotation.z, -pointer.x * 0.05, 3.5, delta)
+      const curMx = mouseNDC.current.x
+      const curMy = mouseNDC.current.y
+      pCam.rotation.x = THREE.MathUtils.damp(pCam.rotation.x,  curMy * 0.2,  3.5, delta)
+      pCam.rotation.y = THREE.MathUtils.damp(pCam.rotation.y, -curMx * 0.4,  3.5, delta)
+      pCam.rotation.z = THREE.MathUtils.damp(pCam.rotation.z, -curMx * 0.05, 3.5, delta)
 
       if (heroTextRef.current) {
         heroTextRef.current.position.y = 0.5 + Math.sin(state.clock.elapsedTime * 0.5) * 0.08
@@ -305,8 +306,8 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
       }
 
       // Camera parallax
-      const targetX = pointer.x * 0.35
-      const targetY = 1.8 + pointer.y * 0.18
+      const targetX = mouseNDC.current.x * 0.35
+      const targetY = 1.8 + mouseNDC.current.y * 0.18
       pCam.position.x = THREE.MathUtils.damp(pCam.position.x, targetX, 3.5, delta)
       pCam.position.y = THREE.MathUtils.damp(pCam.position.y, targetY, 3.5, delta)
       pCam.lookAt(0, 0, -20)

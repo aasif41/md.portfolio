@@ -273,13 +273,13 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
           </section>
 
           {/* Act 1 Scroll Travel & Clean Click to Continue Prompt */}
-          <section className="h-screen flex flex-col items-center justify-center p-8 select-none">
+          <section className="h-screen flex flex-col items-center justify-center p-8 select-none pointer-events-none">
             <button
               onClick={onContinue}
-              className="pointer-events-auto group cursor-pointer text-center p-4 transition-transform duration-300 hover:scale-105"
+              className="pointer-events-auto group cursor-pointer text-center p-4 transition-transform duration-200 hover:scale-105 will-change-transform"
             >
               <h2
-                className="text-6xl sm:text-7xl md:text-9xl font-bold font-movement uppercase tracking-wider transition-all duration-300 text-transparent group-hover:text-[#161216] group-hover:[-webkit-text-fill-color:#161216] group-hover:[-webkit-text-stroke-color:#161216]"
+                className="pointer-events-none text-6xl sm:text-7xl md:text-9xl font-bold font-movement uppercase tracking-wider transition-colors duration-200 text-transparent group-hover:text-[#161216] group-hover:[-webkit-text-fill-color:#161216] group-hover:[-webkit-text-stroke-color:#161216]"
                 style={{ WebkitTextStroke: '2px #161216' }}
               >
                 Click to continue
