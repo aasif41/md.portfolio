@@ -297,10 +297,21 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
           delta
         )
 
+        // Responsive positioning based on viewport aspect ratio (mobile portrait vs desktop)
+        const isPortrait = aspect < 1.05
+        const targetX = isPortrait ? 0 : 6.5
+        const targetYBase = isPortrait ? 4.8 : 0.2
+        const targetZ = isPortrait ? -18 : -12
+        const targetScale = isPortrait ? 0.65 : 1.0
+
+        saturnRef.current.position.x = THREE.MathUtils.damp(saturnRef.current.position.x, targetX, 3.0, delta)
+        saturnRef.current.position.z = THREE.MathUtils.damp(saturnRef.current.position.z, targetZ, 3.0, delta)
+        saturnRef.current.scale.setScalar(THREE.MathUtils.damp(saturnRef.current.scale.x, targetScale, 3.0, delta))
+
         // Smooth vertical floating with scroll
         saturnRef.current.position.y = THREE.MathUtils.damp(
           saturnRef.current.position.y,
-          0.2 + currentScroll.current * 1.6,
+          targetYBase + currentScroll.current * 1.6,
           2.0, delta
         )
       }

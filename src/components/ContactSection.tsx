@@ -194,7 +194,7 @@ Reply-to: ${senderEmail || 'Not specified'}`
   }
 
   return (
-    <section id="contact" className="min-h-screen px-6 md:px-12 py-24 relative select-none selection:bg-[#c93b2b] selection:text-white">
+    <section id="contact" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-24 relative select-none selection:bg-[#c93b2b] selection:text-white">
       {/* Ambient background light gradients */}
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-[850px] h-[450px] bg-gradient-to-t from-[#c93b2b]/15 via-[#48cae4]/5 to-transparent blur-[150px] pointer-events-none -z-10" />
 
@@ -207,7 +207,7 @@ Reply-to: ${senderEmail || 'Not specified'}`
               <Radio size={13} className="animate-pulse text-[#c93b2b]" />
               <span>03 // INITIATE TRANSMISSION · QUANTUM LINK</span>
             </div>
-            <h2 className="text-4xl md:text-7xl font-bold en tracking-tight text-white mb-3">
+            <h2 className="text-3xl sm:text-5xl md:text-7xl font-bold en tracking-tight text-white mb-3">
               Let&apos;s Build Together.
             </h2>
             <p className="text-sm md:text-base text-[#aaa] max-w-2xl font-light leading-relaxed">
@@ -234,7 +234,7 @@ Reply-to: ${senderEmail || 'Not specified'}`
           {/* ── LEFT COLUMN: Interactive Transmission Dispatcher (7 cols) ── */}
           <form
             onSubmit={handleTransmit}
-            className="lg:col-span-7 p-6 md:p-8 rounded-3xl bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-2xl relative overflow-hidden"
+            className="lg:col-span-7 p-4 sm:p-6 md:p-8 rounded-3xl bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-2xl relative overflow-hidden"
           >
             <div className="flex items-center justify-between pb-4 mb-6 border-b border-white/10">
               <div className="flex items-center gap-2 font-mono text-xs text-[#aaa]">
@@ -583,32 +583,32 @@ Reply-to: ${senderEmail || 'Not specified'}`
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header Bar */}
-            <div className="px-5 py-4 bg-white/[0.03] border-b border-white/10 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[#c93b2b]/20 border border-[#c93b2b]/40 flex items-center justify-center text-[#c93b2b]">
-                  <FileText size={18} />
+            <div className="px-3.5 sm:px-5 py-3 sm:py-4 bg-white/[0.03] border-b border-white/10 flex items-center justify-between gap-2 sm:gap-4">
+              <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#c93b2b]/20 border border-[#c93b2b]/40 flex items-center justify-center text-[#c93b2b] shrink-0">
+                  <FileText size={16} className="sm:w-[18px] sm:h-[18px]" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-sm sm:text-base font-bold font-mono text-white">
+                    <h3 className="text-xs sm:text-base font-bold font-mono text-white truncate">
                       Md Aasif — Curriculum Vitae
                     </h3>
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#10b981]/20 border border-[#10b981]/30 text-[#10b981] hidden sm:inline-block">
                       OFFICIAL 2026
                     </span>
                   </div>
-                  <span className="text-[11px] font-mono text-[#888] block">
-                    Asif CV.pdf · In-Page Document Viewer
+                  <span className="text-[10px] sm:text-[11px] font-mono text-[#888] block truncate">
+                    Asif CV.pdf · Document Viewer
                   </span>
                 </div>
               </div>
 
               {/* Action Buttons: Download + Cut / Close */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                 <a
                   href="/Asif-CV.pdf"
                   download="Md_Aasif_CV.pdf"
-                  className="px-3.5 py-2 bg-white/[0.06] hover:bg-white/[0.12] text-white rounded-xl border border-white/15 text-xs font-mono transition-all flex items-center gap-1.5 cursor-pointer"
+                  className="px-2.5 sm:px-3.5 py-1.5 sm:py-2 bg-white/[0.06] hover:bg-white/[0.12] text-white rounded-xl border border-white/15 text-[11px] sm:text-xs font-mono transition-all flex items-center gap-1.5 cursor-pointer"
                   title="Download PDF"
                 >
                   <Download size={13} />
@@ -618,12 +618,12 @@ Reply-to: ${senderEmail || 'Not specified'}`
                 <button
                   type="button"
                   onClick={() => setIsCvOpen(false)}
-                  className="px-3.5 py-2 bg-[#c93b2b]/20 hover:bg-[#c93b2b] text-white rounded-xl border border-[#c93b2b]/40 hover:border-[#c93b2b] text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-lg group"
+                  className="px-2.5 sm:px-3.5 py-1.5 sm:py-2 bg-[#c93b2b]/20 hover:bg-[#c93b2b] text-white rounded-xl border border-[#c93b2b]/40 hover:border-[#c93b2b] text-[11px] sm:text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-lg group"
                   title="Cut / Close Preview (Esc)"
                   aria-label="Close CV preview"
                 >
-                  <X size={16} className="group-hover:rotate-90 transition-transform duration-200" />
-                  <span>Cut / Close</span>
+                  <X size={15} className="group-hover:rotate-90 transition-transform duration-200" />
+                  <span>Close</span>
                 </button>
               </div>
             </div>

@@ -450,7 +450,7 @@ export default function SkillsSection() {
   const displaySkill = hoveredSkill || filteredSkills[0] || SKILLS_DATA[0]
 
   return (
-    <section id="skills" className="min-h-screen px-6 md:px-12 py-24 relative selection:bg-[#c93b2b] selection:text-white">
+    <section id="skills" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-24 relative selection:bg-[#c93b2b] selection:text-white">
       {/* Background ambient lighting accents */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[750px] h-[450px] bg-gradient-to-tr from-[#c93b2b]/10 via-[#48cae4]/5 to-transparent blur-[140px] pointer-events-none -z-10" />
 
@@ -472,12 +472,12 @@ export default function SkillsSection() {
           </div>
 
           {/* Quick Metrics Badge */}
-          <div className="flex items-center gap-3 font-mono text-xs text-[#aaa] bg-white/[0.03] backdrop-blur-md p-3 rounded-2xl border border-white/10 shrink-0">
-            <div className="px-3 py-1.5 bg-white/[0.05] rounded-xl border border-white/10 text-white font-bold flex items-center gap-1.5">
-              <Activity size={14} className="text-[#c93b2b]" />
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 font-mono text-xs text-[#aaa] bg-white/[0.03] backdrop-blur-md p-2.5 sm:p-3 rounded-2xl border border-white/10 shrink-0">
+            <div className="px-2.5 sm:px-3 py-1.5 bg-white/[0.05] rounded-xl border border-white/10 text-white font-bold flex items-center gap-1.5 text-[11px] sm:text-xs">
+              <Activity size={13} className="text-[#c93b2b]" />
               <span>{SKILLS_DATA.length} MODULES READY</span>
             </div>
-            <span className="text-[#666]">|</span>
+            <span className="text-[#666] hidden sm:inline">|</span>
             <div className="flex items-center gap-1 text-[#48cae4]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#48cae4] animate-pulse" />
               <span>PRODUCTION TESTED</span>
@@ -501,13 +501,13 @@ export default function SkillsSection() {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`px-4 py-2 rounded-xl text-xs font-mono transition-all duration-300 flex items-center gap-2 cursor-pointer border ${
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-mono transition-all duration-300 flex items-center gap-1.5 sm:gap-2 cursor-pointer border ${
                     isActive
                       ? 'bg-white/10 border-[#c93b2b] text-white font-bold shadow-[0_0_20px_rgba(201,59,43,0.3)]'
                       : 'bg-white/[0.03] border-white/10 text-[#888] hover:text-white hover:bg-white/[0.07] hover:border-white/20'
                   }`}
                 >
-                  <Icon size={13} className={isActive ? 'text-[#c93b2b]' : 'text-[#777]'} />
+                  <Icon size={12} className={isActive ? 'text-[#c93b2b]' : 'text-[#777]'} />
                   <span>{cat.label}</span>
                   <span className={`text-[10px] px-1.5 py-0.2 rounded-md ${isActive ? 'bg-[#c93b2b]/30 text-white' : 'bg-white/10 text-[#666]'}`}>
                     {count}
@@ -518,7 +518,7 @@ export default function SkillsSection() {
           </div>
 
           {/* Real-time Search Box */}
-          <div className="relative min-w-[240px] md:w-72">
+          <div className="relative w-full sm:w-72">
             <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#777]" />
             <input
               type="text"
@@ -543,7 +543,7 @@ export default function SkillsSection() {
           
           {/* ── SKILLS INTERACTIVE GRID (8 cols on lg) ── */}
           <div className="lg:col-span-8">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 sm:gap-3.5">
               {filteredSkills.map((skill) => {
                 const IconComponent = skill.icon
                 const isHovered = hoveredSkill?.id === skill.id
@@ -553,7 +553,7 @@ export default function SkillsSection() {
                     key={skill.id}
                     onMouseEnter={() => setHoveredSkill(skill)}
                     onMouseLeave={() => setHoveredSkill(null)}
-                    className="group relative p-4 rounded-2xl border transition-all duration-300 cursor-pointer overflow-hidden backdrop-blur-md select-none"
+                    className="group relative p-3 sm:p-4 rounded-2xl border transition-all duration-300 cursor-pointer overflow-hidden backdrop-blur-md select-none"
                     style={{
                       backgroundColor: isHovered ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255, 255, 255, 0.02)',
                       borderColor: isHovered ? `${skill.brandColor}66` : 'rgba(255, 255, 255, 0.08)',

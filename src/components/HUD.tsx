@@ -30,15 +30,15 @@ export default function HUD() {
   return (
     <div className="fixed inset-0 pointer-events-none z-40 select-none">
       {/* Sub-header Telemetry Bar (Left) */}
-      <div className="absolute top-20 left-8 md:left-14 flex items-center gap-2.5 opacity-60">
-        <span className="text-[9px] font-mono tracking-widest text-[#ffaa66]">SYS // 2026</span>
-        <span className="text-[9px] font-mono text-[#555]">|</span>
-        <span className="text-[9px] font-mono text-[#888]">BIHAR, INDIA [26.1542° N, 85.8918° E]</span>
+      <div className="absolute top-16 md:top-20 left-4 sm:left-8 md:left-14 flex items-center gap-2 sm:gap-2.5 opacity-60">
+        <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-[#ffaa66]">SYS // 2026</span>
+        <span className="text-[8px] sm:text-[9px] font-mono text-[#555]">|</span>
+        <span className="text-[8px] sm:text-[9px] font-mono text-[#888] truncate max-w-[150px] sm:max-w-none">BIHAR, INDIA [26.1542° N, 85.8918° E]</span>
       </div>
 
       {/* Sub-header Telemetry Bar (Right) */}
-      <div className="absolute top-20 right-8 md:right-14 flex items-center gap-3 opacity-80">
-        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/[0.04] border border-white/10 text-[9px] font-mono text-[#f0ece4]">
+      <div className="absolute top-16 md:top-20 right-4 sm:right-8 md:right-14 flex items-center gap-2 sm:gap-3 opacity-80">
+        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/[0.04] border border-white/10 text-[8px] sm:text-[9px] font-mono text-[#f0ece4]">
           <span className="w-1.5 h-1.5 rounded-full bg-[#38b000] animate-pulse" />
           <span>STATUS // AVAILABLE</span>
         </div>
@@ -46,16 +46,16 @@ export default function HUD() {
       </div>
 
       {/* Bottom Left Corner Coordinate Display */}
-      <div className="absolute bottom-6 left-8 md:left-14 flex items-center gap-3">
-        <span className="text-xs font-mono text-[#666] tracking-widest uppercase">
-          <span className="font-aquire">MD AASIF</span> · BSC (HONS) CS
+      <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-8 md:left-14 flex items-center gap-2 sm:gap-3">
+        <span className="text-[11px] sm:text-xs font-mono text-[#666] tracking-widest uppercase">
+          <span className="font-aquire">MD AASIF</span> · BSC CS
         </span>
-        <span className="text-[10px] font-mono text-[#333]">/</span>
-        <span className="text-[10px] font-mono text-[#c93b2b]">創造性と技術</span>
+        <span className="text-[10px] font-mono text-[#333] hidden sm:inline">/</span>
+        <span className="text-[10px] font-mono text-[#c93b2b] hidden sm:inline">創造性と技術</span>
       </div>
 
       {/* Bottom Right Scroll Telemetry & Progress Indicator */}
-      <div className="absolute bottom-6 right-8 md:right-14 flex items-center gap-4">
+      <div className="absolute bottom-4 sm:bottom-6 right-4 sm:right-8 md:right-14 flex items-center gap-3 sm:gap-4">
         {/* Animated Visualizer Bars */}
         <div className="hidden md:flex items-end gap-[3px] h-4">
           <span className="w-[2px] bg-[#c93b2b] animate-[bounce_1s_infinite_100ms] h-2" />

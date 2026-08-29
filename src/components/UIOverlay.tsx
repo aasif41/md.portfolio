@@ -161,6 +161,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
   const [activeProjectIndex, setActiveProjectIndex] = useState(0)
   const [isDetailOpen, setIsDetailOpen] = useState(false)
   const [isDossierClosing, setIsDossierClosing] = useState(false)
+  const [isEmbedInteractive, setIsEmbedInteractive] = useState(false)
 
   const closeDossier = () => {
     setIsDossierClosing(true)
@@ -212,8 +213,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
         /* ========================================================================= */
         <div className="text-[#161216]">
           {/* Hero Viewport */}
-          <section className="h-screen flex flex-col justify-between p-8 md:p-14 select-none relative">
-            <div className="max-w-xl pointer-events-none pt-4">
+          <section className="h-screen flex flex-col justify-between p-5 sm:p-8 md:p-14 pt-20 sm:pt-24 md:pt-28 select-none relative">
+            <div className="max-w-xl pointer-events-none pt-2">
               {/* Minimal Tiny Japanese Badge */}
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-black/10 text-[10px] font-mono text-[#555] mb-3 shadow-sm">
                 <span className="w-2 h-2 rounded-full bg-[#c93b2b] animate-ping" />
@@ -223,17 +224,17 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               </div>
 
               {/* Clean Main Title */}
-              <h1 className="text-4xl md:text-7xl font-bold font-aquire tracking-tight text-[#161216] mb-2 leading-none">
+              <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold font-aquire tracking-tight text-[#161216] mb-2 leading-tight">
                 MD AASIF
               </h1>
 
               {/* SubJob Title */}
-              <h2 className="text-sm md:text-lg font-bold font-movement tracking-widest text-[#161216] uppercase mb-4">
+              <h2 className="text-xs sm:text-sm md:text-lg font-bold font-movement tracking-widest text-[#161216] uppercase mb-3 sm:mb-4">
                 Creative Full-Stack Developer &amp; 3D Engineer
               </h2>
 
               {/* SubDescription */}
-              <div className="text-sm md:text-base text-[#222] font-light leading-relaxed max-w-md mb-8">
+              <div className="text-xs sm:text-sm md:text-base text-[#222] font-light leading-relaxed max-w-md mb-6 sm:mb-8">
                 <p>
                   Final-year <strong className="font-bold text-[#161216]">BSc (Hons) CS</strong> student who codes in two dimensions and designs in three. Full-stack by trade, 3D designer by obsession — building WebGL experiences the internet remembers.
                 </p>
@@ -278,7 +279,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               className="pointer-events-auto group cursor-pointer text-center w-full h-[65vh] md:h-[75vh] flex flex-col items-center justify-center transition-transform duration-200 hover:scale-[1.02] will-change-transform px-4"
             >
               <h2
-                className="pointer-events-none whitespace-nowrap text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold font-movement uppercase tracking-wider transition-colors duration-200 text-transparent group-hover:text-[#161216] group-hover:[-webkit-text-fill-color:#161216] group-hover:[-webkit-text-stroke-color:#161216]"
+                className="pointer-events-none whitespace-nowrap text-3xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold font-movement uppercase tracking-wider transition-colors duration-200 text-transparent group-hover:text-[#161216] group-hover:[-webkit-text-fill-color:#161216] group-hover:[-webkit-text-stroke-color:#161216]"
                 style={{ WebkitTextStroke: '2px #161216' }}
               >
                 Click to continue
@@ -292,39 +293,39 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
         /* ========================================================================= */
         <div className="text-[#fffcfc]">
 
-          {/* â”€â”€ SECTION 1: PROJECTS â”€â”€ full screen */}
-          <section id="projects" className="min-h-screen px-6 md:px-12 py-20 relative">
+          {/* ── SECTION 1: PROJECTS ── full screen */}
+          <section id="projects" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-20 relative">
             <div className="max-w-7xl mx-auto">
               {/* Header & Floating Preview */}
               <div className="grid md:grid-cols-2 gap-8 items-start mb-16 pointer-events-auto">
                 <div>
-                  <h1 className="text-4xl md:text-7xl font-bold en tracking-tight mb-4">
+                  <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold en tracking-tight mb-3 sm:mb-4">
                     Last Project recognitions
                   </h1>
-                  <h2 className="text-xl md:text-2xl font-bold en text-[#c93b2b] mb-6">
+                  <h2 className="text-lg sm:text-xl md:text-2xl font-bold en text-[#c93b2b] mb-4 sm:mb-6">
                     <a href="https://watchparty.website" target="_blank" rel="noreferrer" className="hover:underline inline-flex items-center gap-2">
                       WatchParty — Sync &amp; Stream
-                      <ArrowRight size={20} />
+                      <ArrowRight size={18} className="sm:w-5 sm:h-5" />
                     </a>
                   </h2>
 
                   {/* Recognitions / Features List */}
-                  <div className="space-y-3 font-mono text-xs md:text-sm text-[#bbb] mb-8">
-                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center gap-3 hover:border-[#c93b2b] transition-all whitespace-nowrap">
-                      <span>2026 | Real-Time Video Synchronization</span>
-                      <span className="text-[#c93b2b] font-bold shrink-0">[ Socket.IO / WebRTC ]</span>
+                  <div className="space-y-2.5 sm:space-y-3 font-mono text-xs md:text-sm text-[#bbb] mb-8">
+                    <div className="p-3 sm:p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-3 hover:border-[#c93b2b] transition-all">
+                      <span className="text-[11px] sm:text-xs md:text-sm">2026 | Real-Time Video Synchronization</span>
+                      <span className="text-[#c93b2b] font-bold text-[10px] sm:text-xs shrink-0">[ Socket.IO / WebRTC ]</span>
                     </div>
-                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center gap-3 hover:border-[#c93b2b] transition-all whitespace-nowrap">
-                      <span>2026 | Live Multi-User Chat &amp; XSS Defense</span>
-                      <span className="text-[#c93b2b] font-bold shrink-0">[ Node.js / DOMPurify ]</span>
+                    <div className="p-3 sm:p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-3 hover:border-[#c93b2b] transition-all">
+                      <span className="text-[11px] sm:text-xs md:text-sm">2026 | Live Multi-User Chat &amp; XSS Defense</span>
+                      <span className="text-[#c93b2b] font-bold text-[10px] sm:text-xs shrink-0">[ Node.js / DOMPurify ]</span>
                     </div>
-                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center gap-3 hover:border-[#c93b2b] transition-all whitespace-nowrap">
-                      <span>2026 | Peer-to-Peer Video Call &amp; Screen Share</span>
-                      <span className="text-[#c93b2b] font-bold shrink-0">[ WebRTC Mesh ]</span>
+                    <div className="p-3 sm:p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-3 hover:border-[#c93b2b] transition-all">
+                      <span className="text-[11px] sm:text-xs md:text-sm">2026 | Peer-to-Peer Video Call &amp; Screen Share</span>
+                      <span className="text-[#c93b2b] font-bold text-[10px] sm:text-xs shrink-0">[ WebRTC Mesh ]</span>
                     </div>
-                    <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center gap-3 hover:border-[#c93b2b] transition-all whitespace-nowrap">
-                      <span>2026 | Google OAuth &amp; Room Access Control</span>
-                      <span className="text-[#c93b2b] font-bold shrink-0">[ Firebase Auth ]</span>
+                    <div className="p-3 sm:p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-3 hover:border-[#c93b2b] transition-all">
+                      <span className="text-[11px] sm:text-xs md:text-sm">2026 | Google OAuth &amp; Room Access Control</span>
+                      <span className="text-[#c93b2b] font-bold text-[10px] sm:text-xs shrink-0">[ Firebase Auth ]</span>
                     </div>
                   </div>
                 </div>
@@ -367,11 +368,13 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                   </div>
 
                   {/* Live Interactive Web App Frame */}
-                  <div className="relative w-full h-[400px] md:h-[440px] rounded-2xl overflow-hidden border border-white/10 bg-black shadow-inner mb-4">
+                  <div className="relative w-full h-[360px] sm:h-[400px] md:h-[440px] rounded-2xl overflow-hidden border border-white/10 bg-black shadow-inner mb-4 group/frame">
                     <iframe
                       src="https://watchparty.website"
                       title="WatchParty Live Interactive Application"
-                      className="border-0 pointer-events-auto"
+                      className={`border-0 w-full h-full ${
+                        isEmbedInteractive ? 'pointer-events-auto' : 'pointer-events-none md:pointer-events-auto'
+                      }`}
                       style={{
                         transform: 'scale(0.48)',
                         transformOrigin: 'top left',
@@ -380,11 +383,36 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                       }}
                     />
 
+                    {/* Mobile Touch Overlay to allow scrolling without getting stuck */}
+                    {!isEmbedInteractive && (
+                      <div 
+                        onClick={() => setIsEmbedInteractive(true)}
+                        className="md:hidden absolute inset-0 bg-black/35 backdrop-blur-[1px] flex flex-col items-center justify-center gap-2 cursor-pointer z-10 p-4 text-center"
+                      >
+                        <span className="px-3.5 py-1.5 rounded-full bg-[#c93b2b] text-white font-mono text-xs font-bold shadow-lg flex items-center gap-1.5 animate-pulse">
+                          <span>Tap to Interact</span>
+                          <ExternalLink size={12} />
+                        </span>
+                        <span className="text-[10px] font-mono text-[#ddd] bg-black/70 px-2.5 py-0.5 rounded-full">
+                          (Scroll freely elsewhere on page)
+                        </span>
+                      </div>
+                    )}
+
                     {/* Floating Live Interaction Badge */}
-                    <div className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md border border-white/15 text-[10px] font-mono text-emerald-400 flex items-center gap-1.5 pointer-events-none shadow-md">
+                    <div className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md border border-white/15 text-[10px] font-mono text-emerald-400 flex items-center gap-1.5 pointer-events-none shadow-md z-20">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                      <span>LIVE INTERACTIVE APP // REAL-TIME SYNC</span>
+                      <span className="truncate max-w-[190px] sm:max-w-none">LIVE APP // REAL-TIME SYNC</span>
                     </div>
+
+                    {isEmbedInteractive && (
+                      <button
+                        onClick={() => setIsEmbedInteractive(false)}
+                        className="md:hidden absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-black/80 border border-white/20 text-[10px] font-mono text-[#bbb] hover:text-white z-20"
+                      >
+                        Lock Scroll
+                      </button>
+                    )}
                   </div>
 
                   {/* Tech stack pills & Launch button */}
