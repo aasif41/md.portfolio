@@ -14,11 +14,7 @@ export default function Nav({ act, onToggleAct }: NavProps) {
   }
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 md:px-14 py-3.5 md:py-5 flex justify-between items-center transition-all duration-300 select-none pointer-events-auto backdrop-blur-md ${
-      act === 1
-        ? 'bg-[#eef2f6]/60 border-b border-black/[0.04]'
-        : 'bg-[#08080c]/50 border-b border-white/[0.06]'
-    }`}>
+    <nav className="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 md:px-14 py-6 flex justify-between items-center bg-transparent select-none pointer-events-auto">
       {/* Brand logo */}
       <button 
         onClick={() => {
