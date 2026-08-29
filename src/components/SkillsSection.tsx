@@ -446,10 +446,8 @@ export default function SkillsSection() {
     })
   }, [activeCategory, searchQuery])
 
-  const [selectedSkill, setSelectedSkill] = useState<SkillItem | null>(null)
-
-  // Active skill in HUD (hovered one, or selected one, or fallback to first filtered item or Three.js)
-  const displaySkill = hoveredSkill || selectedSkill || filteredSkills[0] || SKILLS_DATA[0]
+  // Active skill in HUD (hovered one, or fallback to first filtered item or Three.js)
+  const displaySkill = hoveredSkill || filteredSkills[0] || SKILLS_DATA[0]
 
   return (
     <section id="skills" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-24 relative selection:bg-[#c93b2b] selection:text-white w-full max-w-full">
@@ -550,16 +548,11 @@ export default function SkillsSection() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 sm:gap-3.5">
               {filteredSkills.map((skill) => {
                 const IconComponent = skill.icon
-                const isSelected = selectedSkill?.id === skill.id
-                const isHovered = hoveredSkill?.id === skill.id || isSelected
+                const isHovered = hoveredSkill?.id === skill.id
 
                 return (
                   <div
                     key={skill.id}
-                    onClick={() => {
-                      setSelectedSkill(skill)
-                      setHoveredSkill(skill)
-                    }}
                     onMouseEnter={() => setHoveredSkill(skill)}
                     onMouseLeave={() => setHoveredSkill(null)}
                     className="group relative p-3 sm:p-4 rounded-2xl border transition-all duration-300 cursor-pointer overflow-hidden backdrop-blur-md select-none"

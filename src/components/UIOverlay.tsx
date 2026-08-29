@@ -291,10 +291,10 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
         /* ========================================================================= */
         /* ============================ ACT 2: GALAXY SPACE ======================== */
         /* ========================================================================= */
-        <div className="text-[#fffcfc] w-full max-w-full overflow-x-hidden">
+        <div className="text-[#fffcfc] w-full max-w-full">
 
           {/* ── SECTION 1: PROJECTS ── full screen */}
-          <section id="projects" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-20 relative w-full max-w-full overflow-x-hidden">
+          <section id="projects" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-20 relative w-full max-w-full">
             <div className="max-w-7xl mx-auto">
               {/* Header & Floating Preview */}
               <div className="grid md:grid-cols-2 gap-8 items-start mb-16 pointer-events-auto">
