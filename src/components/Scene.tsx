@@ -38,6 +38,11 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
   const angularVelocity = useRef({ x: 0, y: 0 })
   const cumulativeRot   = useRef({ x: 0, y: 0 })
 
+  // ── Stabilized Mobile Gyroscope State ─────────────────────────────────────
+  const gyroTarget      = useRef({ x: 0, y: 0 })
+  const gyroSmoothed    = useRef({ x: 0, y: 0 })
+  const baseOrientation = useRef<{ gamma: number; beta: number } | null>(null)
+
   useEffect(() => {
     const handleScroll = () => {
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight
@@ -63,36 +68,24 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
     // ── Mobile Gyroscope / DeviceOrientation Tilt Support ──
     const handleDeviceOrientation = (e: DeviceOrientationEvent) => {
       if (e.gamma === null || e.beta === null) return
-      // Gamma: left-to-right tilt [-90, 90]. Active responsive range ~[-25, 25] degrees
-      const curX = Math.min(Math.max(e.gamma / 25, -1), 1)
-      // Beta: front-to-back tilt [-180, 180]. Handheld portrait phone reference is ~45 degrees
-      const curY = Math.min(Math.max(-(e.beta - 45) / 25, -1), 1)
+      
+      // Auto-calibrate on first sensor event so camera ALWAYS starts dead-center (0, 0)
+      if (!baseOrientation.current) {
+        baseOrientation.current = { gamma: e.gamma, beta: e.beta }
+        return
+      }
 
-      const dx = (curX - lastMousePos.current.x) * 0.4
-      const dy = (curY - lastMousePos.current.y) * 0.4
-      lastMousePos.current.x = curX
-      lastMousePos.current.y = curY
+      // Delta relative to calibrated baseline
+      const deltaGamma = e.gamma - baseOrientation.current.gamma
+      const deltaBeta = e.beta - baseOrientation.current.beta
 
-      mouseNDC.current.x = curX
-      mouseNDC.current.y = curY
-      mouseDelta.current.dx = dx
-      mouseDelta.current.dy = dy
-    }
+      // Deadzone of 1.5° to eliminate resting jitter
+      const rawX = Math.abs(deltaGamma) < 1.5 ? 0 : deltaGamma
+      const rawY = Math.abs(deltaBeta) < 1.5 ? 0 : deltaBeta
 
-    // Touch gesture tilt feedback on mobile
-    const handleTouchMove = (e: TouchEvent) => {
-      if (e.touches.length === 0) return
-      const t = e.touches[0]
-      const curX = (t.clientX / window.innerWidth) * 2 - 1
-      const curY = -(t.clientY / window.innerHeight) * 2 + 1
-      const dx = (curX - lastMousePos.current.x) * 0.5
-      const dy = (curY - lastMousePos.current.y) * 0.5
-      lastMousePos.current.x = curX
-      lastMousePos.current.y = curY
-      mouseNDC.current.x = curX
-      mouseNDC.current.y = curY
-      mouseDelta.current.dx = dx
-      mouseDelta.current.dy = dy
+      // Smooth normalized tilt target [-0.35, 0.35]
+      gyroTarget.current.x = Math.min(Math.max(rawX / 22, -1), 1) * 0.35
+      gyroTarget.current.y = Math.min(Math.max(-rawY / 22, -1), 1) * 0.25
     }
 
     // Attach gyroscope listeners (with iOS permission request fallback if required)
@@ -116,14 +109,12 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
-    window.addEventListener('touchmove', handleTouchMove, { passive: true })
     handleScroll()
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('deviceorientation', handleDeviceOrientation)
-      window.removeEventListener('touchmove', handleTouchMove)
     }
   }, [])
 
@@ -258,6 +249,10 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
       pCam.updateProjectionMatrix()
     }
 
+    // Smoothly interpolate calibrated mobile gyroscope tilt
+    gyroSmoothed.current.x = THREE.MathUtils.damp(gyroSmoothed.current.x, gyroTarget.current.x, 3.5, delta)
+    gyroSmoothed.current.y = THREE.MathUtils.damp(gyroSmoothed.current.y, gyroTarget.current.y, 3.5, delta)
+
     // ── ACT 1 ──
     if (act === 1) {
       const totalTravel = GATE_COUNT * SPACING * 0.88
@@ -273,8 +268,8 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
       }
       pCam.position.x = THREE.MathUtils.damp(pCam.position.x, 0,   3.5, delta)
       pCam.position.y = THREE.MathUtils.damp(pCam.position.y, 2.3, 3.5, delta)
-      const curMx = mouseNDC.current.x
-      const curMy = mouseNDC.current.y
+      const curMx = mouseNDC.current.x + gyroSmoothed.current.x
+      const curMy = mouseNDC.current.y + gyroSmoothed.current.y
       pCam.rotation.x = THREE.MathUtils.damp(pCam.rotation.x,  curMy * 0.2,  3.5, delta)
       pCam.rotation.y = THREE.MathUtils.damp(pCam.rotation.y, -curMx * 0.4,  3.5, delta)
       pCam.rotation.z = THREE.MathUtils.damp(pCam.rotation.z, -curMx * 0.05, 3.5, delta)
@@ -374,9 +369,11 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
         )
       }
 
-      // Camera parallax
-      const targetX = mouseNDC.current.x * 0.35
-      const targetY = 1.8 + mouseNDC.current.y * 0.18
+      // Camera parallax (mouse hover on desktop, gyro tilt on mobile)
+      const curMx = mouseNDC.current.x + gyroSmoothed.current.x
+      const curMy = mouseNDC.current.y + gyroSmoothed.current.y
+      const targetX = curMx * 0.35
+      const targetY = 1.8 + curMy * 0.18
       pCam.position.x = THREE.MathUtils.damp(pCam.position.x, targetX, 3.5, delta)
       pCam.position.y = THREE.MathUtils.damp(pCam.position.y, targetY, 3.5, delta)
       pCam.lookAt(0, 0, -20)

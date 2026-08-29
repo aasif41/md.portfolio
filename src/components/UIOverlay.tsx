@@ -460,11 +460,10 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                 
                 {/* ── LEFT HALF: Authentic Folder Stack (50% Split, Exact Reference Silhouette) ── */}
                 <div className="w-full">
-                  
                   {/* ── THE FOLDER STACK CONTAINER (Intercepts scroll wheel & prevents page scroll) ── */}
                   <div 
                     ref={folderRefCallback}
-                    className="relative w-full max-w-[calc(100%-26px)] sm:max-w-full h-[400px] sm:h-[450px] select-none cursor-pointer group"
+                    className="relative w-full max-w-[calc(100%-20px)] sm:max-w-full h-[450px] select-none cursor-pointer group"
                     onClick={() => setIsDetailOpen(true)}
                   >
                     {/* Render Stacked Folders behind (Layers 3 & 2) with clean low opacity and zero body text */}
@@ -473,8 +472,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                       if (offset === 0 || offset > 2) return null
 
                       const isNext = offset === 1
-                      const translateX = isNext ? 12 : 24
-                      const translateY = isNext ? -12 : -24
+                      const translateX = isNext ? 10 : 20
+                      const translateY = isNext ? -10 : -20
                       const scale = isNext ? 0.97 : 0.94
                       const opacity = isNext ? 0.6 : 0.35
                       const zIndex = isNext ? 20 : 10
@@ -513,17 +512,17 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
 
                           {/* Clean Dim Tab Indicator (No body text, prevents collision with front file) */}
                           <div 
-                            className="absolute top-[28px] left-8 font-mono text-[11px] text-white/50 font-bold flex items-center gap-1.5"
+                            className="absolute top-[26px] sm:top-[28px] left-6 sm:left-8 font-mono text-[10px] sm:text-[11px] text-white/50 font-bold flex items-center gap-1.5 truncate max-w-[150px] sm:max-w-none"
                             style={{ opacity: isNext ? 0.7 : 0.4 }}
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
-                            <span>{proj.folderTab.split(' // ')[0]}</span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-white/30 shrink-0" />
+                            <span className="truncate">{proj.folderTab.split(' // ')[0]}</span>
                           </div>
                         </div>
                       )
                     })}
 
-                    {/* â”€â”€ ACTIVE FRONT FOLDER (Solid Opaque Charcoal Body to Prevent Ghosting) â”€â”€ */}
+                    {/* ── ACTIVE FRONT FOLDER (Solid Opaque Charcoal Body to Prevent Ghosting) ── */}
                     <div 
                       className="absolute inset-0 z-30 transition-all duration-300 drop-shadow-2xl"
                     >
@@ -565,22 +564,22 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                         </svg>
 
                         {/* 2. Top-Left Tab Content (Vertically centered with balanced padding) */}
-                        <div className="absolute top-[26px] left-8 z-10 flex items-center gap-2 font-mono text-xs text-[#fffcfc] font-bold">
-                          <span className="w-2 h-2 rounded-full bg-[#c93b2b] animate-pulse" />
-                          <span>{activeProject.folderTab}</span>
+                        <div className="absolute top-[24px] sm:top-[26px] left-5 sm:left-8 z-10 flex items-center gap-1.5 sm:gap-2 font-mono text-[11px] sm:text-xs text-[#fffcfc] font-bold max-w-[170px] sm:max-w-none">
+                          <span className="w-2 h-2 rounded-full bg-[#c93b2b] animate-pulse shrink-0" />
+                          <span className="truncate">{activeProject.folderTab}</span>
                         </div>
 
                         {/* Top-Right Quick Project Change Buttons (No numbers, sleek compact stepper placed higher on rim) */}
-                        <div className="absolute top-[2px] right-7 z-20 flex items-center gap-1 bg-black/60 backdrop-blur-md p-1 rounded-xl border border-white/15 shadow-md">
+                        <div className="absolute top-[2px] right-4 sm:right-7 z-20 flex items-center gap-1 bg-black/60 backdrop-blur-md p-1 rounded-xl border border-white/15 shadow-md">
                           <button
                             onClick={(e) => {
                               e.stopPropagation()
                               setActiveProjectIndex((prev) => (prev - 1 + PROJECTS_DATA.length) % PROJECTS_DATA.length)
                             }}
-                            className="p-1.5 text-[#bbb] hover:text-white hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
+                            className="p-1 sm:p-1.5 text-[#bbb] hover:text-white hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
                             title="Previous Project"
                           >
-                            <ChevronLeft size={14} />
+                            <ChevronLeft size={13} className="sm:w-[14px] sm:h-[14px]" />
                           </button>
                           <div className="w-[1px] h-3.5 bg-white/15" />
                           <button
@@ -588,56 +587,56 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                               e.stopPropagation()
                               setActiveProjectIndex((prev) => (prev + 1) % PROJECTS_DATA.length)
                             }}
-                            className="p-1.5 text-[#bbb] hover:text-white hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
+                            className="p-1 sm:p-1.5 text-[#bbb] hover:text-white hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
                             title="Next Project"
                           >
-                            <ChevronRight size={14} />
+                            <ChevronRight size={13} className="sm:w-[14px] sm:h-[14px]" />
                           </button>
                         </div>
 
                         {/* 3. Front Pocket Content Container */}
-                        <div className="absolute top-16 inset-x-8 bottom-10 z-20 flex flex-col justify-between p-4">
+                        <div className="absolute top-14 sm:top-16 inset-x-3.5 sm:inset-x-8 bottom-6 sm:bottom-8 z-20 flex flex-col justify-between p-2.5 sm:p-4">
                           
                           {/* Info Header */}
                           <div>
-                            <div className="flex items-center justify-between gap-2 mb-2.5">
-                              <span className="px-3 py-0.5 bg-[#c93b2b]/15 border border-[#c93b2b]/30 rounded text-[11px] font-mono text-[#c93b2b] font-bold uppercase tracking-wider">
+                            <div className="flex items-center justify-between gap-2 mb-2">
+                              <span className="px-2.5 sm:px-3 py-0.5 bg-[#c93b2b]/15 border border-[#c93b2b]/30 rounded text-[10px] sm:text-[11px] font-mono text-[#c93b2b] font-bold uppercase tracking-wider">
                                 {activeProject.badge}
                               </span>
-                              <span className="text-xs font-mono text-[#888]">{activeProject.year}</span>
+                              <span className="text-[11px] sm:text-xs font-mono text-[#888]">{activeProject.year}</span>
                             </div>
 
-                            <h3 className="text-2xl md:text-3xl font-bold en text-[#fffcfc] mb-3 leading-snug group-hover:text-[#c93b2b] transition-colors">
+                            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold en text-[#fffcfc] mb-2 sm:mb-3 leading-snug group-hover:text-[#c93b2b] transition-colors">
                               {activeProject.title}
                             </h3>
 
-                            <p className="text-xs md:text-sm text-[#bbb] leading-relaxed line-clamp-3 font-light mb-3">
+                            <p className="text-xs md:text-sm text-[#bbb] leading-relaxed line-clamp-2 sm:line-clamp-3 font-light mb-2 sm:mb-3">
                               {activeProject.shortDesc}
                             </p>
                           </div>
 
                           {/* Tech Stack & Action Bar */}
                           <div>
-                            <div className="flex flex-wrap gap-1.5 mb-4">
+                            <div className="flex flex-wrap gap-1 sm:gap-1.5 mb-2.5 sm:mb-4">
                               {activeProject.tech.map((t) => (
-                                <span key={t} className="px-2.5 py-0.5 bg-white/[0.06] border border-white/10 rounded-md text-[11px] font-mono text-[#ddd]">
+                                <span key={t} className="px-2 sm:px-2.5 py-0.5 bg-white/[0.06] border border-white/10 rounded-md text-[10px] sm:text-[11px] font-mono text-[#ddd]">
                                   {t}
                                 </span>
                               ))}
                             </div>
 
                             {/* Buttons on Front */}
-                            <div className="flex items-center justify-between gap-3 pt-3.5 border-t border-white/10">
-                              <div className="flex items-center gap-3">
+                            <div className="flex items-center justify-between gap-1.5 sm:gap-3 pt-2.5 sm:pt-3.5 border-t border-white/10">
+                              <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
                                 <a
                                   href={activeProject.githubUrl}
                                   target="_blank"
                                   rel="noreferrer"
                                   onClick={(e) => e.stopPropagation()}
-                                  className="px-4 py-2 bg-[#c93b2b] text-white font-mono text-xs font-bold rounded-xl hover:bg-[#d94838] transition-all inline-flex items-center gap-2 shadow-md shadow-[#c93b2b]/30"
+                                  className="px-2.5 sm:px-4 py-1.5 sm:py-2 bg-[#c93b2b] text-white font-mono text-[11px] sm:text-xs font-bold rounded-xl hover:bg-[#d94838] transition-all inline-flex items-center gap-1.5 sm:gap-2 shadow-md shadow-[#c93b2b]/30"
                                 >
-                                  <GitMerge size={13} />
-                                  GitHub
+                                  <GitMerge size={12} className="sm:w-[13px] sm:h-[13px]" />
+                                  <span>GitHub</span>
                                 </a>
                                 {activeProject.liveDemoUrl && (
                                   <a
@@ -645,25 +644,25 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                                     target="_blank"
                                     rel="noreferrer"
                                     onClick={(e) => e.stopPropagation()}
-                                    className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-white font-mono text-xs font-bold rounded-xl transition-all inline-flex items-center gap-2"
+                                    className="px-2.5 sm:px-4 py-1.5 sm:py-2 bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-white font-mono text-[11px] sm:text-xs font-bold rounded-xl transition-all inline-flex items-center gap-1.5 sm:gap-2"
                                   >
-                                    <ExternalLink size={13} />
-                                    Live Demo
+                                    <ExternalLink size={12} className="sm:w-[13px] sm:h-[13px]" />
+                                    <span>Live Demo</span>
                                   </a>
                                 )}
                               </div>
 
-                              <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                                 <button
                                   onClick={(e) => {
                                     e.stopPropagation()
                                     setActiveProjectIndex((prev) => (prev + 1) % PROJECTS_DATA.length)
                                   }}
-                                  className="text-xs font-mono text-[#bbb] hover:text-white inline-flex items-center gap-1 cursor-pointer transition-colors"
+                                  className="text-[11px] sm:text-xs font-mono text-[#bbb] hover:text-white inline-flex items-center gap-1 cursor-pointer transition-colors"
                                   title="Cycle to next project"
                                 >
                                   <span>Next</span>
-                                  <ArrowRight size={12} />
+                                  <ArrowRight size={11} className="sm:w-[12px] sm:h-[12px]" />
                                 </button>
 
                                 <button
@@ -671,15 +670,15 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                                     e.stopPropagation()
                                     setIsDetailOpen(true)
                                   }}
-                                  className="text-xs font-mono text-[#c93b2b] hover:underline font-bold inline-flex items-center gap-1.5 cursor-pointer"
+                                  className="text-[11px] sm:text-xs font-mono text-[#c93b2b] hover:underline font-bold inline-flex items-center gap-1 cursor-pointer shrink-0"
                                 >
                                   <span>Open File ↗</span>
                                 </button>
                               </div>
                             </div>
                           </div>
-
                         </div>
+
                       </div>
                     </div>
                   </div>
