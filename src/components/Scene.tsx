@@ -395,9 +395,9 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
             <mesh castShadow receiveShadow>
               <dodecahedronGeometry args={[3.5, 2]} />
               <meshStandardMaterial
-                color="#d44230"
-                roughness={0.38}
-                metalness={0.22}
+                color="#c93b2b"
+                roughness={0.5}
+                metalness={0.2}
                 flatShading
               />
             </mesh>
@@ -407,8 +407,8 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
               <ringGeometry args={[4.8, 6.8, 64]} />
               <meshStandardMaterial
                 color="#f0ede6"
-                roughness={0.25}
-                metalness={0.45}
+                roughness={0.3}
+                metalness={0.4}
                 side={THREE.DoubleSide}
                 transparent
                 opacity={0.85}

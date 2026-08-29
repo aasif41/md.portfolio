@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
 import {
-  Globe,
   GitMerge,
   ArrowRight,
   ChevronDown,
@@ -37,32 +36,8 @@ export interface ProjectItem {
 
 const PROJECTS_DATA: ProjectItem[] = [
   {
-    id: 'tribhuvan_portal',
-    folderTab: '01 // TRIBHUVAN_PORTAL',
-    title: 'Tribhuvan College Portal & App',
-    badge: 'FEATURED FULL-STACK & MOBILE',
-    year: '2026',
-    shortDesc: 'Comprehensive multi-role institutional ecosystem with dedicated dashboards for Admins, Teachers, and Students, automated attendance tracking, dynamic timetables & cross-platform React Native app.',
-    fullDesc: 'A complete full-stack enterprise campus management system. Engineered secure role-based access control (RBAC), subject-wise attendance logs, timetable builders, announcement feeds, and a React Native mobile application for student smartphones.',
-    tech: ['React.js', 'Node.js', 'PostgreSQL', 'React Native', 'JWT / RBAC', 'Tailwind CSS'],
-    githubUrl: 'https://github.com/aasif41/tribhuvan_portal',
-    liveDemoUrl: 'https://tribhuvan-portal-web.vercel.app/',
-    modules: [
-      { name: 'Admin Control & Institutional RBAC', tech: 'Node.js / Express', status: 'Active' },
-      { name: 'Teacher Class & Subject Attendance Engine', tech: 'PostgreSQL / SQL', status: 'Active' },
-      { name: 'Student Timetable, Notices & Profile Hub', tech: 'React / TypeScript', status: 'Active' },
-      { name: 'Cross-Platform Student Mobile Client', tech: 'React Native / Expo', status: 'Active' },
-    ],
-    metrics: [
-      { label: 'Architecture', val: 'Multi-Role RBAC' },
-      { label: 'Security', val: 'Zero-Vulnerability JWT' },
-      { label: 'Platforms', val: 'Web + Android/iOS' },
-      { label: 'Database', val: 'PostgreSQL Relational' },
-    ],
-  },
-  {
     id: 'watch_party',
-    folderTab: '02 // WATCH_PARTY',
+    folderTab: '01 // WATCH_PARTY',
     title: 'WatchParty — Sync & Stream',
     badge: 'REAL-TIME FULL-STACK WEB APP',
     year: '2026',
@@ -82,6 +57,30 @@ const PROJECTS_DATA: ProjectItem[] = [
       { label: 'Auth', val: 'Google OAuth' },
       { label: 'Sync', val: 'Multi-User Playback' },
       { label: 'Security', val: 'DOMPurify / XSS Safe' },
+    ],
+  },
+  {
+    id: 'tribhuvan_portal',
+    folderTab: '02 // TRIBHUVAN_PORTAL',
+    title: 'Tribhuvan College Portal & App',
+    badge: 'FEATURED FULL-STACK & MOBILE',
+    year: '2026',
+    shortDesc: 'Comprehensive multi-role institutional ecosystem with dedicated dashboards for Admins, Teachers, and Students, automated attendance tracking, dynamic timetables & cross-platform React Native app.',
+    fullDesc: 'A complete full-stack enterprise campus management system. Engineered secure role-based access control (RBAC), subject-wise attendance logs, timetable builders, announcement feeds, and a React Native mobile application for student smartphones.',
+    tech: ['React.js', 'Node.js', 'PostgreSQL', 'React Native', 'JWT / RBAC', 'Tailwind CSS'],
+    githubUrl: 'https://github.com/aasif41/tribhuvan_portal',
+    liveDemoUrl: 'https://tribhuvan-portal-web.vercel.app/',
+    modules: [
+      { name: 'Admin Control & Institutional RBAC', tech: 'Node.js / Express', status: 'Active' },
+      { name: 'Teacher Class & Subject Attendance Engine', tech: 'PostgreSQL / SQL', status: 'Active' },
+      { name: 'Student Timetable, Notices & Profile Hub', tech: 'React / TypeScript', status: 'Active' },
+      { name: 'Cross-Platform Student Mobile Client', tech: 'React Native / Expo', status: 'Active' },
+    ],
+    metrics: [
+      { label: 'Architecture', val: 'Multi-Role RBAC' },
+      { label: 'Security', val: 'Zero-Vulnerability JWT' },
+      { label: 'Platforms', val: 'Web + Android/iOS' },
+      { label: 'Database', val: 'PostgreSQL Relational' },
     ],
   },
   {
@@ -273,13 +272,13 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
           </section>
 
           {/* Act 1 Scroll Travel & Clean Click to Continue Prompt */}
-          <section className="h-screen flex flex-col items-center justify-center p-8 select-none pointer-events-none">
+          <section className="h-screen flex flex-col items-center justify-center select-none pointer-events-none w-full overflow-hidden">
             <button
               onClick={onContinue}
-              className="pointer-events-auto group cursor-pointer text-center p-4 transition-transform duration-200 hover:scale-105 will-change-transform"
+              className="pointer-events-auto group cursor-pointer text-center w-full h-[65vh] md:h-[75vh] flex flex-col items-center justify-center transition-transform duration-200 hover:scale-[1.02] will-change-transform px-4"
             >
               <h2
-                className="pointer-events-none text-6xl sm:text-7xl md:text-9xl font-bold font-movement uppercase tracking-wider transition-colors duration-200 text-transparent group-hover:text-[#161216] group-hover:[-webkit-text-fill-color:#161216] group-hover:[-webkit-text-stroke-color:#161216]"
+                className="pointer-events-none whitespace-nowrap text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold font-movement uppercase tracking-wider transition-colors duration-200 text-transparent group-hover:text-[#161216] group-hover:[-webkit-text-fill-color:#161216] group-hover:[-webkit-text-stroke-color:#161216]"
                 style={{ WebkitTextStroke: '2px #161216' }}
               >
                 Click to continue
@@ -303,8 +302,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                     Last Project recognitions
                   </h1>
                   <h2 className="text-xl md:text-2xl font-bold en text-[#c93b2b] mb-6">
-                    <a href="https://github.com/aasif41/tribhuvan_portal" target="_blank" rel="noreferrer" className="hover:underline inline-flex items-center gap-2">
-                      Full stack College Portal &amp; App
+                    <a href="https://watchparty.website" target="_blank" rel="noreferrer" className="hover:underline inline-flex items-center gap-2">
+                      WatchParty — Sync &amp; Stream
                       <ArrowRight size={20} />
                     </a>
                   </h2>
@@ -312,34 +311,110 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                   {/* Recognitions / Features List */}
                   <div className="space-y-3 font-mono text-xs md:text-sm text-[#bbb] mb-8">
                     <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center gap-3 hover:border-[#c93b2b] transition-all whitespace-nowrap">
-                      <span>2026 | Admin, Teacher &amp; Student Portal</span>
-                      <span className="text-[#c93b2b] font-bold shrink-0">[ React / Node.js ]</span>
+                      <span>2026 | Real-Time Video Synchronization</span>
+                      <span className="text-[#c93b2b] font-bold shrink-0">[ Socket.IO / WebRTC ]</span>
                     </div>
                     <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center gap-3 hover:border-[#c93b2b] transition-all whitespace-nowrap">
-                      <span>2026 | Teacher Hub &amp; Subject Attendance</span>
-                      <span className="text-[#c93b2b] font-bold shrink-0">[ PostgreSQL ]</span>
+                      <span>2026 | Live Multi-User Chat &amp; XSS Defense</span>
+                      <span className="text-[#c93b2b] font-bold shrink-0">[ Node.js / DOMPurify ]</span>
                     </div>
                     <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center gap-3 hover:border-[#c93b2b] transition-all whitespace-nowrap">
-                      <span>2026 | Student Timetable &amp; Notices Engine</span>
-                      <span className="text-[#c93b2b] font-bold shrink-0">[ Secure RBAC ]</span>
+                      <span>2026 | Peer-to-Peer Video Call &amp; Screen Share</span>
+                      <span className="text-[#c93b2b] font-bold shrink-0">[ WebRTC Mesh ]</span>
                     </div>
                     <div className="p-3.5 bg-white/[0.05] rounded-xl border border-white/10 flex justify-between items-center gap-3 hover:border-[#c93b2b] transition-all whitespace-nowrap">
-                      <span>2026 | Cross-Platform Mobile Application</span>
-                      <span className="text-[#c93b2b] font-bold shrink-0">[ React Native ]</span>
+                      <span>2026 | Google OAuth &amp; Room Access Control</span>
+                      <span className="text-[#c93b2b] font-bold shrink-0">[ Firebase Auth ]</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Floating Preview Window */}
-                <div className="p-6 bg-white/[0.04] backdrop-blur-md rounded-3xl border border-white/10 shadow-2xl">
-                  <div className="w-full h-56 bg-gradient-to-br from-[#c93b2b]/20 to-black rounded-2xl flex flex-col items-center justify-center p-6 text-center border border-white/10 mb-4">
-                    <Globe size={36} className="text-[#c93b2b] mb-3" />
-                    <span className="text-xs font-mono uppercase tracking-widest text-[#c93b2b] font-bold">Interactive 3D Galaxy Viewport</span>
-                    <p className="text-xs text-[#888] mt-1 max-w-xs">Real-time WebGL rendering with physics simulation and dynamic lighting.</p>
+                {/* WatchParty Live Interactive Preview Window */}
+                <div className="p-5 md:p-6 bg-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/15 shadow-[0_0_50px_rgba(0,0,0,0.6)] relative overflow-hidden group">
+                  {/* Atmospheric background glow */}
+                  <div className="absolute -top-16 -right-16 w-56 h-56 bg-[#c93b2b]/15 rounded-full blur-3xl pointer-events-none" />
+
+                  {/* Browser Chrome Header */}
+                  <div className="flex justify-between items-center pb-3 border-b border-white/10 mb-3">
+                    {/* Mac Window Dots */}
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#ef4444]/80" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#f59e0b]/80" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#10b981]/80" />
+                    </div>
+
+                    {/* URL Bar Pill */}
+                    <a
+                      href="https://watchparty.website"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-3 py-1 rounded-full bg-black/40 border border-white/10 text-[11px] font-mono text-[#aaa] hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-white font-medium">watchparty.website</span>
+                    </a>
+
+                    {/* External Link */}
+                    <a
+                      href="https://watchparty.website"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-[#aaa] hover:text-white transition-colors p-1 cursor-pointer"
+                      title="Open in new tab"
+                    >
+                      <ExternalLink size={14} />
+                    </a>
                   </div>
-                  <div className="flex justify-between items-center text-xs font-mono text-[#aaa]">
-                    <span>STATUS: ONLINE</span>
-                    <span>120 FPS WEBGL</span>
+
+                  {/* Live Interactive Web App Frame */}
+                  <div className="relative w-full h-[400px] md:h-[440px] rounded-2xl overflow-hidden border border-white/10 bg-black shadow-inner mb-4">
+                    <iframe
+                      src="https://watchparty.website"
+                      title="WatchParty Live Interactive Application"
+                      className="border-0 pointer-events-auto"
+                      style={{
+                        transform: 'scale(0.48)',
+                        transformOrigin: 'top left',
+                        width: '208.33%',
+                        height: '208.33%',
+                      }}
+                    />
+
+                    {/* Floating Live Interaction Badge */}
+                    <div className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md border border-white/15 text-[10px] font-mono text-emerald-400 flex items-center gap-1.5 pointer-events-none shadow-md">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                      <span>LIVE INTERACTIVE APP // REAL-TIME SYNC</span>
+                    </div>
+                  </div>
+
+                  {/* Tech stack pills & Launch button */}
+                  <div className="flex flex-wrap items-center justify-between gap-2.5">
+                    <div className="flex flex-wrap gap-1.5 font-mono text-[10px]">
+                      <span className="px-2 py-0.5 rounded-md bg-white/[0.06] border border-white/10 text-[#bbb]">React 18</span>
+                      <span className="px-2 py-0.5 rounded-md bg-white/[0.06] border border-white/10 text-[#bbb]">Socket.IO</span>
+                      <span className="px-2 py-0.5 rounded-md bg-[#c93b2b]/20 border border-[#c93b2b]/40 text-[#c93b2b] font-bold">WebRTC P2P</span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <a
+                        href="https://github.com/aasif41/watch-party-app"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="px-3 py-1.5 bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 rounded-xl text-xs font-mono text-[#ccc] hover:text-white transition-all inline-flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <GitMerge size={12} />
+                        <span>Repo</span>
+                      </a>
+                      <a
+                        href="https://watchparty.website"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="px-3.5 py-1.5 bg-[#c93b2b] hover:bg-[#d94838] rounded-xl text-xs font-mono font-bold text-white transition-all inline-flex items-center gap-1.5 shadow-[0_0_15px_rgba(201,59,43,0.3)] cursor-pointer"
+                      >
+                        <span>Open Fullscreen</span>
+                        <ExternalLink size={12} />
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>

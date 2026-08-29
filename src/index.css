@@ -52,6 +52,7 @@
   html {
     scroll-behavior: smooth;
     background: #eef2f6;
+    cursor: ns-resize;
   }
 
   body {
@@ -60,6 +61,21 @@
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    cursor: ns-resize;
+  }
+
+  #root, canvas {
+    cursor: ns-resize;
+  }
+
+  /* Clickable elements retain finger hand pointer */
+  a, button, [role="button"], .cursor-pointer, a *, button *, [role="button"] *, .cursor-pointer *, input[type="submit"], input[type="button"], label[for] {
+    cursor: pointer !important;
+  }
+
+  /* Text editing inputs retain I-beam */
+  input[type="text"], input[type="email"], textarea {
+    cursor: text !important;
   }
 }
 
