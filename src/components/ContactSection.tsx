@@ -14,7 +14,6 @@ import {
   Globe,
   GitMerge,
   Coffee,
-  Sparkles,
   Shrub,
   Loader2,
   CheckCircle2,
@@ -563,7 +562,6 @@ Reply-to: ${senderEmail || 'Not specified'}`
           </button>
 
           <div className="text-xs font-mono text-[#777] tracking-wider uppercase flex items-center gap-2">
-            <Sparkles size={12} className="text-[#c93b2b]" />
             <span>MD AASIF · 2026 CREATIVE 3D WEBGL PORTFOLIO</span>
           </div>
         </div>
