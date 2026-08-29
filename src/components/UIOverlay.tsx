@@ -566,7 +566,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                         {/* 2. Top-Left Tab Content (Strictly fitted within mobile tab flap silhouette) */}
                         <div className="absolute top-[24px] sm:top-[26px] left-4 sm:left-8 z-10 flex items-center gap-1.5 sm:gap-2 font-mono text-[10px] sm:text-xs text-[#fffcfc] font-bold max-w-[115px] sm:max-w-none">
                           <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#c93b2b] animate-pulse shrink-0" />
-                          <span className="truncate">{activeProject.folderTab}</span>
+                          <span className="truncate">{activeProject.folderTab.replace(/_/g, ' ')}</span>
                         </div>
 
                         {/* Top-Right Quick Project Change Buttons (No numbers, sleek compact stepper placed higher on rim) */}
@@ -594,8 +594,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                           </button>
                         </div>
 
-                        {/* 3. Front Pocket Content Container (Safe 46px clearance above bottom embossed lines) */}
-                        <div className="absolute top-13 sm:top-16 inset-x-3.5 sm:inset-x-8 bottom-[46px] sm:bottom-9 z-20 flex flex-col justify-between p-2 sm:p-4">
+                        {/* 3. Front Pocket Content Container (Equidistant vertical spacing for action buttons) */}
+                        <div className="absolute top-13 sm:top-16 inset-x-3.5 sm:inset-x-8 bottom-[39px] sm:bottom-9 z-20 flex flex-col justify-between p-2 sm:p-4">
                           
                           {/* Info Header */}
                           <div>
@@ -625,8 +625,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                               ))}
                             </div>
 
-                            {/* Buttons on Front (Evenly centered between top border & bottom embossed line) */}
-                            <div className="flex items-center justify-between gap-1.5 sm:gap-3 py-2 sm:py-3 border-t border-white/10">
+                            {/* Buttons on Front (Exactly centered between top border & bottom embossed line) */}
+                            <div className="flex items-center justify-between gap-1.5 sm:gap-3 pt-3 pb-1 sm:pt-4 sm:pb-2 border-t border-white/10">
                               <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
                                 <a
                                   href={activeProject.githubUrl}

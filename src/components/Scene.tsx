@@ -83,12 +83,12 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
       const rawX = Math.abs(deltaGamma) < 0.6 ? 0 : deltaGamma
       const rawY = Math.abs(deltaBeta) < 0.6 ? 0 : deltaBeta
 
-      // Responsive sensitivity: full tilt reachable within comfortable ~16° wrist turn
-      const normX = Math.min(Math.max(rawX / 16, -1), 1)
-      const normY = Math.min(Math.max(-rawY / 16, -1), 1)
+      // Responsive sensitivity: comfortably calibrated sweet-spot
+      const normX = Math.min(Math.max(rawX / 19, -1), 1)
+      const normY = Math.min(Math.max(-rawY / 19, -1), 1)
 
-      gyroTarget.current.x = normX * 0.95
-      gyroTarget.current.y = normY * 0.95
+      gyroTarget.current.x = normX * 0.72
+      gyroTarget.current.y = normY * 0.72
     }
 
     // Attach gyroscope listeners (with iOS permission request fallback if required)
@@ -253,8 +253,8 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
     }
 
     // Smoothly interpolate calibrated mobile gyroscope tilt
-    gyroSmoothed.current.x = THREE.MathUtils.damp(gyroSmoothed.current.x, gyroTarget.current.x, 5.0, delta)
-    gyroSmoothed.current.y = THREE.MathUtils.damp(gyroSmoothed.current.y, gyroTarget.current.y, 5.0, delta)
+    gyroSmoothed.current.x = THREE.MathUtils.damp(gyroSmoothed.current.x, gyroTarget.current.x, 4.2, delta)
+    gyroSmoothed.current.y = THREE.MathUtils.damp(gyroSmoothed.current.y, gyroTarget.current.y, 4.2, delta)
 
     // ── ACT 1 ──
     if (act === 1) {
@@ -273,9 +273,9 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
       pCam.position.y = THREE.MathUtils.damp(pCam.position.y, 2.3, 3.5, delta)
       const curMx = mouseNDC.current.x + gyroSmoothed.current.x
       const curMy = mouseNDC.current.y + gyroSmoothed.current.y
-      pCam.rotation.x = THREE.MathUtils.damp(pCam.rotation.x,  curMy * 0.45, 4.0, delta)
-      pCam.rotation.y = THREE.MathUtils.damp(pCam.rotation.y, -curMx * 0.55, 4.0, delta)
-      pCam.rotation.z = THREE.MathUtils.damp(pCam.rotation.z, -curMx * 0.08, 4.0, delta)
+      pCam.rotation.x = THREE.MathUtils.damp(pCam.rotation.x,  curMy * 0.32, 4.0, delta)
+      pCam.rotation.y = THREE.MathUtils.damp(pCam.rotation.y, -curMx * 0.42, 4.0, delta)
+      pCam.rotation.z = THREE.MathUtils.damp(pCam.rotation.z, -curMx * 0.06, 4.0, delta)
 
       if (heroTextRef.current) {
         heroTextRef.current.position.y = 0.5 + Math.sin(state.clock.elapsedTime * 0.5) * 0.08
@@ -375,8 +375,8 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
       // Camera parallax (mouse hover on desktop, gyro tilt on mobile)
       const curMx = mouseNDC.current.x + gyroSmoothed.current.x
       const curMy = mouseNDC.current.y + gyroSmoothed.current.y
-      const targetX = curMx * 0.7
-      const targetY = 1.8 + curMy * 0.75
+      const targetX = curMx * 0.52
+      const targetY = 1.8 + curMy * 0.55
       pCam.position.x = THREE.MathUtils.damp(pCam.position.x, targetX, 4.0, delta)
       pCam.position.y = THREE.MathUtils.damp(pCam.position.y, targetY, 4.0, delta)
       pCam.lookAt(0, 0, -20)
