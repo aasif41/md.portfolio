@@ -194,7 +194,7 @@ Reply-to: ${senderEmail || 'Not specified'}`
   }
 
   return (
-    <section id="contact" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-24 relative select-none selection:bg-[#c93b2b] selection:text-white">
+    <section id="contact" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-24 relative select-none selection:bg-[#c93b2b] selection:text-white w-full max-w-full overflow-x-hidden">
       {/* Ambient background light gradients */}
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-[850px] h-[450px] bg-gradient-to-t from-[#c93b2b]/15 via-[#48cae4]/5 to-transparent blur-[150px] pointer-events-none -z-10" />
 

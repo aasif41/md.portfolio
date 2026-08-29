@@ -291,10 +291,10 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
         /* ========================================================================= */
         /* ============================ ACT 2: GALAXY SPACE ======================== */
         /* ========================================================================= */
-        <div className="text-[#fffcfc]">
+        <div className="text-[#fffcfc] w-full max-w-full overflow-x-hidden">
 
           {/* ── SECTION 1: PROJECTS ── full screen */}
-          <section id="projects" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-20 relative">
+          <section id="projects" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-20 relative w-full max-w-full overflow-x-hidden">
             <div className="max-w-7xl mx-auto">
               {/* Header & Floating Preview */}
               <div className="grid md:grid-cols-2 gap-8 items-start mb-16 pointer-events-auto">
@@ -455,16 +455,16 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                 <div className="w-16 h-[2px] bg-[#c93b2b] mx-auto mt-4" />
               </div>
 
-              {/* â”€â”€ 50/50 Screen Split: Left Folder & Right Dossier (Matching Identical Dimensions) â”€â”€ */}
+              {/* ── 50/50 Screen Split: Left Folder & Right Dossier (Matching Identical Dimensions) ── */}
               <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-stretch pointer-events-auto mt-6">
                 
-                {/* â”€â”€ LEFT HALF: Authentic Folder Stack (50% Split, Exact Reference Silhouette) â”€â”€ */}
-                <div className="w-full flex flex-col justify-center">
+                {/* ── LEFT HALF: Authentic Folder Stack (50% Split, Exact Reference Silhouette) ── */}
+                <div className="w-full">
                   
-                  {/* â”€â”€ THE FOLDER STACK CONTAINER (Intercepts scroll wheel & prevents page scroll) â”€â”€ */}
+                  {/* ── THE FOLDER STACK CONTAINER (Intercepts scroll wheel & prevents page scroll) ── */}
                   <div 
                     ref={folderRefCallback}
-                    className="relative w-full h-[450px] select-none cursor-pointer group"
+                    className="relative w-full max-w-[calc(100%-26px)] sm:max-w-full h-[400px] sm:h-[450px] select-none cursor-pointer group"
                     onClick={() => setIsDetailOpen(true)}
                   >
                     {/* Render Stacked Folders behind (Layers 3 & 2) with clean low opacity and zero body text */}
@@ -473,8 +473,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
                       if (offset === 0 || offset > 2) return null
 
                       const isNext = offset === 1
-                      const translateX = isNext ? 22 : 44
-                      const translateY = isNext ? -18 : -34
+                      const translateX = isNext ? 12 : 24
+                      const translateY = isNext ? -12 : -24
                       const scale = isNext ? 0.97 : 0.94
                       const opacity = isNext ? 0.6 : 0.35
                       const zIndex = isNext ? 20 : 10

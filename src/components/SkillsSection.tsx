@@ -450,7 +450,7 @@ export default function SkillsSection() {
   const displaySkill = hoveredSkill || filteredSkills[0] || SKILLS_DATA[0]
 
   return (
-    <section id="skills" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-24 relative selection:bg-[#c93b2b] selection:text-white">
+    <section id="skills" className="min-h-screen px-4 sm:px-6 md:px-12 py-16 md:py-24 relative selection:bg-[#c93b2b] selection:text-white w-full max-w-full overflow-x-hidden">
       {/* Background ambient lighting accents */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[750px] h-[450px] bg-gradient-to-tr from-[#c93b2b]/10 via-[#48cae4]/5 to-transparent blur-[140px] pointer-events-none -z-10" />
 

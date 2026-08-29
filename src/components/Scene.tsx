@@ -60,13 +60,70 @@ export default function Scene({ act, isWarping, warpPhase = 'idle' }: SceneProps
       mouseDelta.current.dy = dy
     }
 
+    // ── Mobile Gyroscope / DeviceOrientation Tilt Support ──
+    const handleDeviceOrientation = (e: DeviceOrientationEvent) => {
+      if (e.gamma === null || e.beta === null) return
+      // Gamma: left-to-right tilt [-90, 90]. Active responsive range ~[-25, 25] degrees
+      const curX = Math.min(Math.max(e.gamma / 25, -1), 1)
+      // Beta: front-to-back tilt [-180, 180]. Handheld portrait phone reference is ~45 degrees
+      const curY = Math.min(Math.max(-(e.beta - 45) / 25, -1), 1)
+
+      const dx = (curX - lastMousePos.current.x) * 0.4
+      const dy = (curY - lastMousePos.current.y) * 0.4
+      lastMousePos.current.x = curX
+      lastMousePos.current.y = curY
+
+      mouseNDC.current.x = curX
+      mouseNDC.current.y = curY
+      mouseDelta.current.dx = dx
+      mouseDelta.current.dy = dy
+    }
+
+    // Touch gesture tilt feedback on mobile
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 0) return
+      const t = e.touches[0]
+      const curX = (t.clientX / window.innerWidth) * 2 - 1
+      const curY = -(t.clientY / window.innerHeight) * 2 + 1
+      const dx = (curX - lastMousePos.current.x) * 0.5
+      const dy = (curY - lastMousePos.current.y) * 0.5
+      lastMousePos.current.x = curX
+      lastMousePos.current.y = curY
+      mouseNDC.current.x = curX
+      mouseNDC.current.y = curY
+      mouseDelta.current.dx = dx
+      mouseDelta.current.dy = dy
+    }
+
+    // Attach gyroscope listeners (with iOS permission request fallback if required)
+    if (typeof window !== 'undefined' && 'DeviceOrientationEvent' in window) {
+      if (typeof (window as any).DeviceOrientationEvent?.requestPermission === 'function') {
+        const askGyroPermission = () => {
+          (window as any).DeviceOrientationEvent.requestPermission()
+            .then((res: string) => {
+              if (res === 'granted') {
+                window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true })
+              }
+            })
+            .catch(() => {})
+        }
+        window.addEventListener('touchstart', askGyroPermission, { once: true })
+        window.addEventListener('click', askGyroPermission, { once: true })
+      } else {
+        window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true })
+      }
+    }
+
     window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
     handleScroll()
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('deviceorientation', handleDeviceOrientation)
+      window.removeEventListener('touchmove', handleTouchMove)
     }
   }, [])
 

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import Scene from './components/Scene'
 import UIOverlay from './components/UIOverlay'
@@ -12,6 +12,13 @@ export default function App() {
   // warpPhase drives the renaud-style wireframe transition in Scene
   // 'idle' | 'wireframe' | 'zoomout' | 'zoomin'
   const [warpPhase, setWarpPhase] = useState<'idle' | 'wireframe' | 'zoomout' | 'zoomin'>('idle')
+
+  // Keep root HTML and body background color strictly synchronized with active act
+  useEffect(() => {
+    const bg = act === 1 ? '#eef2f6' : '#08080c'
+    document.documentElement.style.backgroundColor = bg
+    document.body.style.backgroundColor = bg
+  }, [act])
 
   const toggleAct = (targetAct?: 1 | 2) => {
     const nextAct = targetAct !== undefined ? targetAct : (act === 1 ? 2 : 1)
@@ -41,7 +48,7 @@ export default function App() {
   }
 
   return (
-    <div className={`${act === 1 ? 'bg-[#eef2f6] text-[#161216]' : 'bg-[#161216] text-[#fffcfc]'} min-h-screen relative selection:bg-[#c93b2b] selection:text-white transition-colors duration-700`}>
+    <div className={`${act === 1 ? 'bg-[#eef2f6] text-[#161216]' : 'bg-[#08080c] text-[#fffcfc]'} min-h-screen w-full max-w-full overflow-x-hidden relative selection:bg-[#c93b2b] selection:text-white transition-colors duration-700`}>
       {/* Authentic Initial Preloader Screen */}
       <Preloader onLoaded={() => setLoaded(true)} />
 
