@@ -1,38 +1,24 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import {
-  Briefcase,
-  GitMerge,
-  Coffee,
   Globe,
-  MapPin,
-  Clock,
-  Copy,
-  Check,
-  Download,
+  GitMerge,
   ArrowRight,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Shrub,
   FileCode,
   ExternalLink,
   X,
 } from 'lucide-react'
 
 import SkillsSection from './SkillsSection'
+import ContactSection from './ContactSection'
 
 interface UIOverlayProps {
   act: 1 | 2
   onContinue: () => void
   onSwitchAct: (act: 1 | 2) => void
 }
-
-const TOPICS = [
-  { label: 'Full-Time Role 2026', icon: <Briefcase size={12} /> },
-  { label: '3D Project',          icon: <Globe size={12} /> },
-  { label: 'Open-Source Collab',  icon: <GitMerge size={12} /> },
-  { label: 'Tech Chat',           icon: <Coffee size={12} /> },
-]
 
 export interface ProjectItem {
   id: string
@@ -172,11 +158,6 @@ const PROJECTS_DATA: ProjectItem[] = [
 ]
 
 export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayProps) {
-  const [copied, setCopied] = useState(false)
-  const [currentTime, setCurrentTime] = useState('')
-  const [message, setMessage] = useState('')
-  const [selectedTopic, setSelectedTopic] = useState(TOPICS[0].label)
-
   // Stacked Folder State (Detail is closed by default as requested!)
   const [activeProjectIndex, setActiveProjectIndex] = useState(0)
   const [isDetailOpen, setIsDetailOpen] = useState(false)
@@ -191,16 +172,6 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
   }
 
   const folderContainerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date()
-      setCurrentTime(now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }))
-    }
-    updateTime()
-    const timer = setInterval(updateTime, 1000)
-    return () => clearInterval(timer)
-  }, [])
 
   const isWheelThrottled = useRef(false)
   const handleFolderWheel = (e: WheelEvent) => {
@@ -232,12 +203,6 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
     }
   }
 
-  const copyEmail = () => {
-    navigator.clipboard.writeText('contact@mdaasif.dev')
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2500)
-  }
-
   const activeProject = PROJECTS_DATA[activeProjectIndex]
 
   return (
@@ -249,7 +214,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
         <div className="text-[#161216]">
           {/* Hero Viewport */}
           <section className="h-screen flex flex-col justify-between p-8 md:p-14 select-none relative">
-            <div className="max-w-xl pointer-events-auto pt-4">
+            <div className="max-w-xl pointer-events-none pt-4">
               {/* Minimal Tiny Japanese Badge */}
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-black/10 text-[10px] font-mono text-[#555] mb-3 shadow-sm">
                 <span className="w-2 h-2 rounded-full bg-[#c93b2b] animate-ping" />
@@ -279,7 +244,7 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
               <div className="flex flex-wrap items-center gap-4">
                 <button
                   onClick={onContinue}
-                  className="px-8 py-3.5 bg-[#161216] text-white font-mono text-xs tracking-[0.2em] uppercase rounded-xl hover:bg-[#c93b2b] transition-all duration-300 shadow-md cursor-pointer flex items-center gap-2 group"
+                  className="pointer-events-auto px-8 py-3.5 bg-[#161216] text-white font-mono text-xs tracking-[0.2em] uppercase rounded-xl hover:bg-[#c93b2b] transition-all duration-300 shadow-md cursor-pointer flex items-center gap-2 group"
                 >
                   <span>Explore Universe</span>
                   <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -705,121 +670,8 @@ export default function UIOverlay({ act, onContinue, onSwitchAct }: UIOverlayPro
           {/* ── SECTION 2: SKILLS ── */}
           <SkillsSection />
 
-          {/* â”€â”€ SECTION 3: CONTACT â”€â”€ full screen */}
-          <section id="contact" className="min-h-screen px-8 md:px-14 py-20 flex items-center">
-            <div className="max-w-6xl mx-auto w-full pointer-events-auto">
-              <div className="max-w-2xl p-8 md:p-12 bg-white/[0.04] backdrop-blur-md rounded-3xl border border-white/10 shadow-2xl">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-6 border-b border-white/10">
-                  <div>
-                    <span className="text-xs font-mono tracking-[0.3em] uppercase text-[#c93b2b] font-bold block mb-1">
-                      04 // INITIATE TRANSMISSION
-                    </span>
-                    <h2 className="text-3xl md:text-5xl font-bold en text-[#fffcfc]">
-                      Let's Build Together.
-                    </h2>
-                  </div>
-                  <div className="p-3 bg-white/[0.05] rounded-xl border border-white/10 font-mono text-xs text-[#aaa] flex flex-col gap-1">
-                    <span className="flex items-center gap-1.5">
-                      <MapPin size={10} className="text-[#c93b2b]" />
-                      NEW DELHI, INDIA
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <Clock size={10} className="text-[#aaa]" />
-                      {currentTime} IST
-                    </span>
-                  </div>
-                </div>
-
-                {/* Topic Select Chips */}
-                <div className="mb-6">
-                  <span className="text-xs font-mono uppercase tracking-widest text-[#888] block mb-3">
-                    Select Topic:
-                  </span>
-                  <div className="flex flex-wrap gap-2 font-mono text-xs">
-                    {TOPICS.map(({ label, icon }) => (
-                      <button
-                        key={label}
-                        onClick={() => setSelectedTopic(label)}
-                        className={`px-4 py-2 rounded-xl border transition-all cursor-pointer flex items-center gap-1.5 ${
-                          selectedTopic === label
-                            ? 'bg-[#c93b2b] text-white border-[#c93b2b] font-bold'
-                            : 'bg-white/[0.04] border-white/10 text-[#aaa] hover:bg-white/[0.08]'
-                        }`}
-                      >
-                        {icon}
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Message Dispatcher */}
-                <div className="p-4 bg-black/40 rounded-2xl border border-white/10 mb-8">
-                  <textarea
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Write your message here..."
-                    rows={3}
-                    className="w-full bg-transparent p-2 text-sm font-sans text-white focus:outline-none resize-none"
-                  />
-                  <div className="flex justify-between items-center pt-3 border-t border-white/10">
-                    <span className="text-xs font-mono text-[#888]">Destination: contact@mdaasif.dev</span>
-                    <a
-                      href={`mailto:contact@mdaasif.dev?subject=${encodeURIComponent(`[${selectedTopic}] Inquiry`)}&body=${encodeURIComponent(message)}`}
-                      className="px-6 py-2 bg-[#c93b2b] text-white font-mono text-xs font-bold uppercase rounded-xl hover:bg-[#d94838] transition-all cursor-pointer inline-flex items-center gap-2"
-                    >
-                      Send Email
-                      <ArrowRight size={12} />
-                    </a>
-                  </div>
-                </div>
-
-                {/* Copy Email & Actions */}
-                <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                  <button
-                    onClick={copyEmail}
-                    className="p-4 bg-white/[0.03] rounded-2xl border border-white/10 hover:border-[#c93b2b] transition-all flex justify-between items-center cursor-pointer"
-                  >
-                    <div className="text-left font-mono">
-                      <span className="text-[10px] text-[#777] block uppercase">Direct Email</span>
-                      <span className="text-sm font-bold text-white">contact@mdaasif.dev</span>
-                    </div>
-                    <span className="px-3 py-1.5 bg-white/[0.08] rounded-lg text-xs font-mono text-white flex items-center gap-1">
-                      {copied ? <><Check size={12} /> Copied!</> : <><Copy size={12} /> Copy</>}
-                    </span>
-                  </button>
-
-                  <a
-                    href="#"
-                    className="p-4 bg-white/[0.03] rounded-2xl border border-white/10 hover:border-white transition-all flex justify-between items-center cursor-pointer"
-                  >
-                    <div className="text-left font-mono">
-                      <span className="text-[10px] text-[#777] block uppercase">Resume (PDF)</span>
-                      <span className="text-sm font-bold text-white">Download CV</span>
-                    </div>
-                    <span className="px-3 py-1.5 bg-white/[0.08] rounded-lg text-xs font-mono text-white flex items-center gap-1">
-                      <Download size={12} /> Download
-                    </span>
-                  </a>
-                </div>
-
-                {/* Switch Back to Act 1 Button */}
-                <div className="text-center pt-6 border-t border-white/10">
-                  <button
-                    onClick={() => onSwitchAct(1)}
-                    className="px-8 py-3 bg-white/[0.05] border border-white/15 text-xs font-mono tracking-widest uppercase rounded-full hover:bg-white/[0.1] transition-all cursor-pointer inline-flex items-center gap-2"
-                  >
-                    <Shrub size={13} />
-                    Return to Shrine Act 1
-                  </button>
-                </div>
-              </div>
-
-              <footer className="text-center text-sm font-mono text-[#888] tracking-widest uppercase py-8">
-                Â© 2026 <span className="font-aquire text-base text-[#666]">MD AASIF</span> Â· CREATIVE 3D WEBGL PORTFOLIO
-              </footer>
-            </div>
-          </section>
+          {/* ── SECTION 3: CONTACT ── */}
+          <ContactSection onSwitchAct={onSwitchAct} />
         </div>
       )}
     </div>

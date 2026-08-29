@@ -33,7 +33,7 @@ export default function HUD() {
       <div className="absolute top-20 left-8 md:left-14 flex items-center gap-2.5 opacity-60">
         <span className="text-[9px] font-mono tracking-widest text-[#ffaa66]">SYS // 2026</span>
         <span className="text-[9px] font-mono text-[#555]">|</span>
-        <span className="text-[9px] font-mono text-[#888]">DELHI [28.6139° N, 77.2090° E]</span>
+        <span className="text-[9px] font-mono text-[#888]">BIHAR, INDIA [26.1542° N, 85.8918° E]</span>
       </div>
 
       {/* Sub-header Telemetry Bar (Right) */}

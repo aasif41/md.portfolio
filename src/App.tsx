@@ -65,6 +65,7 @@ export default function App() {
       <div className={`fixed inset-0 w-screen h-screen z-0 ${act === 2 ? 'pointer-events-auto' : 'pointer-events-none'}`}>
         <Canvas
           shadows
+          eventSource={typeof document !== 'undefined' ? (document.getElementById('root') || undefined) : undefined}
           camera={{ position: [0, 2.4, 7], fov: 46 }}
           dpr={Math.min(window.devicePixelRatio, 2)}
           gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
